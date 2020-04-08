@@ -15,10 +15,6 @@ func RegisterCmd(parentCmd *cobra.Command) {
 		},
 	}
 
-	initCat()
-	codebaseCmd.AddCommand(catCmd)
-	initFind()
-	codebaseCmd.AddCommand(findCmd)
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -28,5 +24,11 @@ func RegisterCmd(parentCmd *cobra.Command) {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	initCat()
+	initFind()
+
+	codebaseCmd.AddCommand(catCmd)
+	codebaseCmd.AddCommand(findCmd)
 	parentCmd.AddCommand(codebaseCmd)
 }
