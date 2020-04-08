@@ -1,4 +1,4 @@
-package repository
+package unitTests
 
 import (
 	"fmt"
@@ -6,13 +6,13 @@ import (
 )
 
 func RegisterCmd(parentCmd *cobra.Command) {
-	var repoCmd = &cobra.Command{
-		Use:                        "repository",
-		Short:                      "Helps you handle your repository",
+	var utCmd = &cobra.Command{
+		Use:                        "unit-tests",
+		Short:                      "Helps you handle unit tests of your projects",
 		Long:                       "",
 		Example:                    "",
 		Run:                        func(cmd *cobra.Command, args []string) {
-			fmt.Println("repository called")
+			fmt.Println("unit tests called")
 		},
 	}
 
@@ -27,6 +27,6 @@ func RegisterCmd(parentCmd *cobra.Command) {
 	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	initCreate()
 
-	repoCmd.AddCommand(createCmd)
-	parentCmd.AddCommand(repoCmd)
+	utCmd.AddCommand(createCmd)
+	parentCmd.AddCommand(utCmd)
 }

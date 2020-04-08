@@ -5,17 +5,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func RegisterCmd(parentCmd *cobra.Command) {
-	var repoCmd = &cobra.Command{
-		Use:                        "repository",
-		Short:                      "Helps you handle your repository",
-		Long:                       "",
-		Example:                    "",
-		Run:                        func(cmd *cobra.Command, args []string) {
-			fmt.Println("repository called")
-		},
-	}
+var createCmd = &cobra.Command{
+	Use:   "create",
+	Short: "Create new repository based on a given template.",
+	Long: ``,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("repository create called")
+	},
+}
 
+func initCreate() {
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -25,8 +24,4 @@ func RegisterCmd(parentCmd *cobra.Command) {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	initCreate()
-
-	repoCmd.AddCommand(createCmd)
-	parentCmd.AddCommand(repoCmd)
 }
