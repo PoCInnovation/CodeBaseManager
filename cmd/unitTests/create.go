@@ -1,28 +1,40 @@
 package unitTests
 
 import (
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
-var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "Create new repository based on a given template.",
-	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("unit-tests create called")
-	},
+var (
+	utType string
+)
+
+func registerCreate(parentCmd *cobra.Command) {
+	var createCmd = &cobra.Command{
+		Use:   "create x func",
+		Short: "Creates a given number of unit-tests for a given function.",
+		Args: checkArgs,
+		Run: func(_ *cobra.Command, args []string) {
+			fmt.Println("unit-tests create:", args)
+		},
+	}
+
+	createCmd.Flags().StringVarP(&utType, "type", "t", "basic", "Type of unit-tests")
+
+	parentCmd.AddCommand(createCmd)
 }
 
-func initCreate() {
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// buildCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+func checkArgs(cmd *cobra.Command, av []string) error {
+	if len(av) != 2 {
+		return errors.New("Exactly 2 arguments required.")
+	}
+	if _, err := strconv.Atoi(av[0]); err != nil {
+		return errors.New("The first argument must be an integer.")
+	}
+	//TODO: check if av[1] is a known function
+	//TODO: check if type has legit value ("basic", "display", ... based on ut.toml")
+	//      cmd -> flags-> lookup -> value
+	return nil
 }
-
