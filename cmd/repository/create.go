@@ -5,23 +5,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "Create new repository based on a given template.",
-	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("repository create called")
-	},
-}
 
-func initCreate() {
-	// Here you will define your flags and configuration settings.
+func registerCreate(parentCmd *cobra.Command) {
+	var createCmd = &cobra.Command{
+		Use:   "create link.to.template",
+		Short: "Create your project repository based on the given template.",
+		Run: func(_ *cobra.Command, args []string) {
+			//TODO: Add its real behavior
+			fmt.Println("Creating repo based on:", args[0])
+		},
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// buildCmd.PersistentFlags().String("foo", "", "A help for foo")
+	createCmd.Args = cobra.ExactArgs(1)
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	parentCmd.AddCommand(createCmd)
 }
