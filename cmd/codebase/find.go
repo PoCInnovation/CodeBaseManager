@@ -5,24 +5,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var findCmd = &cobra.Command{
-	Use:   "find",
-	Short: "Tells you where the requested elements of the codebase are located.",
-	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("codebase find called")
-	},
-}
+func registerFind(parentCmd *cobra.Command) {
+	var findCmd = &cobra.Command{
+		Use:   "find elem...",
+		Short: "Tells you where the requested elements of the codebase are located.",
+		Run: func(cmd *cobra.Command, args []string) {
+			// TODO: Add its real behavior.
+			fmt.Println("Looking for: ", args)
+		},
+	}
 
-func initFind() {
-	// Here you will define your flags and configuration settings.
+	findCmd.Args = cobra.MinimumNArgs(1)
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// buildCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	parentCmd.AddCommand(findCmd)
 }
 

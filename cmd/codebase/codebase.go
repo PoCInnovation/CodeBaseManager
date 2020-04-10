@@ -1,34 +1,53 @@
 package codebase
 
 import (
-	"fmt"
+	"errors"
+	"github.com/PoCFrance/CodeBaseManager/REPLs"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 func RegisterCmd(parentCmd *cobra.Command) {
 	var codebaseCmd = &cobra.Command{
 		Use:   "codebase",
-		Short: "Helps you naviguate through your codebase.",
-		Long: ``,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("codebase called")
+		Short: "Simple shell to navigate through your codebase.",
+		Args:  isCBMRepository,
+		Run: func(_ *cobra.Command, _ []string) {
+			REPLs.CodebaseShell()
 		},
 	}
 
-	// Here you will define your flags and configuration settings.
+	codebaseCmd.Args = cobra.ExactArgs(0)
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// buildCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
-	initCat()
-	initFind()
-
-	codebaseCmd.AddCommand(catCmd)
-	codebaseCmd.AddCommand(findCmd)
+	registerFind(codebaseCmd)
+	registerCat(codebaseCmd)
 	parentCmd.AddCommand(codebaseCmd)
+}
+
+func isCBMRepository(_ *cobra.Command, av []string) error {
+	const (
+		currentDir = 0
+		goToDir = 1
+	)
+
+	switch len(av) {
+	case currentDir:
+		st, err := os.Stat(".cbm/")
+		if err != nil || !st.IsDir() {
+			return errors.New("Not in a CBM Repository.")
+		}
+	case goToDir:
+		st, err := os.Stat(av[0])
+		if err != nil || !st.IsDir() {
+			return errors.New("Invalid filepath")
+		}
+		st, err = os.Stat(av[0] + "/.cbm/")
+		if err != nil || !st.IsDir() {
+			return errors.New("Not a CBM Repository")
+		}
+		if err = os.Chdir(av[0]); err != nil {
+			return errors.Unwrap(err)
+		}
+	}
+	return nil
 }

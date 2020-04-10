@@ -5,23 +5,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var catCmd = &cobra.Command{
-	Use:   "cat",
-	Short: "Print the requested elements of the codebase.",
-	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("codebase cat called")
-	},
-}
+func registerCat(parentCmd *cobra.Command) {
+	var catCmd = &cobra.Command{
+		Use:   "cat elem...",
+		Short: "Prints the requested elements of the codebase.",
+		Run: func(cmd *cobra.Command, args []string) {
+			//TODO: Add its real behavior.
+			fmt.Println("Printing: ", args)
+		},
+	}
 
-func initCat() {
-	// Here you will define your flags and configuration settings.
+	catCmd.Args = cobra.MinimumNArgs(1)
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// buildCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// buildCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	parentCmd.AddCommand(catCmd)
 }
