@@ -6,9 +6,9 @@ import (
 	"os"
 )
 
-func CBMShell() {
+func CodebaseShell() {
 	for {
-		fmt.Printf("%s > CBM :> ", os.Getenv("PWD"))
+		fmt.Printf("%s > CodeBase :> ", os.Getenv("PWD"))
 		_ = utils.GetLine()
 	}
 }
