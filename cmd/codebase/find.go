@@ -9,7 +9,7 @@ func registerFind(parentCmd *cobra.Command) {
 	var findCmd = &cobra.Command{
 		Use:   "find elem...",
 		Short: "Tells you where the requested elements of the codebase are located.",
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(_ *cobra.Command, args []string) {
 			// TODO: Add its real behavior.
 			fmt.Println("Looking for: ", args)
 		},

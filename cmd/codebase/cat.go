@@ -9,7 +9,7 @@ func registerCat(parentCmd *cobra.Command) {
 	var catCmd = &cobra.Command{
 		Use:   "cat elem...",
 		Short: "Prints the requested elements of the codebase.",
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(_ *cobra.Command, args []string) {
 			//TODO: Add its real behavior.
 			fmt.Println("Printing: ", args)
 		},
