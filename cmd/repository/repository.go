@@ -10,8 +10,6 @@ func RegisterCmd(parentCmd *cobra.Command) {
 		Short:                      "Helps you manage your repository",
 	}
 
-	repoCmd.Args = cobra.ExactArgs(0)
-
 	registerCreate(repoCmd)
 	parentCmd.AddCommand(repoCmd)
 }
