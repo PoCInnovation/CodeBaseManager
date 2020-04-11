@@ -8,6 +8,7 @@ func RegisterCmd(parentCmd *cobra.Command) {
 	var utCmd = &cobra.Command{
 		Use:                        "unit-tests",
 		Short:                      "Helps you deal with your unit tests.",
+		Aliases: []string{"ut"},
 	}
 
 	registerCreate(utCmd)
