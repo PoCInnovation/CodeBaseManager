@@ -1,4 +1,4 @@
-package common
+package REPL
 
 import "strings"
 
@@ -13,7 +13,7 @@ func isExit(in string) bool {
 	return len(in) == len("exit") && in == "exit"
 }
 
-func ParseInput(in string, builtins []string) ([]string, int) {
+func parseInput(in string, builtins []string) ([]string, int) {
 	in = strings.TrimSuffix(in, "\n")
 	if in == "" {
 		return nil, Continue

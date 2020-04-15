@@ -1,25 +1,21 @@
-package REPLs
-
-import (
-	"github.com/PoCFrance/CodeBaseManager/REPLs/common"
-)
+package REPL
 
 func CodebaseShell() {
 	codebaseCmd := []string{"cat", "find"}
-	p := common.NewPrompt("CodeBase")
+	p := newPrompt("CodeBase")
 	defer p.Close()
 
 	for {
 		p.Display()
 		in := p.GetInput()
-		parsed, todo := common.ParseInput(in, codebaseCmd)
+		parsed, todo := parseInput(in, codebaseCmd)
 
 		switch todo {
-		case common.Builtin:
-			common.HandleBuiltin(parsed)
-		case common.ExternalBin:
-			common.HandleExternal(parsed)
-		case common.Exit:
+		case Builtin:
+			handleBuiltin(parsed)
+		case ExternalBin:
+			handleExternal(parsed)
+		case Exit:
 			return
 		}
 	}
