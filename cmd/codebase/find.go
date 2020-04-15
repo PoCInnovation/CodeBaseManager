@@ -19,4 +19,3 @@ func registerFind(parentCmd *cobra.Command) {
 
 	parentCmd.AddCommand(findCmd)
 }
-

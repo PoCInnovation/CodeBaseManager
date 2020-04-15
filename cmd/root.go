@@ -16,11 +16,6 @@ func Execute() {
 	var rootCmd = &cobra.Command{
 		Use:   "CodeBaseManager",
 		Short: "Multi-langage CLI tool to manage your code base.",
-		// TODO: Quelle différences avec le shell de cbm codebase? Si aucune, rm
-		//Args:  isCBMRepository,
-		//Run: func(_ *cobra.Command, _ []string) {
-		//	REPLs.CBMShell()
-		//},
 	}
 
 	registerSubCmds(rootCmd)

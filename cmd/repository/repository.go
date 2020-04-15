@@ -6,8 +6,8 @@ import (
 
 func RegisterCmd(parentCmd *cobra.Command) {
 	var repoCmd = &cobra.Command{
-		Use:                        "repository",
-		Short:                      "Helps you manage your repository",
+		Use:   "repository",
+		Short: "Helps you manage your repository",
 	}
 
 	registerCreate(repoCmd)

@@ -15,7 +15,7 @@ func registerCreate(parentCmd *cobra.Command) {
 	var createCmd = &cobra.Command{
 		Use:   "create x func",
 		Short: "Creates a given number of unit-tests for a given function.",
-		Args: checkArgs,
+		Args:  checkArgs,
 		Run: func(_ *cobra.Command, args []string) {
 			fmt.Println("unit-tests create:", args)
 		},
