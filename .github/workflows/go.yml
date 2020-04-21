@@ -24,7 +24,6 @@ jobs:
 
     - name: Build
       run: go build -v .
-
 #
 #  auto-pull-request:
 #    needs: Build
