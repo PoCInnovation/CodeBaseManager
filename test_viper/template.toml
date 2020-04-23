@@ -1,0 +1,5 @@
+Language = "C"
+
+[Sources]
+	Modules = ["parser", "repl"]
+	Tests = ["wrapsMcDo", "src"]
