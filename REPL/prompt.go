@@ -6,27 +6,8 @@ import (
 	"github.com/logrusorgru/aurora"
 	"io"
 	"os"
-	"os/signal"
 	"strings"
-	"syscall"
 )
-
-type mux struct {
-	interrupt chan os.Signal
-	msg       chan string
-}
-
-func (c *mux) init() {
-	c.interrupt = make(chan os.Signal)
-	c.msg = make(chan string)
-	signal.Notify(c.interrupt, syscall.SIGINT)
-}
-
-func (c *mux) Close() {
-	close(c.interrupt)
-	close(c.msg)
-	signal.Reset()
-}
 
 type prompt struct {
 	comm   mux
@@ -53,7 +34,7 @@ func (p *prompt) readInput() {
 	}
 }
 
-func newPrompt(module string) *prompt {
+func NewPrompt(module string) *prompt {
 	p := &prompt{module: module}
 	p.reader = bufio.NewReader(os.Stdin)
 
