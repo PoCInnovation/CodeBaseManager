@@ -21,6 +21,6 @@ func RegisterCmd(parentCmd *cobra.Command) {
 	}
 
 	ftCmd.Args = cobra.ExactArgs(0)
-
+	registerRun(ftCmd)
 	parentCmd.AddCommand(ftCmd)
 }
