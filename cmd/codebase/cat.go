@@ -10,8 +10,11 @@ func registerCat(parentCmd *cobra.Command) {
 		Use:   "cat elem...",
 		Short: "Prints the requested elements of the codebase.",
 		Run: func(_ *cobra.Command, args []string) {
-			//TODO: Add its real behavior.
 			fmt.Println("Printing: ", args)
+			repo := []string{"main.go"}
+			found := make([]bool, len(args))
+			parser := parsingRepo{nil, contentFound{}, args, found}
+			ParseRepo(&parser, repo)
 		},
 	}
 
