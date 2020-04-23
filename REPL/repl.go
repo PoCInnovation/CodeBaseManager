@@ -5,7 +5,7 @@ type Shell struct {
 }
 
 func NewShell(module string) *Shell {
-	sh := &Shell{newPrompt(module)}
+	sh := &Shell{NewPrompt(module)}
 
 	return sh
 }
