@@ -4,6 +4,11 @@ import (
 	"fmt"
 )
 
+type findFctArray struct {
+	language string
+	fct      targetFctParser
+}
+
 type targetFctParser func(fileContent, toFind string) (content *string, err error)
 
 type contentFound map[string]*string
@@ -15,8 +20,8 @@ type parsingRepo struct {
 	found   []bool
 }
 
-// TODO: change type repo by parsed type
 func ParseRepo(parser *parsingRepo, repo []string) {
+	// TODO: change type repo by parsed type
 	// TODO: if parsed by modules, open_dir management (change filepath by Dir)
 	for _, filePath := range repo {
 		fileContent, err := GetFile(filePath)
