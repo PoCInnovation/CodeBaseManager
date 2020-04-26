@@ -2,7 +2,6 @@ package debug
 
 import (
 	"github.com/PoCFrance/CodeBaseManager/REPL"
-	"github.com/PoCFrance/CodeBaseManager/cmd/common"
 	"github.com/spf13/cobra"
 )
 
@@ -12,9 +11,9 @@ func RegisterCmd(parentCmd *cobra.Command) {
 		Short: "Runs the debug prompt",
 		Run: func(cmd *cobra.Command, _ []string) {
 			sh := REPL.NewShell("Debug")
-			acceptedBuiltins := common.RetrieveSubCommandsNames(cmd)
+			accepted := REPL.Builtins{}
 
-			sh.Run(acceptedBuiltins)
+			sh.Run(accepted)
 		},
 	}
 

@@ -10,21 +10,21 @@ func NewShell(module string) *Shell {
 	return sh
 }
 
-func (sh *Shell) Run(acceptedBuiltins []string) {
+func (sh *Shell) Run(cbmBuiltins Builtins) {
 	defer sh.Close()
 
 	for {
 		sh.Display()
 		input := sh.GetInput()
-		parsed, todo := parseInput(input, acceptedBuiltins)
+		parsed, execFn := parseInput(input, cbmBuiltins)
 
-		switch todo {
-		case Builtin:
-			handleBuiltin(parsed)
-		case ExternalBin:
-			handleExternal(parsed)
-		case Exit:
+		switch {
+		case parsed[0] == "continue":
+			continue
+		case parsed[0] == "exit":
 			return
+		default:
+			execFn(parsed)
 		}
 	}
 }
