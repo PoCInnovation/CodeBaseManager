@@ -1,0 +1,40 @@
+[common]
+    bin = "ls" # Optional
+    refBin = "ls" # Optional
+
+    [common.options]
+        repeat = true # Optional
+        time = false # Optional
+        shouldFail = true # Optional
+        timeout = 5 # in seconds, Optional
+        buildWith = "tests_run" # Optional
+
+[[Test]]
+    name = "Help"
+    desc = "Will display CBM's help." # Option
+    args = ["-h"]
+    refArgs = ["-h"]# Optional
+
+    [Test.expected]
+        status = 0
+        stdout = "Hello world" # Optional
+        stdoutFile = "nope" # Either this or stdout - Optional
+        stderr = "lol" # Optional
+        stderrFile = "lol" # Either this or stdout - Optional
+
+    [Test.interactions]
+        stdoutPipe = "yes life" # Optional
+        stderrPipe = "yes life" # Optional
+        stdin = "yes life" # Optional
+        stdinFile = "yes life" # Optional
+        pre = "yes life" # Optional
+        post = "yes life" # Optional
+        env = "yes life" # Optional
+        addEnv = "yes life" # Optional
+
+    [Test.options]
+        repeat = false # Optional
+        time = true # Optional
+        shouldFail = false # Optional
+        timeout = 10 # Optional
+        buildWith = "bin" # Optional

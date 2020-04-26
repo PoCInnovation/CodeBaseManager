@@ -24,6 +24,7 @@ func locateBinary(given string) string {
 		fmt.Println(err)
 		return ""
 	}
+	// TODO: look in path
 	return given
 }
 

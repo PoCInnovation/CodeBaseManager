@@ -3,6 +3,7 @@ package funcTests
 import (
 	"github.com/PoCFrance/CodeBaseManager/REPL"
 	"github.com/PoCFrance/CodeBaseManager/cmd/common"
+	"github.com/PoCFrance/CodeBaseManager/modules/funcTests"
 	"github.com/spf13/cobra"
 )
 
@@ -14,13 +15,15 @@ func RegisterCmd(parentCmd *cobra.Command) {
 		Args:    common.IsCBMRepository,
 		Run: func(cmd *cobra.Command, _ []string) {
 			sh := REPL.NewShell("Functional Tests")
-			acceptedBuiltins := common.RetrieveSubCommandsNames(cmd)
+			accepted := REPL.Builtins{
+				"run": funcTests.Run,
+			}
 
-			sh.Run(acceptedBuiltins)
+			sh.Run(accepted)
 		},
 	}
 
 	ftCmd.Args = cobra.ExactArgs(0)
-
+	registerRun(ftCmd)
 	parentCmd.AddCommand(ftCmd)
 }
