@@ -13,9 +13,10 @@ func RegisterCmd(parentCmd *cobra.Command) {
 		Args:  common.IsCBMRepository,
 		Run: func(cmd *cobra.Command, _ []string) {
 			sh := REPL.NewShell("CodeBase")
-			acceptedBuiltins := common.RetrieveSubCommandsNames(cmd)
-
-			sh.Run(acceptedBuiltins)
+			accepted := REPL.Builtins{
+				//TODO: add builtins
+			}
+			sh.Run(accepted)
 		},
 	}
 

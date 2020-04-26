@@ -1,9 +1,12 @@
 package REPL
 
-import "strings"
+import (
+	"strings"
+)
 
 const (
-	Builtin = iota
+	CommonBuiltin = iota
+	CBMBuiltin
 	ExternalBin
 	Exit
 	Continue
@@ -13,13 +16,20 @@ func isExit(in string) bool {
 	return len(in) == len("exit") && in == "exit"
 }
 
-func parseInput(in string, builtins []string) ([]string, int) {
+func parseInput(in string, cbmBuiltins Builtins) ([]string, builtin) {
 	in = strings.TrimSuffix(in, "\n")
 	if in == "" {
-		return nil, Continue
+		return []string{"continue"}, nil
 	} else if isExit(in) {
-		return nil, Exit
+		return []string{in}, nil
 	}
-	//TODO: Check what's av0 according to the consts above
-	return strings.Fields(in), Continue
+
+	parsed := strings.Fields(in)
+	if fn := isBuiltin(parsed[0], commonBuiltins); fn != nil {
+		return parsed, fn
+	}
+	if fn := isBuiltin(parsed[0], cbmBuiltins); fn != nil {
+		return parsed, fn
+	}
+	return parsed, handleExternal
 }
