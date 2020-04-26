@@ -22,4 +22,3 @@ func (c *mux) Close() {
 	close(c.msg)
 	signal.Reset()
 }
-
