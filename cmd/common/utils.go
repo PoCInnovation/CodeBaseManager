@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/spf13/cobra"
 	"os"
-	"strings"
 )
 
 func IsCBMRepository(_ *cobra.Command, av []string) error {
@@ -33,13 +32,4 @@ func IsCBMRepository(_ *cobra.Command, av []string) error {
 		}
 	}
 	return nil
-}
-
-func RetrieveSubCommandsNames(cmd *cobra.Command) []string {
-	subCmdsName := []string{}
-	subCmds := cmd.Commands()
-	for _, c := range subCmds {
-		subCmdsName = append(subCmdsName, strings.Fields(c.Use)[0])
-	}
-	return subCmdsName
 }
