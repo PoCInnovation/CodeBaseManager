@@ -1,33 +1,73 @@
 package codebase
 
-type findFctArray struct {
-	language string
-	fct      targetFctParser
-}
+import (
+	"fmt"
+	"log"
+	"os"
+	"strings"
+)
 
-type targetFctParser func(fileContent, toFind string) (content *string, err error)
-type contentFound map[string]string
+type fctParser func(string, parsingRepo)
+
+//type contentFound map[string]string
+type contentFound map[string]map[string]string
 
 type parsingRepo struct {
+	parser  fctParser
 	content contentFound
 	args    []string
-	found   []bool
-	repo    []string
 }
 
-func findTargetFromArgs(filepath, fileContent string, parser *parsingRepo) (err error) {
-	for idx, toFind := range parser.args {
-		if filepath == toFind {
-			parser.content[toFind] = fileContent
-			parser.found[idx] = true
-			continue
+func RepoParser(module string, control parsingRepo) {
+	// TODO: Manage hidden folder ?
+	splitName := strings.Split(module, "/")
+	splitLen := len(splitName)
+	if (module != ".") && (splitLen == 0 || strings.HasPrefix(splitName[splitLen-1], ".")) {
+		return
+	}
+
+	dir, err := os.Open(module)
+	if err != nil {
+		log.Printf("Error when opening module %s, %v", module, err)
+		return
+	}
+	defer func() {
+		err := dir.Close()
+		if err != nil {
+			log.Printf("Cannot close module :%s, %v", module, err)
 		}
-		if content, err := parser.target(fileContent, toFind); err == nil {
-			parser.content[toFind] = *content
-			parser.found[idx] = true
+	}()
+
+	files, err := dir.Readdir(0)
+	if err != nil {
+		log.Printf("Error when Readdir module %s, %v", module, err)
+		return
+	}
+
+	for _, file := range files {
+		if !file.IsDir() {
+			fmt.Println(module + "/" + file.Name())
+			control.parser(module+"/"+file.Name(), control)
+			// manage file
 		} else {
-			return err
+			RepoParser(module+"/"+file.Name(), control)
 		}
 	}
-	return nil
 }
+
+//func findTargetFromArgs(filepath, fileContent string, parser *parsingRepo) (err error) {
+//	for idx, toFind := range parser.args {
+//		if filepath == toFind {
+//			parser.content[toFind] = fileContent
+//			parser.found[idx] = true
+//			continue
+//		}
+//		if content, err := parser.target(fileContent, toFind); err == nil {
+//			parser.content[toFind] = *content
+//			parser.found[idx] = true
+//		} else {
+//			return err
+//		}
+//	}
+//	return nil
+//}
