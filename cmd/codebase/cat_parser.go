@@ -1,26 +1,35 @@
 package codebase
 
-func CatParseRepo(catStruct parsingRepo) {
-	// TODO: change type repo by parsed type
-	// TODO: Add opendir management.
+import (
+	"github.com/PoCFrance/CodeBaseManager/modules/codebase"
+	"log"
+	"strings"
+)
 
-	for _, module := range catStruct.repo {
-
-		if FoundAllArgs(catStruct.found) {
-			return
+func CatParser(name string, control parsingRepo) {
+	for _, arg := range control.args {
+		splitName := strings.Split(name, "/")
+		splitLen := len(splitName)
+		if splitLen == 0 {
+			log.Printf("Cannot Split %s", name)
 		}
-	}
 
-	//for _, filePath := range repo {
-	//	fileContent, err := codebase.GetFile(filePath)
-	//	if err != nil {
-	//		continue
-	//	}
-	//	fmt.Println(*fileContent)
-	//	//findTargetFromArgs(filePath, *fileContent, parser)
-	//	if foundAllArgs(parser.found) {
-	//		return
-	//	}
-	//}
-	//return print content
+		if arg == splitName[splitLen-1] {
+			content, err := codebase.GetFile(name)
+			if err == nil {
+				//control.content[arg][name] = *content
+				if control.content[arg] != nil {
+					control.content[arg][name] = *content
+				} else {
+					control.content[arg] = map[string]string{}
+					control.content[arg][name] = *content
+				}
+				//control.content[name] = *content
+				//print(*content)
+			}
+		} else {
+			//cat function
+		}
+
+	}
 }

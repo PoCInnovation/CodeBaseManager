@@ -11,12 +11,12 @@ func GetFile(fileName string) (*string, error) {
 
 	defer func() {
 		if err = fh.Close(); err != nil {
-			log.Fatal("Error on closing file", err)
+			log.Printf("Error on closing file %s, %v", fileName, err)
 		}
 	}()
 
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Error when opening file %s, %v", fileName, err)
 		return nil, err
 	}
 
@@ -28,7 +28,7 @@ func GetFile(fileName string) (*string, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		log.Printf("Error on closing file %s %v", fileName, err)
 		return nil, err
 	}
 

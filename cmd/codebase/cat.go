@@ -21,9 +21,22 @@ func registerCat(parentCmd *cobra.Command) {
 }
 
 func cat(args []string) {
-	// TODO
-	CatParseRepo(parsingRepo{
-		found: make([]bool, len(args)),
-		repo:  []string{"cmd"},
-	})
+	// TODO: Change repo parsing
+	repo := []string{"."}
+	parser := parsingRepo{
+		//found:   make([]bool, len(args)),
+		args:    args,
+		content: contentFound{},
+		parser:  CatParser,
+	}
+	for _, module := range repo {
+		RepoParser(module, parser)
+	}
+	for _, arg := range args {
+		if contentFound, ok := parser.content[arg]; ok {
+			for _, content := range contentFound {
+				fmt.Println(content)
+			}
+		}
+	}
 }
