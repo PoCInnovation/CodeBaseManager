@@ -25,7 +25,9 @@ func registerFind(parentCmd *cobra.Command) {
 
 func find(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
-	repo := []string{"."}
+	repo := []string{"cmd", "modules", "REPL", "test_viper"}
+	// TODO: Manage Panic when reading binary (regexp)
+	//repo := []string{"."}
 	parser := parsingRepo{
 		args:       args,
 		content:    contentFound{},
@@ -38,6 +40,7 @@ func find(args []string) {
 	PrintResult(args, parser)
 }
 
+// TODO: Delete function => common ground for cat and find (argParser in FindInRepository)
 func FindParser(name string, control parsingRepo) {
 	for _, arg := range control.args {
 		splitName := strings.Split(name, "/")
@@ -50,6 +53,7 @@ func FindParser(name string, control parsingRepo) {
 			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
 			control.content[arg], _ = control.manageFile(control.content[arg], name)
 		} else {
+			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
 			//read content to find function
 		}
 	}

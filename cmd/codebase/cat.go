@@ -25,7 +25,9 @@ func registerCat(parentCmd *cobra.Command) {
 
 func cat(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
-	repo := []string{"cmd"}
+	repo := []string{"cmd", "modules", "REPL", "test_viper"}
+	// TODO: Manage Panic when reading binary (regexp)
+	//repo := []string{"."}
 	parser := parsingRepo{
 		args:       args,
 		content:    contentFound{},
@@ -38,6 +40,7 @@ func cat(args []string) {
 	PrintResult(args, parser)
 }
 
+// TODO: Delete function => common ground for cat and find (argParser in FindInRepository)
 func CatParser(name string, control parsingRepo) {
 	for _, arg := range control.args {
 		splitName := strings.Split(name, "/")
@@ -51,10 +54,10 @@ func CatParser(name string, control parsingRepo) {
 			//var err error
 			control.content[arg], _ = control.manageFile(control.content[arg], name)
 		} else {
-			fmt.Println(name)
+			//fmt.Println(name)
+			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
 			control.content[arg], _ = CatFunction(control.content[arg], name, arg)
 		}
-
 	}
 }
 
@@ -80,6 +83,7 @@ func CatFunction(controlContent map[string]string, name, arg string) (map[string
 		return controlContent, err
 	}
 
+	// TODO: Manage several language ? array of function pointer given repository language
 	if found := catGoFunction(*content, arg); found != nil {
 		//read content to find function
 		//fmt.Println(*found)

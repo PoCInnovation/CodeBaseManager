@@ -5,6 +5,18 @@ import (
 	"regexp"
 )
 
+type languageFct func(string, string) *string
+
+//const catTargetFcts = []findFctArray{
+//	{"C", catCFct},
+//	{"Go", catGoFct},
+//}
+
+//const findTargetFcts = []findFctArray{
+//	{"C", findCFct},
+//	{"Go", findGoFct},
+//}
+
 func catFunction(reg, fileContent string) *string {
 	r, _ := regexp.Compile(reg)
 	if !r.MatchString(fileContent) {
