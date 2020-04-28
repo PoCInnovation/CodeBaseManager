@@ -11,24 +11,21 @@ func CatParser(name string, control parsingRepo) {
 		splitName := strings.Split(name, "/")
 		splitLen := len(splitName)
 		if splitLen == 0 {
-			log.Printf("Cannot Split %s", name)
+			log.Printf("Cannot Split %s\n", name)
 		}
 
 		if arg == splitName[splitLen-1] {
 			content, err := codebase.GetFile(name)
 			if err == nil {
-				//control.content[arg][name] = *content
 				if control.content[arg] != nil {
 					control.content[arg][name] = *content
 				} else {
 					control.content[arg] = map[string]string{}
 					control.content[arg][name] = *content
 				}
-				//control.content[name] = *content
-				//print(*content)
 			}
 		} else {
-			//cat function
+			//read content to find function
 		}
 
 	}

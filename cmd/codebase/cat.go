@@ -21,10 +21,9 @@ func registerCat(parentCmd *cobra.Command) {
 }
 
 func cat(args []string) {
-	// TODO: Change repo parsing
+	// TODO: Change repo parsing and evaluate repo language
 	repo := []string{"."}
 	parser := parsingRepo{
-		//found:   make([]bool, len(args)),
 		args:    args,
 		content: contentFound{},
 		parser:  CatParser,
@@ -32,11 +31,17 @@ func cat(args []string) {
 	for _, module := range repo {
 		RepoParser(module, parser)
 	}
-	for _, arg := range args {
-		if contentFound, ok := parser.content[arg]; ok {
-			for _, content := range contentFound {
-				fmt.Println(content)
-			}
-		}
-	}
+	PrintResult(args, parser)
 }
+
+//func printResult(args []string, parser parsingRepo) {
+//	for _, arg := range args {
+//		fmt.Printf("ARG: %s\n", arg)
+//		if contentFound, ok := parser.content[arg]; ok {
+//			for key, content := range contentFound {
+//				fmt.Printf("FILE: %s\n", key)
+//				fmt.Println(content)
+//			}
+//		}
+//	}
+//}
