@@ -7,7 +7,7 @@ func PrintResult(args []string, parser parsingRepo) {
 		fmt.Printf("ARG: %s\n", arg)
 		if contentFound, ok := parser.content[arg]; ok {
 			for key, content := range contentFound {
-				fmt.Printf("FILE: %s\n", key)
+				fmt.Printf("FOUND ===> %s\n", key)
 				fmt.Println(content)
 			}
 		}
