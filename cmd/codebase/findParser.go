@@ -15,7 +15,8 @@ func FindParser(name string, control parsingRepo) {
 
 		if arg == splitName[splitLen-1] {
 			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			control.content[arg], _ = FindFile(control.content[arg], name)
+			control.content[arg], _ = control.fileFct(control.content[arg], name)
+			//control.content[arg], _ = FindFile(control.content[arg], name)
 			//if control.content[arg] != nil {
 			//	control.content[arg][name] = name
 			//} else {
@@ -37,7 +38,3 @@ func FindFile(controlContent map[string]string, name string) (map[string]string,
 	}
 	return controlContent, nil
 }
-
-//func CatFile() {
-//
-//}

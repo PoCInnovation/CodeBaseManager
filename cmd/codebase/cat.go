@@ -27,6 +27,7 @@ func cat(args []string) {
 		args:    args,
 		content: contentFound{},
 		parser:  CatParser,
+		fileFct: CatFile,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)

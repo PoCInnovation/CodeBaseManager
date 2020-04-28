@@ -10,11 +10,11 @@ type fctParser func(string, parsingRepo)
 
 type contentFound map[string]map[string]string
 
-//type fileFct func(map[string]string, string) (map[string]string, error)
+type fileFct func(map[string]string, string) (map[string]string, error)
 
 type parsingRepo struct {
-	parser fctParser
-	//fileFct fileFct
+	parser  fctParser
+	fileFct fileFct
 	content contentFound
 	args    []string
 }
