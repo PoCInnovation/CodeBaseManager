@@ -1,9 +1,0 @@
-[arouf]
-    selem = false
-    meilleurrapeur = false
-    flow = 100000000
-    chansons = 3
-[jul]
-    selem = true
-    chansons = 4000
-    flow = 1000
