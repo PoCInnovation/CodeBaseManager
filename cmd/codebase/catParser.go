@@ -17,7 +17,8 @@ func CatParser(name string, control parsingRepo) {
 		if arg == splitName[splitLen-1] {
 			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
 			//var err error
-			control.content[arg], _ = CatFile(control.content[arg], name)
+			control.content[arg], _ = control.fileFct(control.content[arg], name)
+			//control.content[arg], _ = CatFile(control.content[arg], name)
 			//content, err := codebase.GetFile(name)
 			//if err == nil {
 			//	if control.content[arg] != nil {

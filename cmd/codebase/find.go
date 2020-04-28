@@ -28,6 +28,7 @@ func find(args []string) {
 		args:    args,
 		content: contentFound{},
 		parser:  FindParser,
+		fileFct: FindFile,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)
