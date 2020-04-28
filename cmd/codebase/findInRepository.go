@@ -1,6 +1,7 @@
 package codebase
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -68,6 +69,20 @@ func argParser(name string, control parsingRepo) {
 			control.content[arg], _ = control.manageFile(control.content[arg], name)
 		} else {
 			//read content to find function
+		}
+	}
+}
+
+func PrintResult(args []string, parser parsingRepo) {
+	for _, arg := range args {
+		fmt.Println(strings.Repeat("==", 50))
+		fmt.Printf("ARG: %s\n", arg)
+		if contentFound, ok := parser.content[arg]; ok {
+			for key, content := range contentFound {
+				fmt.Println(strings.Repeat("#", 50))
+				fmt.Printf("FOUND ===> %s\n", key)
+				fmt.Println(content)
+			}
 		}
 	}
 }
