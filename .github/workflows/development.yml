@@ -24,14 +24,15 @@ jobs:
 
     - name: Build
       run: go build -v .
-#
-#  auto-pull-request:
-#    needs: Build
-#    name: PullRequestAction
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: pull-request-action
-#        uses: vsoch/pull-request-action@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          PULL_REQUEST_BRANCH: "dev"
+
+
+  auto-pull-request:
+    needs: Build
+    name: PullRequestAction
+    runs-on: ubuntu-latest
+    steps:
+      - name: pull-request-action
+        uses: vsoch/pull-request-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_BRANCH: "dev"
