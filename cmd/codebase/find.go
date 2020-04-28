@@ -27,16 +27,10 @@ func find(args []string) {
 	parser := parsingRepo{
 		args:    args,
 		content: contentFound{},
-		parser:  CatParser,
+		parser:  FindParser,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)
 	}
-	for _, arg := range args {
-		if contentFound, ok := parser.content[arg]; ok {
-			for _, content := range contentFound {
-				fmt.Println(content)
-			}
-		}
-	}
+	PrintResult(args, parser)
 }
