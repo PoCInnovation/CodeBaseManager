@@ -22,7 +22,7 @@ func registerFind(parentCmd *cobra.Command) {
 }
 
 func find(args []string) {
-	// TODO: Change repo parsing
+	// TODO: Change repo parsing and evaluate repo language
 	repo := []string{"."}
 	parser := parsingRepo{
 		args:    args,
