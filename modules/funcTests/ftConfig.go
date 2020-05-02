@@ -6,12 +6,14 @@ import (
     "github.com/BurntSushi/toml"
 )
 
+type ftCommon struct {
+    Bin    string    `toml:"bin"`
+    RefBin string    `toml:"refBin"`
+    Opt    ftOptions `toml:"options"`
+}
+
 type ConfigFT struct {
-    Common struct {
-        Bin    string    `toml:"bin"`
-        RefBin string    `toml:"refBin"`
-        Opt    ftOptions `toml:"options"`
-    }
+    Common ftCommon
     Tests []FT `toml:"Test"`
 }
 
