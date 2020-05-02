@@ -1,15 +1,17 @@
 package funcTests
 
+
 type FT struct {
 	Name    string
 	Desc    string
 	Args    []string
 	RefArgs []string
 
-	Exp ftExpected     `toml:"expected"`
-	Ext ftInteractions `toml:"interactions"`
-	Opt ftOptions      `toml:"options"`
-	exec [2]ftExecution
+	Exp    ftExpected     `toml:"expected"`
+	Ext    ftInteractions `toml:"interactions"`
+	Opt    ftOptions      `toml:"options"`
+	myExec, refExec ftExecution
+
 }
 
 type ftExpected struct {

@@ -15,11 +15,16 @@ func Run(_ []string) {
 	for _, test := range cfg.Tests {
 		fmt.Printf("Setting up %s...\n", test.Name)
 		test.Opt.SetCommon(&cfg.Common.Opt)
+		test.myExec.Set(cfg.Common.Bin, test.Args...)
+		if cfg.Common.RefBin != "" {
+			test.refExec.Set(cfg.Common.RefBin, test.RefArgs...)
+		}
 		// TODO: Setup tests
 		//       - Commands
-		//          - bin & ref bin
 		//          - their envs
 		//          - pipes & stdin
+		test.myExec.Run()
+		fmt.Println(test.myExec.outBuf.String(), test.myExec.errBuf.String())
 		// TODO: Run tests
 		//       - run pre
 		//       - run /!\ Options /!\
