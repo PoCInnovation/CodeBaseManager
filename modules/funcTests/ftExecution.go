@@ -13,20 +13,41 @@ type ftExecution struct {
     errBuf bytes.Buffer
 }
 
-func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
-    e.cmd = exec.Command(bin, args...)
-
-    e.cmd.Stdout = &e.outBuf
-    e.cmd.Stderr = &e.errBuf
-
-    if inter.Env != nil {
-        e.cmd.Env = inter.Env
+func (e *ftExecution) setEnv(env, addEnv []string) {
+    if env != nil {
+        e.cmd.Env = env
     } else {
         e.cmd.Env = os.Environ()
     }
-    e.cmd.Env = append(e.cmd.Env, inter.AddEnv...)
+    //TODO: See for variable replacement
+    e.cmd.Env = append(e.cmd.Env, addEnv...)
+}
 
-    // TODO: - stdin
+func (e *ftExecution) setStdin(stdin, stdinFile string) {
+    if stdin != noCmd {
+        e.cmd.Stdin = bytes.NewReader([]byte(stdin))
+    } else if stdinFile != noCmd {
+        file, err := os.Open(stdinFile)
+        if err != nil {
+            fmt.Println(err)
+            // TODO: Handle that way better.
+            return
+        }
+        e.cmd.Stdin = file
+    }
+}
+
+func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
+    e.cmd = exec.Command(bin, args...)
+
+    //TODO: Handle stdoutPipe
+    e.cmd.Stdout = &e.outBuf
+    //TODO: Handle stderrPipe
+    e.cmd.Stderr = &e.errBuf
+    e.setStdin(inter.Stdin, inter.StdinFile)
+
+    e.setEnv(inter.Env, inter.AddEnv)
+
     //       - pipes
 
 }
