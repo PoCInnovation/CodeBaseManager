@@ -17,22 +17,22 @@ type findFctArray struct {
 //var pythonExtension = []string{".py", ".pyc"}
 
 var catTargetFcts = []findFctArray{
-	{language: "C", fct: catGoFunction,
+	{language: "C", fct: catCFunction,
 		extensions: []string{".c", ".h"},
 		regex:      "((?m)^(\\w+(\\s+)?){1,3})%s((\\((.*?)\\))(\\s*)\\{(\\s*?.*?)*?\n\\})",
 	},
-	{language: "Go", fct: catCFunction,
+	{language: "Go", fct: catGoFunction,
 		extensions: []string{".go"},
 		regex:      "(?m)^((\\t| )*?)func %s\\((.+)\\{(\\s*?.*?)*?\n\\}\n",
 	},
 }
 
 var findTargetFcts = []findFctArray{
-	{language: "C", fct: findGoFunction,
+	{language: "C", fct: findCFunction,
 		extensions: []string{".c", ".h"},
 		regex:      "((?m)^(\\w+(\\s+)?){1,3})%s((\\((.*?)\\))(\\s*)\\{(\\s*?.*?)*?\n\\})",
 	},
-	{language: "Go", fct: findCFunction,
+	{language: "Go", fct: findGoFunction,
 		extensions: []string{".go"},
 		regex:      "(?m)^((\\t| )*?)func %s\\((.+)\\{(\\s*?.*?)*?\n\\}\n",
 	},
