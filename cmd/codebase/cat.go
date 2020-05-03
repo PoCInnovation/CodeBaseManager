@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/PoCFrance/CodeBaseManager/modules/codebase"
 	"github.com/spf13/cobra"
-	"log"
-	"strings"
 )
 
 func registerCat(parentCmd *cobra.Command) {
@@ -29,9 +27,8 @@ func cat(args []string) {
 	// TODO: Manage Panic when reading binary (regexp)
 	//repo := []string{"."}
 	parser := parsingRepo{
-		args:    args,
-		content: contentFound{},
-		//parser:          CatParser,
+		args:            args,
+		content:         contentFound{},
 		fileManager:     CatFile,
 		functionManager: CatFunction,
 	}
@@ -39,27 +36,6 @@ func cat(args []string) {
 		RepoParser(module, parser)
 	}
 	PrintResult(args, parser)
-}
-
-// TODO: Delete function => common ground for cat and find (argParser in FindInRepository)
-func CatParser(name string, control parsingRepo) {
-	for _, arg := range control.args {
-		splitName := strings.Split(name, "/")
-		splitLen := len(splitName)
-		if splitLen == 0 {
-			log.Printf("Cannot Split %s\n", name)
-		}
-
-		if arg == splitName[splitLen-1] {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			//var err error
-			control.content[arg], _ = control.fileManager(control.content[arg], name)
-		} else {
-			//fmt.Println(name)
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			control.content[arg], _ = CatFunction(control.content[arg], name, arg)
-		}
-	}
 }
 
 func CatFile(controlContent map[string]string, name string) (map[string]string, error) {
@@ -93,13 +69,13 @@ func CatFunction(controlContent map[string]string, name, arg string) (map[string
 			controlContent[name] = *found
 		}
 	}
-	if found := catCFunction(*content, arg); found != nil {
-		if controlContent != nil {
-			controlContent[name] = *found
-		} else {
-			controlContent = map[string]string{}
-			controlContent[name] = *found
-		}
-	}
+	//if found := catCFunction(*content, arg); found != nil {
+	//	if controlContent != nil {
+	//		controlContent[name] = *found
+	//	} else {
+	//		controlContent = map[string]string{}
+	//		controlContent[name] = *found
+	//	}
+	//}
 	return controlContent, nil
 }

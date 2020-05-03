@@ -17,6 +17,7 @@ type parsingRepo struct {
 	fileManager     manageFile
 	functionManager manageFunction
 	content         contentFound
+	languages       []string
 	args            []string
 }
 
