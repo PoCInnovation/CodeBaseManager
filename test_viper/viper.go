@@ -18,4 +18,3 @@ func printViperInfo(filepath string) {
 	fmt.Println(viper.Get("sources"))
 	fmt.Println(viper.Get("language"))
 }
-
