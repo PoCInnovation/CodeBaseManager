@@ -25,14 +25,15 @@ func registerCat(parentCmd *cobra.Command) {
 
 func cat(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
-	repo := []string{"cmd", "modules", "REPL", "test_viper"}
+	repo := []string{"cmd", "modules", "REPL", "test_viper", "tests"}
 	// TODO: Manage Panic when reading binary (regexp)
 	//repo := []string{"."}
 	parser := parsingRepo{
-		args:       args,
-		content:    contentFound{},
-		parser:     CatParser,
-		manageFile: CatFile,
+		args:    args,
+		content: contentFound{},
+		//parser:          CatParser,
+		fileManager:     CatFile,
+		functionManager: CatFunction,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)
@@ -52,7 +53,7 @@ func CatParser(name string, control parsingRepo) {
 		if arg == splitName[splitLen-1] {
 			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
 			//var err error
-			control.content[arg], _ = control.manageFile(control.content[arg], name)
+			control.content[arg], _ = control.fileManager(control.content[arg], name)
 		} else {
 			//fmt.Println(name)
 			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
@@ -85,8 +86,14 @@ func CatFunction(controlContent map[string]string, name, arg string) (map[string
 
 	// TODO: Manage several language ? array of function pointer given repository language
 	if found := catGoFunction(*content, arg); found != nil {
-		//read content to find function
-		//fmt.Println(*found)
+		if controlContent != nil {
+			controlContent[name] = *found
+		} else {
+			controlContent = map[string]string{}
+			controlContent[name] = *found
+		}
+	}
+	if found := catCFunction(*content, arg); found != nil {
 		if controlContent != nil {
 			controlContent[name] = *found
 		} else {
