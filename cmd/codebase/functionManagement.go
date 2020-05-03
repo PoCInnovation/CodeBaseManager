@@ -3,14 +3,13 @@ package codebase
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
-
-type languageFct func(string, string) *string
 
 type findFctArray struct {
 	language   string
 	extensions []string
-	fct        languageFct
+	fct        func(string, string) *string
 }
 
 var cExtensions = []string{".c", ".h"}
@@ -20,56 +19,59 @@ var pythonExtension = []string{".py", ".pyc"}
 
 // TODO: manage file extension
 // TODO: make const ?
-var catTargetFcts = []findFctArray{
+var catTargetFcts = [...]findFctArray{
 	{language: "C", extensions: cExtensions, fct: catGoFunction},
 	{language: "Go", extensions: goExtensions, fct: catCFunction},
 }
 
 // TODO: manage file extension
 // TODO: make const ?
-var findTargetFcts = []findFctArray{
+var findTargetFcts = [...]findFctArray{
 	{language: "C", extensions: cExtensions, fct: findGoFunction},
 	{language: "Go", extensions: goExtensions, fct: findCFunction},
 }
 
 func catFunction(reg, fileContent string) *string {
-	r, _ := regexp.Compile(reg)
-	if !r.MatchString(fileContent) {
+	r, err := regexp.Compile(reg)
+	if err != nil {
 		return nil
 	}
-	found := r.FindString(fileContent)
+	if found := r.FindString(fileContent); found != "" {
+		return &found
+	}
+	return nil
+}
+
+func findFunction(reg, fileContent, fctName string) *string {
+	r, err := regexp.Compile(reg)
+	if err != nil {
+		return nil
+	}
+	foundIndex := r.FindStringIndex(fileContent)
+	if foundIndex == nil {
+		return nil
+	}
+	line := strings.Count(fileContent[0:foundIndex[0]], "\n") + 1
+	found := fmt.Sprintf("Function %v at line : %v", fctName, line)
 	return &found
 }
 
 func catGoFunction(fileContent, fctName string) *string {
-	//TODO: Add begin line management
-	reg := "func " + fctName + "\\((.+)\\{(\\s*?.*?)*?\n\\}\n"
+	reg := "(?m)^((\\t| )*?)func " + fctName + "\\((.+)\\{(\\s*?.*?)*?\n\\}\n"
 	return catFunction(reg, fileContent)
 }
 
 func catCFunction(fileContent, fctName string) *string {
-	fmt.Println(fctName)
-	//TODO: Add begin line management
-	reg := "(\\w+(\\s+)?)" + fctName + "\\([^!@#$+%^]+?\\)(\\s*)\\{(\\s*?.*?)*?\n\\}"
+	reg := "((?m)^(\\w+(\\s+)?){1,3})" + fctName + "((\\((.*?)\\))(\\s*)\\{(\\s*?.*?)*?\n\\})"
 	return catFunction(reg, fileContent)
 }
 
 func findGoFunction(fileContent, fctName string) *string {
-	fmt.Println(fctName)
-	r, _ := regexp.Compile("func " + fctName + "\\((.+)\\{(\\s*?.*?)*?\n\\}\n")
-	if !r.MatchString(fileContent) {
-		return nil
-	}
-	found := r.FindString(fileContent)
-	return &found
+	reg := "(?m)^((\\t| )*?)func " + fctName + "\\((.+)\\{(\\s*?.*?)*?\n\\}\n"
+	return findFunction(reg, fileContent, fctName)
 }
 
 func findCFunction(fileContent, fctName string) *string {
-	fmt.Println(fctName)
-	r, _ := regexp.Compile("^(\\w+(\\s+)?)" + fctName + "\\([^!@#$+%^]+?\\)(\\s*)\\{(\\s*?.*?)*?\n\\}")
-	if !r.MatchString(fileContent) {
-		return nil
-	}
-	found := r.FindString(fileContent)
-	return &found
+	reg := "((?m)^(\\w+(\\s+)?){1,3})" + fctName + "((\\((.*?)\\))(\\s*)\\{(\\s*?.*?)*?\n\\})"
+	return findFunction(reg, fileContent, fctName)
 }

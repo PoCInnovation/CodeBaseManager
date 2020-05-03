@@ -2,9 +2,8 @@ package codebase
 
 import (
 	"fmt"
+	"github.com/PoCFrance/CodeBaseManager/modules/codebase"
 	"github.com/spf13/cobra"
-	"log"
-	"strings"
 )
 
 func registerFind(parentCmd *cobra.Command) {
@@ -12,7 +11,6 @@ func registerFind(parentCmd *cobra.Command) {
 		Use:   "find elem...",
 		Short: "Tells you where the requested elements of the codebase are located.",
 		Run: func(_ *cobra.Command, args []string) {
-			// TODO: Add its real behavior.
 			fmt.Println("Looking for: ", args)
 			find(args)
 		},
@@ -29,9 +27,8 @@ func find(args []string) {
 	// TODO: Manage Panic when reading binary (regexp)
 	//repo := []string{"."}
 	parser := parsingRepo{
-		args:    args,
-		content: contentFound{},
-		//parser:          FindParser,
+		args:            args,
+		content:         contentFound{},
 		fileManager:     FindFile,
 		functionManager: FindFunction,
 	}
@@ -39,25 +36,6 @@ func find(args []string) {
 		RepoParser(module, parser)
 	}
 	PrintResult(args, parser)
-}
-
-// TODO: Delete function => common ground for cat and find (argParser in FindInRepository)
-func FindParser(name string, control parsingRepo) {
-	for _, arg := range control.args {
-		splitName := strings.Split(name, "/")
-		splitLen := len(splitName)
-		if splitLen == 0 {
-			log.Printf("Cannot Split %s\n", name)
-		}
-
-		if arg == splitName[splitLen-1] {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			control.content[arg], _ = control.fileManager(control.content[arg], name)
-		} else {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			//read content to find function
-		}
-	}
 }
 
 func FindFile(controlContent map[string]string, name string) (map[string]string, error) {
@@ -71,6 +49,28 @@ func FindFile(controlContent map[string]string, name string) (map[string]string,
 }
 
 func FindFunction(controlContent map[string]string, name, arg string) (map[string]string, error) {
-	fmt.Println(name)
+	fmt.Println(name + "\tFIND")
+	content, err := codebase.GetFile(name)
+	if err != nil {
+		return controlContent, err
+	}
+
+	// TODO: Manage several language ? array of function pointer given repository language
+	if found := findGoFunction(*content, arg); found != nil {
+		if controlContent != nil {
+			controlContent[name] = *found
+		} else {
+			controlContent = map[string]string{}
+			controlContent[name] = *found
+		}
+	}
+	//if found := findCFunction(*content, arg); found != nil {
+	//	if controlContent != nil {
+	//		controlContent[name] = *found
+	//	} else {
+	//		controlContent = map[string]string{}
+	//		controlContent[name] = *found
+	//	}
+	//}
 	return controlContent, nil
 }
