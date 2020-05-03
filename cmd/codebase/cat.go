@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/PoCFrance/CodeBaseManager/modules/codebase"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 func registerCat(parentCmd *cobra.Command) {
@@ -26,11 +27,19 @@ func cat(args []string) {
 	repo := []string{"cmd", "modules", "REPL", "test_viper", "tests"}
 	// TODO: Manage Panic when reading binary (regexp)
 	//repo := []string{"."}
+
+	supportedLanguage := setupTargetFunctions(catTargetFcts)
+	if len(supportedLanguage) == 0 {
+		log.Println("No supported Language in user configuration.")
+		return
+	}
+
 	parser := parsingRepo{
 		args:            args,
 		content:         contentFound{},
-		fileManager:     CatFile,
-		functionManager: CatFunction,
+		fileManager:     catFile,
+		functionManager: catFunction,
+		languageManager: supportedLanguage,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)
@@ -38,7 +47,7 @@ func cat(args []string) {
 	PrintResult(args, parser)
 }
 
-func CatFile(controlContent map[string]string, name string) (map[string]string, error) {
+func catFile(controlContent map[string]string, name string) (map[string]string, error) {
 	content, err := codebase.GetFile(name)
 	if err != nil {
 		return controlContent, err
@@ -54,22 +63,14 @@ func CatFile(controlContent map[string]string, name string) (map[string]string, 
 	return controlContent, nil
 }
 
-func CatFunction(controlContent map[string]string, name, arg string) (map[string]string, error) {
+func catFunction(controlContent map[string]string, name, arg string) (map[string]string, error) {
 	content, err := codebase.GetFile(name)
 	if err != nil {
 		return controlContent, err
 	}
 
 	// TODO: Manage several language ? array of function pointer given repository language
-	if found := catGoFunction(*content, arg); found != nil {
-		if controlContent != nil {
-			controlContent[name] = *found
-		} else {
-			controlContent = map[string]string{}
-			controlContent[name] = *found
-		}
-	}
-	//if found := catCFunction(*content, arg); found != nil {
+	//if found := catGoFunction(*content, arg); found != nil {
 	//	if controlContent != nil {
 	//		controlContent[name] = *found
 	//	} else {
@@ -77,5 +78,13 @@ func CatFunction(controlContent map[string]string, name, arg string) (map[string
 	//		controlContent[name] = *found
 	//	}
 	//}
+	if found := catCFunction(*content, arg); found != nil {
+		if controlContent != nil {
+			controlContent[name] = *found
+		} else {
+			controlContent = map[string]string{}
+			controlContent[name] = *found
+		}
+	}
 	return controlContent, nil
 }

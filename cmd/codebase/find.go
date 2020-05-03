@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/PoCFrance/CodeBaseManager/modules/codebase"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 func registerFind(parentCmd *cobra.Command) {
@@ -26,11 +27,18 @@ func find(args []string) {
 	repo := []string{"cmd", "modules", "REPL", "test_viper", "tests"}
 	// TODO: Manage Panic when reading binary (regexp)
 	//repo := []string{"."}
+	supportedLanguage := setupTargetFunctions(findTargetFcts)
+	if len(supportedLanguage) == 0 {
+		log.Println("No supported Language in user configuration.")
+		return
+	}
+
 	parser := parsingRepo{
 		args:            args,
 		content:         contentFound{},
-		fileManager:     FindFile,
-		functionManager: FindFunction,
+		fileManager:     findFile,
+		functionManager: findFunction,
+		languageManager: supportedLanguage,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)
@@ -38,7 +46,7 @@ func find(args []string) {
 	PrintResult(args, parser)
 }
 
-func FindFile(controlContent map[string]string, name string) (map[string]string, error) {
+func findFile(controlContent map[string]string, name string) (map[string]string, error) {
 	if controlContent != nil {
 		controlContent[name] = name
 	} else {
@@ -48,8 +56,8 @@ func FindFile(controlContent map[string]string, name string) (map[string]string,
 	return controlContent, nil
 }
 
-func FindFunction(controlContent map[string]string, name, arg string) (map[string]string, error) {
-	fmt.Println(name + "\tFIND")
+func findFunction(controlContent map[string]string, name, arg string) (map[string]string, error) {
+	//fmt.Println(name + "\tFIND")
 	content, err := codebase.GetFile(name)
 	if err != nil {
 		return controlContent, err

@@ -16,8 +16,8 @@ type manageFunction func(map[string]string, string, string) (map[string]string, 
 type parsingRepo struct {
 	fileManager     manageFile
 	functionManager manageFunction
+	languageManager []findFctArray
 	content         contentFound
-	languages       []string
 	args            []string
 }
 
@@ -70,6 +70,23 @@ func argParser(name string, control parsingRepo) {
 			control.content[arg], _ = control.functionManager(control.content[arg], name, arg)
 		}
 	}
+}
+
+func setupTargetFunctions(targetLanguageArray []findFctArray) []findFctArray {
+	templateLanguages := []string{"go", "c"}
+	if len(targetLanguageArray) == 0 {
+		log.Println("No supported Language in CBM.")
+	}
+	//templateLanguages := []string{"go"}
+	var array []findFctArray
+	for _, templateLanguage := range templateLanguages {
+		for _, supportedLanguage := range targetLanguageArray {
+			if strings.EqualFold(templateLanguage, supportedLanguage.language) {
+				array = append(array, supportedLanguage)
+			}
+		}
+	}
+	return array
 }
 
 func PrintResult(args []string, parser parsingRepo) {
