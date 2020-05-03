@@ -7,17 +7,17 @@ import (
 	"strings"
 )
 
-type fctParser func(string, parsingRepo)
-
 type contentFound map[string]map[string]string
 
-type fileFct func(map[string]string, string) (map[string]string, error)
+type manageFile func(map[string]string, string) (map[string]string, error)
+
+type manageFunction func(map[string]string, string, string) (map[string]string, error)
 
 type parsingRepo struct {
-	manageFile fileFct
-	parser     fctParser
-	content    contentFound
-	args       []string
+	fileManager     manageFile
+	functionManager manageFunction
+	content         contentFound
+	args            []string
 }
 
 func RepoParser(module string, control parsingRepo) {
@@ -48,8 +48,7 @@ func RepoParser(module string, control parsingRepo) {
 
 	for _, file := range files {
 		if !file.IsDir() {
-			control.parser(module+"/"+file.Name(), control)
-			//argParser(module+"/"+file.Name(), control)
+			argParser(module+"/"+file.Name(), control)
 		} else {
 			RepoParser(module+"/"+file.Name(), control)
 		}
@@ -65,10 +64,9 @@ func argParser(name string, control parsingRepo) {
 		}
 
 		if arg == splitName[splitLen-1] {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			control.content[arg], _ = control.manageFile(control.content[arg], name)
+			control.content[arg], _ = control.fileManager(control.content[arg], name)
 		} else {
-			//read content to find function
+			control.content[arg], _ = control.functionManager(control.content[arg], name, arg)
 		}
 	}
 }
