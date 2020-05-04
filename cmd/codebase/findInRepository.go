@@ -64,6 +64,10 @@ func argParser(name string, control parsingRepo) {
 			log.Printf("Cannot Split %s\n", name)
 		}
 
+		if isParsable(name) {
+			continue
+		}
+
 		if arg == splitName[splitLen-1] {
 			control.content[arg], _ = control.fileManager(control.content[arg], name)
 		} else {
@@ -76,9 +80,11 @@ func setupTargetFunctions(targetLanguageArray []findFctArray) []findFctArray {
 	templateLanguages := []string{"go", "c"}
 	//templateLanguages := []string{"c"}
 	//templateLanguages := []string{"go"}
+
 	if len(targetLanguageArray) == 0 {
 		log.Println("No supported Language in CBM.")
 	}
+
 	var array []findFctArray
 	for _, templateLanguage := range templateLanguages {
 		for _, supportedLanguage := range targetLanguageArray {
@@ -88,6 +94,17 @@ func setupTargetFunctions(targetLanguageArray []findFctArray) []findFctArray {
 		}
 	}
 	return array
+}
+
+func isParsable(name string) bool {
+	info, err := os.Stat(name)
+
+	if err != nil {
+		return false
+	}
+
+	perm := info.Mode()
+	return info.Size() > 10000 && perm&0111 == 0111
 }
 
 func PrintResult(args []string, parser parsingRepo) {

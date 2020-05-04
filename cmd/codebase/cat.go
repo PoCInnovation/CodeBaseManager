@@ -25,6 +25,8 @@ func registerCat(parentCmd *cobra.Command) {
 
 func cat(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
+	//repo := []string{"cmd", "modules", "REPL", "test_viper", "tests"}
+	// TODO: Manage Panic when reading binary (regexp)
 	repo := []string{"."}
 
 	supportedLanguage := setupTargetFunctions(catTargetFcts)
@@ -63,12 +65,14 @@ func catFile(controlContent map[string]string, name string) (map[string]string, 
 }
 
 func catFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
+	// TODO: move Supported languages in args parser ?
 	for _, supportedLang := range supportedLanguages {
 		for _, extension := range supportedLang.extensions {
 			if strings.HasSuffix(name, extension) {
-				fmt.Println(name, extension)
+				//fmt.Println(name, extension)
 				content, err := codebase.GetFile(name)
 				if err != nil {
+					// TODO: continue ?
 					return controlContent, err
 				}
 				if found := supportedLang.fct(*content, arg); found != nil {
@@ -92,7 +96,6 @@ func catFunction(controlContent map[string]string, name, arg string, supportedLa
 //		return controlContent, err
 //	}
 //
-//	// TODO: Manage several language ? array of function pointer given repository language
 //	//if found := catGoFunction(*content, arg); found != nil {
 //	//	if controlContent != nil {
 //	//		controlContent[name] = *found
