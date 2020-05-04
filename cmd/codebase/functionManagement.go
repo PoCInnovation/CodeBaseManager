@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+//TODO: transform fct into 2 fields of catFct and findFct
 type findFctArray struct {
 	language   string
 	extensions []string
