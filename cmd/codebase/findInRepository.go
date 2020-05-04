@@ -77,12 +77,13 @@ func argParser(name string, control parsingRepo) {
 }
 
 func setupTargetFunctions(targetLanguageArray []findFctArray) []findFctArray {
-	templateLanguages := []string{"go", "c"}
+	templateLanguages := []string{"go", "c", "python"}
 	//templateLanguages := []string{"c"}
 	//templateLanguages := []string{"go"}
 
 	if len(targetLanguageArray) == 0 {
 		log.Println("No supported Language in CBM.")
+		return nil
 	}
 
 	var array []findFctArray

@@ -30,6 +30,9 @@ func find(args []string) {
 	repo := []string{"."}
 
 	supportedLanguage := setupTargetFunctions(findTargetFcts)
+	if supportedLanguage == nil {
+		return
+	}
 	if len(supportedLanguage) == 0 {
 		log.Println("No supported Language in user configuration.")
 		return
@@ -59,7 +62,7 @@ func findFile(controlContent map[string]string, name string) (map[string]string,
 }
 
 func findFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
-	// TODO: move Supported languages in args parser ?
+	// TODO: move Supported languages management in args parser ?
 	for _, supportedLang := range supportedLanguages {
 		for _, extension := range supportedLang.extensions {
 			if strings.HasSuffix(name, extension) {
