@@ -16,42 +16,26 @@ const (
 type findFctArray struct {
 	language   string
 	extensions []string
-	fct        func(string, string) *string
+	fct        [2]func(string, string) *string
 	regex      string
 }
 
 //var cppExtensions = []string{".cpp", ".hpp", ".cc", ".hh"}
 //var pythonExtension = []string{".py", ".pyc"}
 
-var catTargetFcts = []findFctArray{
+var TargetFcts = []findFctArray{
 	{
-		language: "C", fct: catCFunction,
+		language: "C", fct: [2]func(string, string) *string{findCFunction, catCFunction},
 		extensions: []string{".c", ".h"},
 		regex:      "((?m)^(\\w+(\\s+)?){1,3})%s((\\((.*?)\\))(\\s*)\\{(\\s*?.*?)*?\n\\})",
 	},
 	{
-		language: "Go", fct: catGoFunction,
+		language: "Go", fct: [2]func(string, string) *string{findGoFunction, catGoFunction},
 		extensions: []string{".go"},
 		regex:      "(?m)^((\\t| )*?)func %s\\((.+)\\{(\\s*?.*?)*?\n\\}\n",
 	},
 	{
-		language: "Python", fct: catPythonFunction,
-		extensions: []string{".py"},
-		regex:      "(((?:^[ \t]*)*@(.*)\n)(?:^[ \t]*)def %s\\(.*\\):(\\s)*((?=.*?[^ \t\n]).*\r?\n?)*\n)",
-	},
-}
-
-var findTargetFcts = []findFctArray{
-	{language: "C", fct: findCFunction,
-		extensions: []string{".c", ".h"},
-		regex:      "((?m)^(\\w+(\\s+)?){1,3})%s((\\((.*?)\\))(\\s*)\\{(\\s*?.*?)*?\n\\})",
-	},
-	{language: "Go", fct: findGoFunction,
-		extensions: []string{".go"},
-		regex:      "(?m)^((\\t| )*?)func %s\\((.+)\\{(\\s*?.*?)*?\n\\}\n",
-	},
-	{
-		language: "Python", fct: findPythonFunction,
+		language: "Python", fct: [2]func(string, string) *string{findPythonFunction, catPythonFunction},
 		extensions: []string{".py"},
 		regex:      "(((?:^[ \t]*)*@(.*)\n)(?:^[ \t]*)def %s\\(.*\\):(\\s)*((?=.*?[^ \t\n]).*\r?\n?)*\n)",
 	},

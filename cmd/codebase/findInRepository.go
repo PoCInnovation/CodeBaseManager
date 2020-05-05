@@ -1,6 +1,7 @@
 package codebase
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -76,14 +77,13 @@ func argParser(name string, control parsingRepo) {
 	}
 }
 
-func setupTargetFunctions(targetLanguageArray []findFctArray) []findFctArray {
+func setupTargetFunctions(targetLanguageArray []findFctArray) ([]findFctArray, error) {
 	templateLanguages := []string{"go", "c", "python"}
 	//templateLanguages := []string{"c"}
 	//templateLanguages := []string{"go"}
 
 	if len(targetLanguageArray) == 0 {
-		log.Println("No supported Language in CBM.")
-		return nil
+		return nil, errors.New("No supported Language in CBM.")
 	}
 
 	var array []findFctArray
@@ -94,7 +94,7 @@ func setupTargetFunctions(targetLanguageArray []findFctArray) []findFctArray {
 			}
 		}
 	}
-	return array
+	return array, nil
 }
 
 func isParsable(name string) bool {

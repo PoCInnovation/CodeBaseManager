@@ -25,15 +25,14 @@ func registerFind(parentCmd *cobra.Command) {
 
 func find(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
-	//repo := []string{"cmd", "modules", "REPL", "test_viper", "tests"}
-	// TODO: Manage Panic when reading binary (regexp)
 	repo := []string{"."}
 
-	supportedLanguage := setupTargetFunctions(findTargetFcts)
-	if supportedLanguage == nil {
+	supportedLanguage, err := setupTargetFunctions(TargetFcts)
+	if err != nil {
+		log.Println(err)
 		return
 	}
-	if len(supportedLanguage) == 0 {
+	if supportedLanguage == nil {
 		log.Println("No supported Language in user configuration.")
 		return
 	}
@@ -69,10 +68,10 @@ func findFunction(controlContent map[string]string, name, arg string, supportedL
 				//fmt.Println(name, extension)
 				content, err := codebase.GetFile(name)
 				if err != nil {
-					// TODO: continue ?
+					// TODO: continue ? (if supported
 					return controlContent, err
 				}
-				if found := supportedLang.fct(*content, arg); found != nil {
+				if found := supportedLang.fct[FIND](*content, arg); found != nil {
 					if controlContent != nil {
 						controlContent[name] = *found
 					} else {
