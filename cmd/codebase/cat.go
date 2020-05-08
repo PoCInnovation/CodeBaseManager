@@ -25,14 +25,24 @@ func registerCat(parentCmd *cobra.Command) {
 
 func cat(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
-	repo := []string{"cmd", "modules", "REPL", "test_viper"}
-	// TODO: Manage Panic when reading binary (regexp)
-	//repo := []string{"."}
+	repo := []string{"."}
+
+	supportedLanguage, err := setupTargetFunctions(TargetFcts)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	if supportedLanguage == nil {
+		log.Println("No supported Language in user configuration.")
+		return
+	}
+
 	parser := parsingRepo{
-		args:       args,
-		content:    contentFound{},
-		parser:     CatParser,
-		manageFile: CatFile,
+		args:            args,
+		content:         contentFound{},
+		fileManager:     catFile,
+		functionManager: catFunction,
+		languageManager: supportedLanguage,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)
@@ -40,28 +50,7 @@ func cat(args []string) {
 	PrintResult(args, parser)
 }
 
-// TODO: Delete function => common ground for cat and find (argParser in FindInRepository)
-func CatParser(name string, control parsingRepo) {
-	for _, arg := range control.args {
-		splitName := strings.Split(name, "/")
-		splitLen := len(splitName)
-		if splitLen == 0 {
-			log.Printf("Cannot Split %s\n", name)
-		}
-
-		if arg == splitName[splitLen-1] {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			//var err error
-			control.content[arg], _ = control.manageFile(control.content[arg], name)
-		} else {
-			//fmt.Println(name)
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			control.content[arg], _ = CatFunction(control.content[arg], name, arg)
-		}
-	}
-}
-
-func CatFile(controlContent map[string]string, name string) (map[string]string, error) {
+func catFile(controlContent map[string]string, name string) (map[string]string, error) {
 	content, err := codebase.GetFile(name)
 	if err != nil {
 		return controlContent, err
@@ -77,22 +66,53 @@ func CatFile(controlContent map[string]string, name string) (map[string]string, 
 	return controlContent, nil
 }
 
-func CatFunction(controlContent map[string]string, name, arg string) (map[string]string, error) {
-	content, err := codebase.GetFile(name)
-	if err != nil {
-		return controlContent, err
-	}
-
-	// TODO: Manage several language ? array of function pointer given repository language
-	if found := catGoFunction(*content, arg); found != nil {
-		//read content to find function
-		//fmt.Println(*found)
-		if controlContent != nil {
-			controlContent[name] = *found
-		} else {
-			controlContent = map[string]string{}
-			controlContent[name] = *found
+func catFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
+	// TODO: move Supported languages management in args parser ?
+	for _, supportedLang := range supportedLanguages {
+		for _, extension := range supportedLang.extensions {
+			if strings.HasSuffix(name, extension) {
+				//fmt.Println(name, extension)
+				content, err := codebase.GetFile(name)
+				if err != nil {
+					// TODO: continue ?
+					return controlContent, err
+				}
+				if found := supportedLang.fct[CAT](*content, arg); found != nil {
+					if controlContent != nil {
+						controlContent[name] = *found
+					} else {
+						controlContent = map[string]string{}
+						controlContent[name] = *found
+					}
+					return controlContent, nil
+				}
+			}
 		}
 	}
 	return controlContent, nil
 }
+
+//func catFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
+//	content, err := codebase.GetFile(name)
+//	if err != nil {
+//		return controlContent, err
+//	}
+//
+//	//if found := catGoFunction(*content, arg); found != nil {
+//	//	if controlContent != nil {
+//	//		controlContent[name] = *found
+//	//	} else {
+//	//		controlContent = map[string]string{}
+//	//		controlContent[name] = *found
+//	//	}
+//	//}
+//	if found := catCFunction(*content, arg); found != nil {
+//		if controlContent != nil {
+//			controlContent[name] = *found
+//		} else {
+//			controlContent = map[string]string{}
+//			controlContent[name] = *found
+//		}
+//	}
+//	return controlContent, nil
+//}

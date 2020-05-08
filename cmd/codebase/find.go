@@ -2,6 +2,7 @@ package codebase
 
 import (
 	"fmt"
+	"github.com/PoCFrance/CodeBaseManager/modules/codebase"
 	"github.com/spf13/cobra"
 	"log"
 	"strings"
@@ -12,7 +13,6 @@ func registerFind(parentCmd *cobra.Command) {
 		Use:   "find elem...",
 		Short: "Tells you where the requested elements of the codebase are located.",
 		Run: func(_ *cobra.Command, args []string) {
-			// TODO: Add its real behavior.
 			fmt.Println("Looking for: ", args)
 			find(args)
 		},
@@ -25,14 +25,24 @@ func registerFind(parentCmd *cobra.Command) {
 
 func find(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
-	repo := []string{"cmd", "modules", "REPL", "test_viper"}
-	// TODO: Manage Panic when reading binary (regexp)
-	//repo := []string{"."}
+	repo := []string{"."}
+
+	supportedLanguage, err := setupTargetFunctions(TargetFcts)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	if supportedLanguage == nil {
+		log.Println("No supported Language in user configuration.")
+		return
+	}
+
 	parser := parsingRepo{
-		args:       args,
-		content:    contentFound{},
-		parser:     FindParser,
-		manageFile: FindFile,
+		args:            args,
+		content:         contentFound{},
+		fileManager:     findFile,
+		functionManager: findFunction,
+		languageManager: supportedLanguage,
 	}
 	for _, module := range repo {
 		RepoParser(module, parser)
@@ -40,26 +50,7 @@ func find(args []string) {
 	PrintResult(args, parser)
 }
 
-// TODO: Delete function => common ground for cat and find (argParser in FindInRepository)
-func FindParser(name string, control parsingRepo) {
-	for _, arg := range control.args {
-		splitName := strings.Split(name, "/")
-		splitLen := len(splitName)
-		if splitLen == 0 {
-			log.Printf("Cannot Split %s\n", name)
-		}
-
-		if arg == splitName[splitLen-1] {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			control.content[arg], _ = control.manageFile(control.content[arg], name)
-		} else {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			//read content to find function
-		}
-	}
-}
-
-func FindFile(controlContent map[string]string, name string) (map[string]string, error) {
+func findFile(controlContent map[string]string, name string) (map[string]string, error) {
 	if controlContent != nil {
 		controlContent[name] = name
 	} else {
@@ -68,3 +59,56 @@ func FindFile(controlContent map[string]string, name string) (map[string]string,
 	}
 	return controlContent, nil
 }
+
+func findFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
+	// TODO: move Supported languages management in args parser ?
+	for _, supportedLang := range supportedLanguages {
+		for _, extension := range supportedLang.extensions {
+			if strings.HasSuffix(name, extension) {
+				//fmt.Println(name, extension)
+				content, err := codebase.GetFile(name)
+				if err != nil {
+					// TODO: continue ? (if supported
+					return controlContent, err
+				}
+				if found := supportedLang.fct[FIND](*content, arg); found != nil {
+					if controlContent != nil {
+						controlContent[name] = *found
+					} else {
+						controlContent = map[string]string{}
+						controlContent[name] = *found
+					}
+					return controlContent, nil
+				}
+			}
+		}
+	}
+	return controlContent, nil
+}
+
+//func findFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
+//
+//	//fmt.Println(name + "\tFIND")
+//	content, err := codebase.GetFile(name)
+//	if err != nil {
+//		return controlContent, err
+//	}
+//
+//	if found := findGoFunction(*content, arg); found != nil {
+//		if controlContent != nil {
+//			controlContent[name] = *found
+//		} else {
+//			controlContent = map[string]string{}
+//			controlContent[name] = *found
+//		}
+//	}
+//	//if found := findCFunction(*content, arg); found != nil {
+//	//	if controlContent != nil {
+//	//		controlContent[name] = *found
+//	//	} else {
+//	//		controlContent = map[string]string{}
+//	//		controlContent[name] = *found
+//	//	}
+//	//}
+//	return controlContent, nil
+//}

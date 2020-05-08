@@ -1,0 +1,17 @@
+
+func find(args []string) {
+	// TODO: Change repo parsing and evaluate repo language
+	repo := []string{"cmd", "modules", "REPL", "test_viper", "tests"}
+	// TODO: Manage Panic when reading binary (regexp)
+	//repo := []string{"."}
+	parser := parsingRepo{
+		args:            args,
+		content:         contentFound{},
+		fileManager:     FindFile,
+		functionManager: FindFunction,
+	}
+	for _, module := range repo {
+		RepoParser(module, parser)
+	}
+	PrintResult(args, parser)
+}

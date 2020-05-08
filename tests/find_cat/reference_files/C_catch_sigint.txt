@@ -1,0 +1,8 @@
+
+static void catch_sigint(int signal)
+{
+    if (signal == SIGINT) {
+        my_printf("\n");
+        display_prompt();
+    }
+}

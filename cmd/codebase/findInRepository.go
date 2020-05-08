@@ -1,23 +1,25 @@
 package codebase
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"strings"
 )
 
-type fctParser func(string, parsingRepo)
-
 type contentFound map[string]map[string]string
 
-type fileFct func(map[string]string, string) (map[string]string, error)
+type manageFile func(map[string]string, string) (map[string]string, error)
+
+type manageFunction func(map[string]string, string, string, []findFctArray) (map[string]string, error)
 
 type parsingRepo struct {
-	manageFile fileFct
-	parser     fctParser
-	content    contentFound
-	args       []string
+	fileManager     manageFile
+	functionManager manageFunction
+	languageManager []findFctArray
+	content         contentFound
+	args            []string
 }
 
 func RepoParser(module string, control parsingRepo) {
@@ -48,8 +50,7 @@ func RepoParser(module string, control parsingRepo) {
 
 	for _, file := range files {
 		if !file.IsDir() {
-			control.parser(module+"/"+file.Name(), control)
-			//argParser(module+"/"+file.Name(), control)
+			argParser(module+"/"+file.Name(), control)
 		} else {
 			RepoParser(module+"/"+file.Name(), control)
 		}
@@ -64,13 +65,47 @@ func argParser(name string, control parsingRepo) {
 			log.Printf("Cannot Split %s\n", name)
 		}
 
+		if isParsable(name) {
+			continue
+		}
+
 		if arg == splitName[splitLen-1] {
-			// TODO: refacto parsing to use fctPtr -> common ground for cat and find
-			control.content[arg], _ = control.manageFile(control.content[arg], name)
+			control.content[arg], _ = control.fileManager(control.content[arg], name)
 		} else {
-			//read content to find function
+			control.content[arg], _ = control.functionManager(control.content[arg], name, arg, control.languageManager)
 		}
 	}
+}
+
+func setupTargetFunctions(targetLanguageArray []findFctArray) ([]findFctArray, error) {
+	templateLanguages := []string{"go", "c", "python"}
+	//templateLanguages := []string{"c"}
+	//templateLanguages := []string{"go"}
+
+	if len(targetLanguageArray) == 0 {
+		return nil, errors.New("No supported Language in CBM.")
+	}
+
+	var array []findFctArray
+	for _, templateLanguage := range templateLanguages {
+		for _, supportedLanguage := range targetLanguageArray {
+			if strings.EqualFold(templateLanguage, supportedLanguage.language) {
+				array = append(array, supportedLanguage)
+			}
+		}
+	}
+	return array, nil
+}
+
+func isParsable(name string) bool {
+	info, err := os.Stat(name)
+
+	if err != nil {
+		return false
+	}
+
+	perm := info.Mode()
+	return info.Size() > 10000 && perm&0111 == 0111
 }
 
 func PrintResult(args []string, parser parsingRepo) {

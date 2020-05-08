@@ -1,0 +1,4 @@
+void signal_handler(UNUSED char *cmd)
+{
+    signal(SIGINT, catch_sigint);
+}
