@@ -116,7 +116,7 @@ func PrintResult(args []string, parser parsingRepo) {
 			for key, content := range contentFound {
 				fmt.Println(strings.Repeat("#", 50))
 				fmt.Printf("FOUND ===> %s\n", key)
-				fmt.Println(content)
+				fmt.Println(content + "\n")
 			}
 		}
 	}

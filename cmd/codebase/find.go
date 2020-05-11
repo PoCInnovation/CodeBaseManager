@@ -25,6 +25,7 @@ func registerFind(parentCmd *cobra.Command) {
 
 func find(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
+	// Repo allan
 	repo := []string{"."}
 
 	supportedLanguage, err := setupTargetFunctions(TargetFcts)
@@ -85,30 +86,3 @@ func findFunction(controlContent map[string]string, name, arg string, supportedL
 	}
 	return controlContent, nil
 }
-
-//func findFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
-//
-//	//fmt.Println(name + "\tFIND")
-//	content, err := codebase.GetFile(name)
-//	if err != nil {
-//		return controlContent, err
-//	}
-//
-//	if found := findGoFunction(*content, arg); found != nil {
-//		if controlContent != nil {
-//			controlContent[name] = *found
-//		} else {
-//			controlContent = map[string]string{}
-//			controlContent[name] = *found
-//		}
-//	}
-//	//if found := findCFunction(*content, arg); found != nil {
-//	//	if controlContent != nil {
-//	//		controlContent[name] = *found
-//	//	} else {
-//	//		controlContent = map[string]string{}
-//	//		controlContent[name] = *found
-//	//	}
-//	//}
-//	return controlContent, nil
-//}
