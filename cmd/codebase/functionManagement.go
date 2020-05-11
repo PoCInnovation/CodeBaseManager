@@ -90,7 +90,7 @@ func findGoFunction(fileContent, fctName string) *string {
 }
 
 func findCFunction(fileContent, fctName string) *string {
-	reg := fmt.Sprintf("(?m)^((\\t| )*?)func %s\\((.+)\\{(\\s*?.*?)*?\n\\}\n", fctName)
+	reg := fmt.Sprintf("((?m)^(\\w+(\\s+)?){1,3})%s((\\((.*?)\\))(\\s*)\\{(\\s*?.*?)*?\n\\})", fctName)
 	return findTargetFunction(reg, fileContent, fctName)
 }
 
