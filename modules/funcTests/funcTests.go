@@ -13,11 +13,11 @@ type FT struct {
 	Args    []string
 	RefArgs []string
 
-	Exp    ftExpected     `toml:"expected"`
-	Ext    ftInteractions `toml:"interactions"`
-	Opt    ftOptions      `toml:"options"`
-	myExec, refExec ftExecution
-
+	Exp     ftExpected     `toml:"expected"`
+	Ext     ftInteractions `toml:"interactions"`
+	Opt     ftOptions      `toml:"options"`
+	my, ref ftExecution
+	res     ftResult
 }
 
 func (test *FT) Init(basicOpt *ftCommon) {
@@ -25,9 +25,9 @@ func (test *FT) Init(basicOpt *ftCommon) {
 
 	test.Opt.SetCommon(&basicOpt.Opt)
 
-	test.myExec.Set(&test.Ext, basicOpt.Bin, test.Args...)
+	test.my.Set(&test.Ext, basicOpt.Bin, test.Args...)
 	if basicOpt.RefBin != noBin {
-		test.refExec.Set(&test.Ext, basicOpt.RefBin, test.RefArgs...)
+		test.ref.Set(&test.Ext, basicOpt.RefBin, test.RefArgs...)
 	}
 
 }
@@ -41,34 +41,29 @@ func (test *FT) Run() {
 		}
 	}
 
-	test.myExec.Run() // TODO: care about options
+	test.my.Run() // TODO: care about options
+	if test.ref.cmd != nil {
+		test.ref.Run() // TODO: care about options
+	}
 
+	test.my.AfterPipe(test.Ext.StdoutPipe, test.Ext.StderrPipe)
+	if test.ref.cmd != nil {
+		test.ref.AfterPipe(test.Ext.StdoutPipe, test.Ext.StderrPipe)
+	}
 	if test.Ext.Post != noCmd {
 		// TODO: Improvements? Error handling or else?
 		if err := QuickRun(test.Ext.Post); err != nil {
 			fmt.Println(err)
 		}
 	}
-
-	fmt.Println(test.myExec.outBuf.String(), test.myExec.errBuf.String())
+	fmt.Println(test.my.outBuf.String(), test.my.errBuf.String())
 }
 
-type ftExpected struct {
-	Status     int
-	Stdout     string
-	Stderr     string
-	StdoutFile string
-	StderrFile string
+func (test *FT) GetResults() {
+	if test.ref.cmd != nil {
+		test.res.CompareToRef(&test.ref, &test.my)
+	} else {
+		test.res.CompareToExp(&test.Exp, &test.my)
+	}
 }
 
-type ftInteractions struct {
-	StdoutPipe string
-	StderrPipe string
-	Stdin      string
-	StdinFile  string
-
-	Pre    string
-	Post   string
-	Env    []string
-	AddEnv []string
-}

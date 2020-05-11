@@ -5,6 +5,7 @@ import (
 )
 
 func Run(_ []string) {
+	// TODO: More flexibility on path
 	cfg, err := NewConfigFT(".cbm/template/ft.toml")
 	if err != nil {
 		fmt.Println(err)
@@ -16,7 +17,7 @@ func Run(_ []string) {
 	for _, test := range cfg.Tests {
 		test.Init(&cfg.Common)
 		test.Run()
-		// TODO: Analyse results
+		test.GetResults()
 	}
 	// TODO: show results
 }

@@ -5,12 +5,26 @@ import (
     "fmt"
     "os"
     "os/exec"
+    "syscall"
 )
+
+type ftInteractions struct {
+    StdoutPipe string
+    StderrPipe string
+    Stdin      string
+    StdinFile  string
+
+    Pre    string
+    Post   string
+    Env    []string
+    AddEnv []string
+}
 
 type ftExecution struct {
     cmd *exec.Cmd
     outBuf bytes.Buffer
     errBuf bytes.Buffer
+    status int
 }
 
 func (e *ftExecution) setEnv(env, addEnv []string) {
@@ -47,14 +61,37 @@ func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
     e.setStdin(inter.Stdin, inter.StdinFile)
 
     e.setEnv(inter.Env, inter.AddEnv)
-
-    //       - pipes
-
 }
 
 func (e *ftExecution) Run() {
     if err := e.cmd.Run(); err != nil {
         fmt.Println(err)
+        if exitError, ok := err.(*exec.ExitError); ok {
+            e.status = exitError.Sys().(syscall.WaitStatus).ExitStatus()
+        }
+    } else {
+        e.status = e.cmd.ProcessState.Sys().(syscall.WaitStatus).ExitStatus()
+    }
+}
+
+func (e *ftExecution) AfterPipe(outPipeCmd, errPipeCmd string) {
+    if outPipeCmd != "" {
+        tmp := exec.Command("bash", "-c", outPipeCmd)
+        tmp.Stdin = bytes.NewReader(e.outBuf.Bytes())
+        tmp.Stdout = &e.outBuf
+        if err := tmp.Run(); err != nil {
+            fmt.Println("stdoutPipe:", err)
+            return
+        }
+    }
+    if errPipeCmd != "" {
+        tmp := exec.Command("bash", "-c", errPipeCmd)
+        tmp.Stdin = bytes.NewReader(e.errBuf.Bytes())
+        tmp.Stderr = &e.errBuf
+        if err := tmp.Run(); err != nil {
+            fmt.Println("stderrPipe:", err)
+            return
+        }
     }
 }
 
