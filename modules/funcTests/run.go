@@ -2,16 +2,22 @@ package funcTests
 
 import (
 	"fmt"
-	"github.com/BurntSushi/toml"
 )
 
 func Run(_ []string) {
-	var cfg ConfigFT
-
-	_, err := toml.DecodeFile(".cbm/template/ft.toml", &cfg)
+	// TODO: More flexibility on path
+	cfg, err := NewConfigFT(".cbm/template/ft.toml")
 	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		fmt.Println(cfg)
+		fmt.Println(err)
+		// TODO: Would you like to continue ? yes | exit
+		return
 	}
+	// TODO: if no bin ask build module for binary
+	// TODO: use exec.lookPath to make sure our bin's ok
+	for _, test := range cfg.Tests {
+		test.Init(&cfg.Common)
+		test.Run()
+		test.GetResults()
+	}
+	// TODO: show results
 }
