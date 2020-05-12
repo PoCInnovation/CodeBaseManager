@@ -24,8 +24,12 @@ func locateBinary(given string) string {
 		fmt.Println(err)
 		return ""
 	}
-	// TODO: look in path
-	return given
+	found, err := exec.LookPath(given)
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+	return found
 }
 
 func handleExternal(av []string) {

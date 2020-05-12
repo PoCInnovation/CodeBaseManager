@@ -1,19 +1,17 @@
 [common]
-    bin = "ls" # Optional
-    refBin = "ls" # Optional
+    bin = "mysh" # Optional
+    refBin = "tcsh" # Optional
 
     [common.options]
-        repeat = true # Optional
+        repeat = 5 # Optional
         time = false # Optional
-        shouldFail = true # Optional
         timeout = 5 # in seconds, Optional
-        buildWith = "tests_run" # Optional
 
 [[Test]]
     name = "Help"
-    desc = "Will display CBM's help." # Option
-    args = ["-h"]
-    refArgs = ["-h"]# Optional
+    desc = "Will display CBM's help." # Optional
+    args = ["-h"] # Optional
+    refArgs = ["-h"] # Optional
 
     [Test.expected]
         status = 0
@@ -24,17 +22,26 @@
 
     [Test.interactions]
         stdoutPipe = "yes life" # Optional
-        stderrPipe = "yes life" # Optional
+        stderrPipe = "bonjour" # Optional
         stdin = "yes life" # Optional
         stdinFile = "yes life" # Optional
-        pre = "yes life" # Optional
+        pre = "42" # Optional
         post = "yes life" # Optional
         env = "yes life" # Optional
         addEnv = "yes life" # Optional
 
     [Test.options]
-        repeat = false # Optional
+        repeat = 10 # Optional
         time = true # Optional
         shouldFail = false # Optional
         timeout = 10 # Optional
-        buildWith = "bin" # Optional
+
+[[Test]]
+    name = "others"
+    desc = "Will display CBM's help." # Optional
+    args = ["-h"] # Optional
+    refArgs = ["-h"] # Optional
+
+    [Test.expected]
+        status = 0
+        stdout = "Hello world" # Optional
