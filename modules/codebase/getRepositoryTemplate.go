@@ -1,11 +1,10 @@
 package codebase
 
 import (
-	"fmt"
 	"github.com/BurntSushi/toml"
 )
 
-const FILEPATH_REPOSITORY = "./.cbm/template/repository.toml"
+const FILEPATH_REPOSITORY = "./.cbm/template/test.toml"
 
 type RepoTemplate struct {
 	Language []string `toml:"Language"`
@@ -13,12 +12,12 @@ type RepoTemplate struct {
 	Tests   []string `toml:Tests`
 }
 
-func GetTomlRepo() RepoTemplate {
+func GetTomlRepo(filepath string) (*RepoTemplate, error) {
 	var template RepoTemplate
 
-	_, err := toml.DecodeFile(FILEPATH_REPOSITORY, &template)
+	_, err := toml.DecodeFile(filepath, &template)
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
 	}
-	return template
+	return &template, nil
 }
