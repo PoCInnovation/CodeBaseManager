@@ -1,5 +1,5 @@
 [common]
-    bin = "cbm"
+    bin = "./cbm"
 
 [[Test]]
     name = "Run basic tests"
@@ -27,7 +27,6 @@
     [Test.expected]
         status = 0
         stdoutFile = "modules/funcTests/tests/exp/expected"
-
 
 [[Test]]
     name = "ftOptions"
