@@ -3,6 +3,7 @@ package funcTests
 import (
     "bytes"
     "fmt"
+    "github.com/PoCFrance/CodeBaseManager/REPL"
     "os"
     "os/exec"
     "syscall"
@@ -52,6 +53,7 @@ func (e *ftExecution) setStdin(stdin, stdinFile string) {
 }
 
 func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
+    bin = REPL.LocateBinary(bin)
     e.cmd = exec.Command(bin, args...)
 
     //TODO: Handle stdoutPipe
