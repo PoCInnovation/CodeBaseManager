@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"syscall"
 )
 
 func execute(bin string, av []string) {
@@ -20,8 +19,8 @@ func execute(bin string, av []string) {
 }
 
 func LocateBinary(given string) string {
-	const X_OK = 1
-	if err := syscall.Access("./" + given, X_OK); err == nil {
+	st, err := os.Stat(given)
+	if err == nil && st.Mode().Perm() == 111 {
 		return given
 	}
 	found, err := exec.LookPath(given)
