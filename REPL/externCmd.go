@@ -21,7 +21,7 @@ func execute(bin string, av []string) {
 
 func LocateBinary(given string) string {
 	const X_OK = 1
-	if err := syscall.Access(given, X_OK); err == nil {
+	if err := syscall.Access("./" + given, X_OK); err == nil {
 		return given
 	}
 	found, err := exec.LookPath(given)
