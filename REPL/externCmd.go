@@ -19,9 +19,13 @@ func execute(bin string, av []string) {
 }
 
 func LocateBinary(given string) string {
-	st, err := os.Stat(os.Getenv("PWD") + "/" + given)
-	if err == nil && st.Mode().Perm() == 111 {
-		return given
+	path, err := os.Getwd()
+	if err == nil {
+		var st os.FileInfo
+		st, err = os.Stat(path + "/" + given)
+		if err == nil && st.Mode().Perm() == 111 {
+			return given
+		}
 	}
 	found, err := exec.LookPath(given)
 	if err != nil {
