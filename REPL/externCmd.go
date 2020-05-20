@@ -19,7 +19,7 @@ func execute(bin string, av []string) {
 }
 
 func LocateBinary(given string) string {
-	st, err := os.Stat(given)
+	st, err := os.Stat(os.Getenv("PWD") + "/" + given)
 	if err == nil && st.Mode().Perm() == 111 {
 		return given
 	}

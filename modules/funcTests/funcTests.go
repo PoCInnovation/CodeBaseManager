@@ -17,7 +17,6 @@ type FT struct {
 	Ext     ftInteractions `toml:"interactions"`
 	Opt     ftOptions      `toml:"options"`
 	my, ref ftExecution
-	res     ftResult
 }
 
 func (test *FT) Init(basicOpt *ftCommon) {
@@ -59,11 +58,13 @@ func (test *FT) Run() {
 	fmt.Println(test.my.outBuf.String(), test.my.errBuf.String())
 }
 
-func (test *FT) GetResults() {
+func (test *FT) GetResults() *ftResult {
+	res := &ftResult{}
 	if test.ref.cmd != nil {
-		test.res.CompareToRef(&test.ref, &test.my)
+		res.CompareToRef(&test.ref, &test.my)
 	} else {
-		test.res.CompareToExp(&test.Exp, &test.my)
+		res.CompareToExp(&test.Exp, &test.my)
 	}
+	return res
 }
 
