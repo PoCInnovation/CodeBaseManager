@@ -2,24 +2,31 @@ package funcTests
 
 import (
 	"fmt"
+	"github.com/AlecAivazis/survey/v2"
 )
 
+func errorPrompt(err error) bool {
+	var answer bool
+	prompt := &survey.Confirm{
+		Message: err.Error() + "\nWould you like to continue ?",
+	}
+	survey.AskOne(prompt, &answer, survey.WithValidator(survey.Required))
+	return answer
+}
+
 func Run(av []string) {
-	// TODO: More flexibility on path
 	for _, fp := range av {
 		cfg, err := NewConfigFT(fp)
 		if err != nil {
 			fmt.Println(err)
-			// TODO: Would you like to continue ? yes | exit
+			//errorPrompt(err)
 			return
 		}
 		// TODO: if no bin ask build module for binary
-		// TODO: use exec.lookPath to make sure our bin's ok
 		for _, test := range cfg.Tests {
 			test.Init(&cfg.Common)
 			test.Run()
-			test.GetResults()
+			test.GetResults().Show(test.Name)
 		}
-		// TODO: show results
 	}
 }
