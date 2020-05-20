@@ -19,7 +19,7 @@ func execute(bin string, av []string) {
 	}
 }
 
-func locateBinary(given string) string {
+func LocateBinary(given string) string {
 	const X_OK = 1
 	if err := syscall.Access(given, X_OK); err == nil {
 		return given
@@ -33,7 +33,7 @@ func locateBinary(given string) string {
 }
 
 func handleExternal(av []string) {
-	bin := locateBinary(av[0])
+	bin := LocateBinary(av[0])
 	if bin == "" {
 		return
 	}
