@@ -19,14 +19,10 @@ func execute(bin string, av []string) {
 }
 
 func LocateBinary(given string) string {
-	path, err := os.Getwd()
-	if err == nil {
-		var st os.FileInfo
-		st, err = os.Stat(path + "/" + given)
-		if err == nil && st.Mode().Perm() == 111 {
+	st, err := os.Stat(given)
+	if err == nil && st.Mode().Perm() == 111 {
 			return given
 		}
-	}
 	found, err := exec.LookPath(given)
 	if err != nil {
 		log.Printf("%s: command not found\n", given)
