@@ -2,6 +2,7 @@ package REPL
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"syscall"
@@ -25,7 +26,7 @@ func locateBinary(given string) string {
 	}
 	found, err := exec.LookPath(given)
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("%s: command not found\n", given)
 		return ""
 	}
 	return found

@@ -6,7 +6,7 @@ import (
 
 func Run(_ []string) {
 	// TODO: More flexibility on path
-	cfg, err := NewConfigFT(".cbm/template/ft.toml")
+	cfg, err := NewConfigFT(".cbm/template/cantFail.toml")
 	if err != nil {
 		fmt.Println(err)
 		// TODO: Would you like to continue ? yes | exit
