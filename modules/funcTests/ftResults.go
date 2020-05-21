@@ -3,13 +3,13 @@ package funcTests
 import (
     "fmt"
     "github.com/logrusorgru/aurora"
+    "strings"
 )
 
 const (
     OK = iota
     NOK
     IGNORED
-
 )
 
 type ftResult struct {
@@ -18,7 +18,8 @@ type ftResult struct {
     stderrFail int
 }
 
-func compareOutput(out, exp string) int {
+func compareOutput(exp, out string) int {
+    out = strings.TrimSuffix(out, "\n")
     switch exp {
     case "":
         return IGNORED
@@ -49,7 +50,7 @@ func (r *ftResult) CompareToExp(exp *ftExpected, my *ftExecution) {
 }
 
 func (r *ftResult) isPerfect() bool {
-    return r.statusFail == OK && r.stdoutFail == OK && r.stderrFail == OK
+    return r.statusFail != NOK && r.stdoutFail != NOK && r.stderrFail != NOK
 }
 
 func (r *ftResult) showFailed() {
@@ -67,13 +68,15 @@ func (r *ftResult) showFailed() {
     fmt.Println("")
 }
 
-func (r *ftResult) Show(name string) {
+func (r *ftResult) Show(name string) int {
     if r.isPerfect() {
         fmt.Printf("%s%s%s%s", aurora.Green("Success").Bold(), aurora.Bold(": ["), name,
             aurora.Bold("]\n"))
+        return OK
     } else {
         fmt.Printf("%s%s%s%s", aurora.Red("Failure").Bold(), aurora.Bold(": ["), name,
             aurora.Bold("]\n"))
         r.showFailed()
+        return NOK
     }
 }
