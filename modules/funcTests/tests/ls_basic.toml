@@ -1,12 +1,10 @@
 [common]
     bin = "ls"
-    refBin = "ls"
 
 [[Test]]
     name = "Basic ls"
     desc = "Testing a basic ls with himself"
     args = ["main.go"]
-    refArgs = ["main.go"]
 
     [Test.expected]
         status = 0
