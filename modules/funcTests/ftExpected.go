@@ -14,9 +14,12 @@ type ftExpected struct {
 }
 
 func getFile(fp string) string {
+    if fp == "" {
+        return ""
+    }
     buf, err := ioutil.ReadFile(fp)
     if err != nil {
-        fmt.Println(err)
+        fmt.Println("Expected:", err.Error())
         return ""
     }
     return string(buf)

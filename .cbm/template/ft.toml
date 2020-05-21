@@ -1,11 +1,11 @@
 [common]
-    bin = "mysh" # Optional
-    refBin = "tcsh" # Optional
+    #bin = "cbm"  Optional, if not provided will default to cbm's project binary
+    # refBin = Optional
 
-    [common.options]
-        repeat = 5 # Optional
-        time = false # Optional
-        timeout = 5 # in seconds, Optional
+    [common.options] # Fully optional & not used yet
+        repeat = 5
+        time = false
+        timeout = 5
 
 [[Test]]
     name = "Help"
@@ -14,7 +14,7 @@
     refArgs = ["-h"] # Optional
 
     [Test.expected]
-        status = 0
+        status = 0 # Optional
         stdout = "Hello world" # Optional
         stdoutFile = "nope" # Either this or stdout - Optional
         stderr = "lol" # Optional
