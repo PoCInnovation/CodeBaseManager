@@ -1,0 +1,3 @@
+Language = ["C", "Go"]
+Modules = ["parser", "repl"]
+Tests = ["tests", "olala"]

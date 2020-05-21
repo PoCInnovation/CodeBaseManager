@@ -91,28 +91,3 @@ func catFunction(controlContent map[string]string, name, arg string, supportedLa
 	}
 	return controlContent, nil
 }
-
-//func catFunction(controlContent map[string]string, name, arg string, supportedLanguages []findFctArray) (map[string]string, error) {
-//	content, err := codebase.GetFile(name)
-//	if err != nil {
-//		return controlContent, err
-//	}
-//
-//	//if found := catGoFunction(*content, arg); found != nil {
-//	//	if controlContent != nil {
-//	//		controlContent[name] = *found
-//	//	} else {
-//	//		controlContent = map[string]string{}
-//	//		controlContent[name] = *found
-//	//	}
-//	//}
-//	if found := catCFunction(*content, arg); found != nil {
-//		if controlContent != nil {
-//			controlContent[name] = *found
-//		} else {
-//			controlContent = map[string]string{}
-//			controlContent[name] = *found
-//		}
-//	}
-//	return controlContent, nil
-//}
