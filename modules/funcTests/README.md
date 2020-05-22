@@ -83,7 +83,7 @@ As the name suggest, this section is used to check if the test succeeded. The fi
 | stderrFile | Compare stderr to file | string (path) | **optional**, if provided **do not** use `stderr` |
 
 > :question: **Notes on expectations**
-
+>
 > If not provided, then the default test is to check if the binary exited without error.
 >
 > If a `refBin` was provided it's outputs will be used by default.
