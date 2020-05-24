@@ -1,0 +1,15 @@
+[defaults]
+    bin = ""
+    refBin = ""
+
+    [defaults.options]
+        repeat = 1
+        timeout = 5
+        time = true
+
+    [defaults.expected]
+        status = 1
+
+[vars]
+    srcPath = "path/to/test/src/files"
+    expPath = "path/to/exp/files"

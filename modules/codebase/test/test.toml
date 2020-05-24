@@ -1,0 +1,3 @@
+Language = ["C", "Go", "Python"]
+Modules = ["parser", "repl", "cmd"]
+Tests = ["tests", "olala", "did_you_see_my_skill?"]

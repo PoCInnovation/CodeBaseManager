@@ -1,0 +1,47 @@
+[common]
+    #bin = "cbm"  Optional, if not provided will default to cbm's project binary
+    # refBin = Optional
+
+    [common.options] # Fully optional & not used yet
+        repeat = 5
+        time = false
+        timeout = 5
+
+[[Test]]
+    name = "Help"
+    desc = "Will display CBM's help." # Optional
+    args = ["-h"] # Optional
+    refArgs = ["-h"] # Optional
+
+    [Test.expected]
+        status = 0 # Optional
+        stdout = "Hello world" # Optional
+        stdoutFile = "nope" # Either this or stdout - Optional
+        stderr = "lol" # Optional
+        stderrFile = "lol" # Either this or stdout - Optional
+
+    [Test.interactions]
+        stdoutPipe = "yes life" # Optional
+        stderrPipe = "bonjour" # Optional
+        stdin = "yes life" # Optional
+        stdinFile = "yes life" # Optional
+        pre = "42" # Optional
+        post = "yes life" # Optional
+        env = "yes life" # Optional
+        addEnv = "yes life" # Optional
+
+    [Test.options]
+        repeat = 10 # Optional
+        time = true # Optional
+        shouldFail = false # Optional
+        timeout = 10 # Optional
+
+[[Test]]
+    name = "others"
+    desc = "Will display CBM's help." # Optional
+    args = ["-h"] # Optional
+    refArgs = ["-h"] # Optional
+
+    [Test.expected]
+        status = 0
+        stdout = "Hello world" # Optional
