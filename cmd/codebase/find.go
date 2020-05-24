@@ -14,7 +14,7 @@ func registerFind(parentCmd *cobra.Command) {
 		Short: "Tells you where the requested elements of the codebase are located.",
 		Run: func(_ *cobra.Command, args []string) {
 			fmt.Println("Looking for: ", args)
-			find(args)
+			Find(args)
 		},
 	}
 
@@ -23,7 +23,7 @@ func registerFind(parentCmd *cobra.Command) {
 	parentCmd.AddCommand(findCmd)
 }
 
-func find(args []string) {
+func Find(args []string) *contentFound {
 	// TODO: Change repo parsing and evaluate repo language
 	// Repo allan
 	repo := []string{"."}
@@ -31,11 +31,11 @@ func find(args []string) {
 	supportedLanguage, err := setupTargetFunctions(TargetFcts)
 	if err != nil {
 		log.Println(err)
-		return
+		return nil
 	}
 	if supportedLanguage == nil {
 		log.Println("No supported Language in user configuration.")
-		return
+		return nil
 	}
 
 	parser := parsingRepo{
@@ -49,6 +49,7 @@ func find(args []string) {
 		RepoParser(module, parser)
 	}
 	PrintResult(args, parser)
+	return &parser.content
 }
 
 func findFile(controlContent map[string]string, name string) (map[string]string, error) {

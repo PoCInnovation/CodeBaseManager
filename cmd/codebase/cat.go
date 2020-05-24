@@ -14,7 +14,7 @@ func registerCat(parentCmd *cobra.Command) {
 		Short: "Prints the requested elements of the codebase.",
 		Run: func(_ *cobra.Command, args []string) {
 			fmt.Println("Printing: ", args)
-			cat(args)
+			Cat(args)
 		},
 	}
 
@@ -23,18 +23,18 @@ func registerCat(parentCmd *cobra.Command) {
 	parentCmd.AddCommand(catCmd)
 }
 
-func cat(args []string) {
+func Cat(args []string) *contentFound {
 	// TODO: Change repo parsing and evaluate repo language
 	repo := []string{"."}
 
 	supportedLanguage, err := setupTargetFunctions(TargetFcts)
 	if err != nil {
 		log.Println(err)
-		return
+		return nil
 	}
 	if supportedLanguage == nil {
 		log.Println("No supported Language in user configuration.")
-		return
+		return nil
 	}
 
 	parser := parsingRepo{
@@ -48,6 +48,7 @@ func cat(args []string) {
 		RepoParser(module, parser)
 	}
 	PrintResult(args, parser)
+	return &parser.content
 }
 
 func catFile(controlContent map[string]string, name string) (map[string]string, error) {
