@@ -38,17 +38,5 @@ func TestFindCFunction(t *testing.T) {
 		if res == nil {
 			t.Errorf("For argument(s) [%v]), res is nil\n", table.args)
 		}
-		//for _, arg := range table.args {
-		//	t.Log(res[arg]["lol"])
-			//if contentFound, ok := res[arg]; ok {
-			//
-			//}
-		//}
-			//for key, content := range res[arg]["lol"] {
-			//if res[args] != table.exp {
-			//	t.Errorf(
-			//		"For argument(s) [%v]), res is [%v] (Expected [%v]\n", table.args, res, table.exp)
-			//}
-		//}
 	}
 }
