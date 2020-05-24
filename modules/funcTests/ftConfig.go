@@ -24,10 +24,9 @@ func NewConfigFT(cfgPath string) (*ConfigFT, error) {
     if err != nil {
         return nil, err
     }
-    // Check if any key in the cfg were ignored
+    // Checks if any key in the cfg were ignored
     ignored := md.Undecoded()
     if len(ignored) == 0 {
-        fmt.Println("Successfully loaded config")
         return cfg, nil
     }
     // We're handling error in the TOML file.

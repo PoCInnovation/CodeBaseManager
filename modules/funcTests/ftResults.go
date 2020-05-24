@@ -1,10 +1,15 @@
 package funcTests
 
+import (
+    "fmt"
+    "github.com/logrusorgru/aurora"
+    "strings"
+)
+
 const (
     OK = iota
     NOK
     IGNORED
-
 )
 
 type ftResult struct {
@@ -13,7 +18,8 @@ type ftResult struct {
     stderrFail int
 }
 
-func compareOutput(out, exp string) int {
+func compareOutput(exp, out string) int {
+    out = strings.TrimSuffix(out, "\n")
     switch exp {
     case "":
         return IGNORED
@@ -41,4 +47,36 @@ func (r *ftResult) CompareToExp(exp *ftExpected, my *ftExecution) {
     }
     r.stdoutFail = compareOutput(exp.getExpOut(), my.outBuf.String())
     r.stderrFail = compareOutput(exp.getExpErr(), my.errBuf.String())
+}
+
+func (r *ftResult) isPerfect() bool {
+    return r.statusFail != NOK && r.stdoutFail != NOK && r.stderrFail != NOK
+}
+
+func (r *ftResult) showFailed() {
+    //TODO: Improve error display (show difference)
+    if r.statusFail == NOK {
+        fmt.Println("status differs")
+    }
+    if r.stdoutFail == NOK {
+        fmt.Println("stdout differs")
+
+    }
+    if r.stderrFail == NOK {
+        fmt.Println("stderr differs")
+    }
+    fmt.Println("")
+}
+
+func (r *ftResult) Show(name string) int {
+    if r.isPerfect() {
+        fmt.Printf("%s%s%s%s", aurora.Green("Success").Bold(), aurora.Bold(": ["), name,
+            aurora.Bold("]\n"))
+        return OK
+    } else {
+        fmt.Printf("%s%s%s%s", aurora.Red("Failure").Bold(), aurora.Bold(": ["), name,
+            aurora.Bold("]\n"))
+        r.showFailed()
+        return NOK
+    }
 }

@@ -1,40 +1,196 @@
 # CodeBaseManager - Functional Tests
 
-This module is highly inspired of [JenRik](https://github.com/Yohannfra/JenRik).
-It can interact with CBM's other modules (such as build) if required.
+This module is highly inspired by [JenRik](https://github.com/Yohannfra/JenRik).
 
-## Possible Commands
+The goal of this module is to allow the user to describe tests for their binaries through simple [TOML](https://github.com/toml-lang/toml) files.
 
-- [x] bin
-- [x] refbin -> More or less implemented
+## Quick Start
+Let's take a simple go program, say `helloworld.go`
+```go
+func main() {
+    if len(os.Args) == 1 {
+        fmt.Println("hello world")
+    } else {
+        fmt.Fprintln(os.Stderr, "yeah.. no")
+        os.Exit(1)
+    }
+}
+```
+Then you can write tests which can be as simple as this
+```TOML
+[[Test]]
+    name = "OK" # Name of the test
+    bin = "helloworld" # The binary being tested
+```
+Of course you may want to write some more tests and have more control over them. Each file is a TestSuite so you can write multiple tests inside a file.
+```TOML
+[default] # Parameters for the TestSuite
+    name = "My hello world"
+    desc = "TestSuite of this special special version of mine"
+    bin = "helloworld" # Binary used in all tests
+    
+[[Test]]
+    name = "ok"
+    [Test.expected]
+        status = 0
+        stdout = "hello world"
 
-- [x] arg
-- [x] refArg
+# This test expect helloworld to exit with 0 after printing "hello world"
 
-- [x] stdout : expected stdout of your program
-- [x] stdout_file : compare your program stdout with the content of a given file
-- [x] stdout_pipe : redirect your program stderr to a specified shell command before checking it
+[[Test]]
+    name = "failure"
+    [Test.expected]
+        status = 1
+        stderrFile = "path/to/expected/file_exp"
+        
+# This one expect helloworld to exit with 1 after printing on stderr the same thing as "file_exp"'s content
+```
 
-- [x] stderr : expected stderr of your program
-- [x] stderr_file : compare your program stderr with the content of a given file
-- [x] stderr_pipe : redirect your program stderr to a specified shell command before checking it
+## Details
+Each test files represent a TestSuite. A test file has up to 3 of the following sections:
 
-- [x] stdin : write in the stdin of the process
-- [x] stdin_file : write in the stdin of the process from the content of a file
+### [vars]
+This section is **optional** and can be used to declare variables which can later be used **in a literal string** like `'...$myvar...'`.
+Here's a brief exemple:
+```TOML
+ [vars]
+    longPath = "path/to/smth/very/deep/somewhere/here"
+  
+ [default]
+    bin = '$longPath/cbm' # -> Becomes bin = 'path/to/smth/very/deep/somewhere/here/cbm'
+```
 
-- [x] pre  : Runs a command before the test. Can be used for setup.
-- [x] post : Runs a command after the test. Can be used for cleanup.
+### [default]
+This section is **optional** as well and can be used to set most of `[[Test]]`'s field with a value for the whole TestSuite (except `name` & `desc` which will then describe the TestSuite, aswell as `pre` & `post`).
 
-- [x] env : Define program's env (use default if none provided)
-- [x] add_env : change environment variable(s) (append the given value to environment value)
+Any field defined in this section will be overriden if redefined in a test. The fields are described in the next section.
 
-Sprint 2
-- [ ] repeat : repeat the test x times
-- [ ] time : Time the execution of your program
-- [ ] timeout : make the test fail if it times out, after killing it (SIGTERM) (the time is given in seconds)
-- [ ] should_fail : make the test success if it fails
+### [[Test]]
+This section is **mandatory** as it describes the tests. It is a [TOML array of section](https://github.com/toml-lang/toml#array-of-tables).
+Here's a brief exemple:
+```TOML
+[[Test]]
+    name = "Test 1"
+    desc = "This a useless test"
+    bin = "ls"
+    refBin = "ls"
+    
+ # This test will compare ls's output & exit status to ls.
 
+[[Test]]
+    name = "Test 2"
+    desc = "This is useless & stupid too but will fail"
+    bin = "ls"
+    args = ["-h"]
+    refBin = "ls"
 
-Later Sprint
-- [ ] build_with : 
-- [ ] noBin (gotta look within CBM)
+# This test will compare `ls -h`'s output & exit status to ls.
+```
+Following is the explanation of all available fields.
+
+#### Commons
+These fields are present directly under a `[default]` or `[[Test]]`, they give basic information about the Test(Suite).
+|  Fields |           Usage           |      Type     | Remark |
+|:-------:|:-------------------------:|:-------------:|--------|
+| name    | Test(Suite)'s name        | string        | **Mandatory** for each `[[Test]]` |
+| desc    | Test(Suite)'s description | string        | **Optional** |
+| bin     | Binary being tested       | string (path) | **Mandatory**|
+| refBin  | Binary used as reference  | string (path) | **Optional** |
+| args    | Args passed to `bin`      | [string]      | **Optional** or **ignored** if given as `[default]` |
+| refArgs | Args passed to `refBin`   | [string]      | **Optional** or **ignored** if given as `[default]` |
+
+> :question: **Notes**
+>
+> If `refBin` is provided then it will go through the same process as `bin` and checks will be performed against the outputs of `refBin`; therefore the `[Test.expected]` section of each `[[Test]]` can be fully omitted, if it isn't it will be used for checks rather than the `refBin`'s outputs.
+>
+> :warning: If the given binaries aren't located in `$PATH` then the path should be provided.
+>
+> :warning: If the given binaries can't be found or if no `bin` was provided then the test is **ignored**.
+> In future updates, if `bin` isn't provided then we shall use the one the backend knows.
+
+#### Expected
+These fields are present as a sub section of either `[default]` or `[[Test]]`, such as:
+```TOML
+[[Test]]
+    desc = "Failing Test"
+    bin = "ls"
+    args = ["-e"]
+    [Test.expected]
+        status = 1
+        stderrFile = "path/to/ls_dashe_output"
+
+# This test will execute "ls -e" and it's exit status & stderr will be checked against the expected status and the content of `ls_dashe_output`.
+```
+As the name suggest, this section is used to check if the test succeeded. The fields are the following:
+|   Fields   |           Usage         |      Type     | Remark |
+|:----------:|:-----------------------:|:-------------:|--------|
+| status     | Expected exit status    | int           | **Optional**, if not provided will expect 0 |
+| stdout     | Expected stdout         | string        | **Optional**, if provided **do not** use `stdoutFile` |
+| stderr     | Expected stderr         | string        | **Optional**, if provided **do not** use `stderrFile` |
+| stdoutFile | Compares stdout to file | string (path) | **Optional**, if provided **do not** use `stdout` |
+| stderrFile | Compares stderr to file | string (path) | **Optional**, if provided **do not** use `stderr` |
+
+> :question: **Notes**
+>
+> If not provided, then the default test is to check if the binary exited without error.
+>
+> If a `refBin` was provided it's outputs will be used by default.
+> Defining status will override the check on `refBin`'s status. The same logic applies for `stdout` and `stderr`.
+>
+> :warning: If both `stdx` and `stdxFile` are provided, `stdxFile` will be **ignored**
+
+### Interactions
+These fields are present as a sub section of either `[default]` or `[[Test]]`, such as:
+```TOML
+[[Test]]
+    bin = "cat"
+    [Test.interactions]
+        stdin = "Hello world"
+        stdoutPipe = 'grep "world"'
+
+# This test will execute cat "hello world" as its input. Its output will be redirected to 'grep "world"'
+# and it will be checked afterward.
+```
+This section is used to 
+|   Fields   |                         Usage                    |       Type     | Needed |
+|:----------:|:------------------------------------------------:|:--------------:|--------|
+| stdoutPipe | Redirects stdout to a command before checking it | string (cmd)   | **Optional** |
+| stderrPipe | Redirects stderr to a command before checking it | string (cmd)   | **Optional** |
+| stdinPipe  | Redirects a command to your stdin                | string (cmd)   | **Optional** |
+| stdinFile  | Uses the file's content as your stdin            | string (path)  | **Optional** |
+| stdin      | Used as your stdin                               | string         | **Optional** |
+| pre        | Runs a command before the test                   | string (cmd)   | **Optional** |
+| post       | Runs a command after the test                    | string (cmd)   | **Optional** |
+| env        | Serves as the env for your `bin`                 | [string] (key=value) | **Optional** |
+| addEnv     | Adds to the current env all of the given pairs   | [string] (key=value) | **Optional** |
+> :question: **Notes**
+>
+> :warning: Only one of the stdin fields should be provided. If multiple stdin fields are provided then CBM will use the first one found in this order: stdin, stdinFile & stdinPipe.
+>
+> :warning: If `pre` or `post` are specified as `[default]`, they'll be ran at the start & end of the TestSuite. Therefore `[default]`'s `pre`/`post` are distincts of `[[Test]]`'s.
+
+### Options
+These fields are present as a sub section of either `[default]` or `[[Test]]`, such as:
+```TOML
+[[Test]]
+    desc = "Some very hard test"
+    [Test.options]
+        repeat = 10
+        timeout = 5
+        time = true
+
+# This test will be repeated 10 times, timed everytime (the end result will be an average).
+# If a run takes longer than 5 second it will be killed and this iterations will be marked as failed.
+```
+|   Fields   |                    Usage              |      Type      |    Remark    |
+|:----------:|:-------------------------------------:|:--------------:|--------------|
+| repeat     | Repeats the `[[Test]]`                | int            | **optional** |
+| timeout    | Kills the `[[Test]]` if reached       | float(seconds) | **optional** |
+| time¹      | Times the execution of the `[[Test]]` | bool           | **optional** |
+| shouldFail | `[[Test]]` succeed if it fails        | bool           | **optional** |
+> :question: **Notes**
+>
+> ¹time: for more precise results the `[[Test]]` should be as bare as possible.
+## Predicted
+
+Usage of CBM's backend to be able to omit the `bin` field & add new fields such as `build`

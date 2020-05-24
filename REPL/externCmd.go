@@ -2,9 +2,9 @@ package REPL
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
-	"syscall"
 )
 
 func execute(bin string, av []string) {
@@ -18,24 +18,23 @@ func execute(bin string, av []string) {
 	}
 }
 
-func locateBinary(given string) string {
-	const X_OK = 1
-	if err := syscall.Access(given, X_OK); err != nil {
-		fmt.Println(err)
-		return ""
-	}
+func LocateBinary(given string) string {
+	st, err := os.Stat(given)
+	if err == nil && st.Mode().Perm() == 111 {
+			return given
+		}
 	found, err := exec.LookPath(given)
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("%s: command not found\n", given)
 		return ""
 	}
 	return found
 }
 
 func handleExternal(av []string) {
-	bin := locateBinary(av[0])
+	bin := LocateBinary(av[0])
 	if bin == "" {
 		return
 	}
-	execute(bin, av)
+	execute(bin, av[1:])
 }

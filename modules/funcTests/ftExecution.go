@@ -3,6 +3,7 @@ package funcTests
 import (
     "bytes"
     "fmt"
+    "github.com/PoCFrance/CodeBaseManager/REPL"
     "os"
     "os/exec"
     "syscall"
@@ -43,7 +44,7 @@ func (e *ftExecution) setStdin(stdin, stdinFile string) {
     } else if stdinFile != noCmd {
         file, err := os.Open(stdinFile)
         if err != nil {
-            fmt.Println(err)
+            fmt.Println("setStdin:", err)
             // TODO: Handle that way better.
             return
         }
@@ -52,6 +53,7 @@ func (e *ftExecution) setStdin(stdin, stdinFile string) {
 }
 
 func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
+    bin = REPL.LocateBinary(bin)
     e.cmd = exec.Command(bin, args...)
 
     //TODO: Handle stdoutPipe
@@ -65,7 +67,7 @@ func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
 
 func (e *ftExecution) Run() {
     if err := e.cmd.Run(); err != nil {
-        fmt.Println(err)
+        fmt.Println("Run:", err)
         if exitError, ok := err.(*exec.ExitError); ok {
             e.status = exitError.Sys().(syscall.WaitStatus).ExitStatus()
         }

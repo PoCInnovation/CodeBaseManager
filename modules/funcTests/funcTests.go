@@ -17,12 +17,9 @@ type FT struct {
 	Ext     ftInteractions `toml:"interactions"`
 	Opt     ftOptions      `toml:"options"`
 	my, ref ftExecution
-	res     ftResult
 }
 
 func (test *FT) Init(basicOpt *ftCommon) {
-	fmt.Printf("Setting up %s...\n", test.Name)
-
 	test.Opt.SetCommon(&basicOpt.Opt)
 
 	test.my.Set(&test.Ext, basicOpt.Bin, test.Args...)
@@ -36,7 +33,7 @@ func (test *FT) Run() {
 	if test.Ext.Pre != noCmd {
 		// TODO: Improvements? Error handling or else?
 		if err := QuickRun(test.Ext.Pre); err != nil {
-			fmt.Println(err)
+			fmt.Println("Pre:", err)
 			return
 		}
 	}
@@ -53,17 +50,18 @@ func (test *FT) Run() {
 	if test.Ext.Post != noCmd {
 		// TODO: Improvements? Error handling or else?
 		if err := QuickRun(test.Ext.Post); err != nil {
-			fmt.Println(err)
+			fmt.Println("Post:", err)
 		}
 	}
-	fmt.Println(test.my.outBuf.String(), test.my.errBuf.String())
 }
 
-func (test *FT) GetResults() {
+func (test *FT) GetResults() *ftResult {
+	res := &ftResult{}
 	if test.ref.cmd != nil {
-		test.res.CompareToRef(&test.ref, &test.my)
+		res.CompareToRef(&test.ref, &test.my)
 	} else {
-		test.res.CompareToExp(&test.Exp, &test.my)
+		res.CompareToExp(&test.Exp, &test.my)
 	}
+	return res
 }
 
