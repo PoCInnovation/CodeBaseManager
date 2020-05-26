@@ -10,9 +10,9 @@ A module fills up a specific task. In the future they will be able to interact w
 
 ### Current
 
-- [CodeBase](): Allows to easily find informations about the codebase.
+- [CodeBase](/modules/codebase/README.md): Allows to easily find informations about the codebase.
  
-- [Functional Tests](): Allows to easily test a binary through the use of [TOML](https://github.com/toml-lang/toml) files to describe tests.
+- [Functional Tests](/modules/funcTests/README.md): Allows to easily test a binary through the use of [TOML](https://github.com/toml-lang/toml) files to describe tests.
 
 ### Predicted
 
