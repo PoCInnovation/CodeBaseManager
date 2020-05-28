@@ -1,0 +1,16 @@
+[common]
+    bin = "ls"
+
+[[Test]]
+    name = "coucou"
+    args = ["main.go"]
+
+    [Test.expected]
+        stdout = "main.go"
+
+[[Test]]
+    name = "coucou"
+    args = ["main.go"]
+
+    [Test.expected]
+        stdout = "main.go"
