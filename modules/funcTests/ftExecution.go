@@ -6,6 +6,7 @@ import (
     "github.com/PoCFrance/CodeBaseManager/REPL"
     "os"
     "os/exec"
+	"strings"
     "syscall"
     "time"
 )
@@ -70,7 +71,9 @@ func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
 func (e *ftExecution) Run(options ftOptions) {
     e.execTime = time.Now()
     if err := e.cmd.Run(); err != nil {
-        fmt.Println("Run:", err)
+		if !strings.Contains(err.Error(), "exit status") {
+			fmt.Println("Run:", err)
+		}
         if exitError, ok := err.(*exec.ExitError); ok {
             e.status = exitError.Sys().(syscall.WaitStatus).ExitStatus()
         }
