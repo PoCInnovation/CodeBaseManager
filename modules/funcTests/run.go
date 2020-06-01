@@ -23,7 +23,7 @@ func Run(av []string) {
 		if err != nil {
 			fmt.Println(fp, err)
 			//errorPrompt(err)
-			return
+			continue
 		}
 		// TODO: if no bin ask build module for binary
 		for _, test := range cfg.Tests {
