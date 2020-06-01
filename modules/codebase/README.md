@@ -5,7 +5,7 @@ The goal of this module is to allow the user to describe repository for their Pr
 Furthermore, Basic Cat and Find Tools (for files and functions) are implemented.
 
 ## Repository
-In .cbm folder, there is a toml file name `repository.toml`
+In .cbm folder, there is a toml file called `repository.toml`
 
 This file allow you to configure some features such as:
 ```TOML
@@ -32,8 +32,8 @@ Theses tools allow the user to quickly find some information.
 
 | Fields    | Usage                         | Description                               |
 |:---------:|:-----------------------------:|:-----------------------------------------:|
-| Find      | cmb codebase find `[args]`    | Find requested files or functions         |
-| Cat       | cmb codebase cat `[args]`     | Display requested files or functions      |
+| Find      | cbm codebase find `[args]`    | Find requested files or functions         |
+| Cat       | cbm codebase cat `[args]`     | Display requested files or functions      |
 
 
 | Language      | Remark                                        |

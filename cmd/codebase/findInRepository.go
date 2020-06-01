@@ -3,6 +3,7 @@ package codebase
 import (
 	"errors"
 	"fmt"
+	"github.com/logrusorgru/aurora"
 	"log"
 	"os"
 	"strings"
@@ -110,12 +111,14 @@ func isParsable(name string) bool {
 
 func PrintResult(args []string, parser parsingRepo) {
 	for _, arg := range args {
-		fmt.Println(strings.Repeat("==", 50))
-		fmt.Printf("ARG: %s\n", arg)
+		fmt.Println(aurora.Green(strings.Repeat("==", 50)))
+		//fmt.Printf("%s%s\n", aurora.Red("ARG → "), aurora.Red(arg))
+		fmt.Println(aurora.Red(arg))
 		if contentFound, ok := parser.content[arg]; ok {
 			for key, content := range contentFound {
-				fmt.Println(strings.Repeat("#", 50))
-				fmt.Printf("FOUND ===> %s\n", key)
+				//fmt.Println(strings.Repeat("#", 50))
+				//fmt.Printf("FOUND ===> %s\n", key)
+				fmt.Println(aurora.BrightMagenta(key))
 				fmt.Println(content + "\n")
 			}
 		}

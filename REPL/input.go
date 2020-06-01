@@ -19,10 +19,10 @@ func parseInput(in string, cbmBuiltins Builtins) ([]string, builtin) {
 
 	parsed := strings.Fields(in)
 	if fn := isBuiltin(parsed[0], commonBuiltins); fn != nil {
-		return parsed, fn
+		return parsed[1:], fn
 	}
 	if fn := isBuiltin(parsed[0], cbmBuiltins); fn != nil {
-		return parsed, fn
+		return parsed[1:], fn
 	}
 	return parsed, handleExternal
 }

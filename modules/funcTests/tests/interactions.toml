@@ -1,9 +1,5 @@
-[defaults]
+[common]
     bin = "ls"
-    desc = "Test suite for interactions"
-    [defaults.expected]
-        status = 0
-        stdout = "main.go"
 
 [[Test]]
     name = "stderr with pipe"
@@ -24,16 +20,6 @@
 
     [Test.expected]
         status = 2
-        stderrFile = "modules/funcTests/tests/exp/failing_interactions_stderr_file"
+        stderrFile = "modules/funcTests/tests/exp/failingInteractionsStderrFile"
     [Test.interactions]
         stderrPipe = "grep xd -A 1"
-
-[[Test]]
-    name = "adding an environnment variable"
-    desc = "removing path from env with ls"
-    args = ["$tmp"]
-
-    [Test.expected]
-        status = 0
-    [Test.interactions]
-        addEnv = ["tmp=main.go"]

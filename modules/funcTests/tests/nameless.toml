@@ -1,0 +1,8 @@
+[common]
+    bin = "ls"
+
+[[Test]]
+    args = ["main.go"]
+
+    [Test.expected]
+        stdout = "main.go"

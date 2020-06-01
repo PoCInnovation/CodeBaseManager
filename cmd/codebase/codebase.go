@@ -14,7 +14,8 @@ func RegisterCmd(parentCmd *cobra.Command) {
 		Run: func(cmd *cobra.Command, _ []string) {
 			sh := REPL.NewShell("CodeBase")
 			accepted := REPL.Builtins{
-				//TODO: add builtins
+				"cat": Cat,
+				"find": Find,
 			}
 			sh.Run(accepted)
 		},

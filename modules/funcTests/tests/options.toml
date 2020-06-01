@@ -1,0 +1,9 @@
+[common]
+    bin = "sleep"
+
+[[Test]]
+    name = "trying with a lot of options"
+    args = ["1"]
+
+    [Test.options]
+        time = true
