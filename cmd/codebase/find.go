@@ -23,7 +23,7 @@ func registerFind(parentCmd *cobra.Command) {
 	parentCmd.AddCommand(findCmd)
 }
 
-func Find(args []string) *contentFound {
+func Find(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
 	// Repo allan
 	repo := []string{"."}
@@ -31,11 +31,11 @@ func Find(args []string) *contentFound {
 	supportedLanguage, err := setupTargetFunctions(TargetFcts)
 	if err != nil {
 		log.Println(err)
-		return nil
+		return
 	}
 	if supportedLanguage == nil {
 		log.Println("No supported Language in user configuration.")
-		return nil
+		return
 	}
 
 	parser := parsingRepo{
@@ -49,7 +49,6 @@ func Find(args []string) *contentFound {
 		RepoParser(module, parser)
 	}
 	PrintResult(args, parser)
-	return &parser.content
 }
 
 func findFile(controlContent map[string]string, name string) (map[string]string, error) {

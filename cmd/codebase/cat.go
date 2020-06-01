@@ -23,18 +23,18 @@ func registerCat(parentCmd *cobra.Command) {
 	parentCmd.AddCommand(catCmd)
 }
 
-func Cat(args []string) *contentFound {
+func Cat(args []string) {
 	// TODO: Change repo parsing and evaluate repo language
 	repo := []string{"."}
 
 	supportedLanguage, err := setupTargetFunctions(TargetFcts)
 	if err != nil {
 		log.Println(err)
-		return nil
+		return
 	}
 	if supportedLanguage == nil {
 		log.Println("No supported Language in user configuration.")
-		return nil
+		return
 	}
 
 	parser := parsingRepo{
@@ -48,7 +48,6 @@ func Cat(args []string) *contentFound {
 		RepoParser(module, parser)
 	}
 	PrintResult(args, parser)
-	return &parser.content
 }
 
 func catFile(controlContent map[string]string, name string) (map[string]string, error) {
