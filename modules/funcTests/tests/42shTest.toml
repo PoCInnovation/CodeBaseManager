@@ -1,0 +1,58 @@
+[common]
+    bin = "modules/funcTests/tests/42sh"
+    refBin = "tcsh"
+
+[[Test]]
+    name = "it's ls time"
+    desc = "just a lazy ls test"
+
+    [Test.interactions]
+        stdin = "ls\n"
+
+[[Test]]
+    name = "ls with pipe"
+    desc = "testing easy pipe with a grep"
+
+    [Test.interactions]
+        stdin = "ls -la | grep \"main.go\"\n"
+
+[[Test]]
+    name = "Vesqui le timeout"
+    desc = "faire le plus grand nombre de pipe en un temps limité"
+
+    [Test.interactions]
+        stdin = "ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls | ls\n"
+    [Test.options]
+        time = true
+
+[[Test]]
+    name = "Left redirection to the victory"
+    desc = "< les chevrons, c'est cool"
+
+    [Test.interactions]
+        stdin = "cat < README.md\n"
+
+[[Test]]
+    name = "magic quote ?"
+    desc = "` imma win ):"
+
+    [Test.interactions]
+        stdin = "ls `echo main.go`\n"
+
+[[Test]]
+    name = "Some error handling on pipes 1)"
+    desc = "what if a right pipe is empty"
+
+    [Test.expected]
+        status = 1
+    [Test.interactions]
+        stdin = "ls `echo -la` | grep main.go | \n"
+
+[[Test]]
+    name = "Some error handling on pipes 2)"
+    desc = "what if a left pipe is empty"
+
+    [Test.expected]
+        status = 1
+    [Test.interactions]
+        stdin = "| ls `echo -la` | grep main.go\n"
