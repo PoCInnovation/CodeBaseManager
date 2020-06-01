@@ -4,11 +4,11 @@
 [[Test]]
     name = "Run basic tests"
     desc = "Runs: ls_basic.toml"
-    args = ["ft", "run", "modules/funcTests/tests/ls_basic.toml"]
+    args = ["ft", "run", "modules/funcTests/tests/lsBasic.toml"]
 
     [Test.expected]
         status = 0
-        stdoutFile = "modules/funcTests/tests/exp/ls_basic"
+        stdoutFile = "modules/funcTests/tests/exp/lsBasic"
 
 [[Test]]
     name = "ftInteractions"
@@ -43,7 +43,7 @@
     args = ["ft", "run", "modules/funcTests/tests/nameless.toml"]
 
     [Test.expected]
-        status = 1
+        status = 0
         stdoutFile = "modules/funcTests/tests/exp/nameless"
 
 [[Test]]
@@ -52,5 +52,5 @@
     args = ["ft", "run", "modules/funcTests/tests/samename.toml"]
 
     [Test.expected]
-        status = 1
+        status = 0
         stdoutFile = "modules/funcTests/tests/exp/samename"

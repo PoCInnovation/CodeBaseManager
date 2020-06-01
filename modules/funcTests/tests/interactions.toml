@@ -1,0 +1,25 @@
+[common]
+    bin = "ls"
+
+[[Test]]
+    name = "stderr with pipe"
+    desc = "What if i give two incorrect files in a ls"
+    args = ["./", "unknown", "lol"]
+
+    [Test.expected]
+        status = 2
+        stderr = "/usr/bin/ls: cannot access 'unknown': No such file or directory"
+    [Test.interactions]
+        stdoutPipe = "grep main.go"
+        stderrPipe = "grep unknown"
+
+[[Test]]
+    name = "stderr pipe with argument"
+    desc = "What if i want to parse stdout and stderr"
+    args = ["xd", "unknown", "main.go"]
+
+    [Test.expected]
+        status = 2
+        stderrFile = "modules/funcTests/tests/exp/failingInteractionsStderrFile"
+    [Test.interactions]
+        stderrPipe = "grep xd -A 1"

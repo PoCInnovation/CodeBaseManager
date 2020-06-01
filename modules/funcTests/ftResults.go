@@ -18,8 +18,17 @@ type ftResult struct {
     stderrFail int
 }
 
+func removeEndln(str string)  string{
+    for strings.HasSuffix(str, "\n") {
+        str = strings.TrimSuffix(str, "\n")
+    }
+    return str
+}
+
 func compareOutput(exp, out string) int {
-    out = strings.TrimSuffix(out, "\n")
+    out = removeEndln(out)
+    exp = removeEndln(exp)
+    //fmt.Printf("exp: [%s]\nout: [%s]\n", exp, out)
     switch exp {
     case "":
         return IGNORED

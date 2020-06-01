@@ -29,7 +29,7 @@ func (test *FT) Init(basicOpt *ftCommon) {
 
 }
 
-func (test *FT) Run() {
+func (test *FT) Run(options ftOptions) {
 	if test.Ext.Pre != noCmd {
 		// TODO: Improvements? Error handling or else?
 		if err := QuickRun(test.Ext.Pre); err != nil {
@@ -38,9 +38,9 @@ func (test *FT) Run() {
 		}
 	}
 
-	test.my.Run() // TODO: care about options
+	test.my.Run(test.Opt) // TODO: care about options
 	if test.ref.cmd != nil {
-		test.ref.Run() // TODO: care about options
+		test.ref.Run(test.Opt) // TODO: care about options
 	}
 
 	test.my.AfterPipe(test.Ext.StdoutPipe, test.Ext.StderrPipe)
