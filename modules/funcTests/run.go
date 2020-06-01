@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"os"
+	"time"
 )
 
 func errorPrompt(err error) bool {
@@ -28,7 +29,8 @@ func Run(av []string) {
 		// TODO: if no bin ask build module for binary
 		for _, test := range cfg.Tests {
 			test.Init(&cfg.Common)
-			test.Run()
+			test.ref.execTime = time.Now()
+			test.Run(test.Opt)
 			failPerConf += test.GetResults().Show(test.Name)
 		}
 		if failPerConf != 0 {

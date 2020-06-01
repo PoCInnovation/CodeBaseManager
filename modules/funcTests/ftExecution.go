@@ -7,6 +7,7 @@ import (
     "os"
     "os/exec"
     "syscall"
+    "time"
 )
 
 type ftInteractions struct {
@@ -25,6 +26,7 @@ type ftExecution struct {
     cmd *exec.Cmd
     outBuf bytes.Buffer
     errBuf bytes.Buffer
+    execTime time.Time
     status int
 }
 
@@ -65,7 +67,8 @@ func (e *ftExecution) Set(inter *ftInteractions, bin string, args ...string) {
     e.setEnv(inter.Env, inter.AddEnv)
 }
 
-func (e *ftExecution) Run() {
+func (e *ftExecution) Run(options ftOptions) {
+    e.execTime = time.Now()
     if err := e.cmd.Run(); err != nil {
         fmt.Println("Run:", err)
         if exitError, ok := err.(*exec.ExitError); ok {
@@ -74,12 +77,16 @@ func (e *ftExecution) Run() {
     } else {
         e.status = e.cmd.ProcessState.Sys().(syscall.WaitStatus).ExitStatus()
     }
+    if options.Time {
+        fmt.Println(time.Since(e.execTime))
+    }
 }
 
 func (e *ftExecution) AfterPipe(outPipeCmd, errPipeCmd string) {
     if outPipeCmd != "" {
         tmp := exec.Command("bash", "-c", outPipeCmd)
         tmp.Stdin = bytes.NewReader(e.outBuf.Bytes())
+        e.outBuf.Reset()
         tmp.Stdout = &e.outBuf
         if err := tmp.Run(); err != nil {
             fmt.Println("stdoutPipe:", err)
@@ -89,7 +96,8 @@ func (e *ftExecution) AfterPipe(outPipeCmd, errPipeCmd string) {
     if errPipeCmd != "" {
         tmp := exec.Command("bash", "-c", errPipeCmd)
         tmp.Stdin = bytes.NewReader(e.errBuf.Bytes())
-        tmp.Stderr = &e.errBuf
+        e.errBuf.Reset()
+        tmp.Stdout = &e.errBuf
         if err := tmp.Run(); err != nil {
             fmt.Println("stderrPipe:", err)
             return

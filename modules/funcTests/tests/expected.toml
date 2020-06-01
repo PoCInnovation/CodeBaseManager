@@ -1,0 +1,16 @@
+[common]
+    bin = "ls"
+
+[[Test]]
+    name = "litteraly nothing"
+    desc = "just a lazy ls test"
+
+[[Test]]
+    name = "stderr file and brut stdout"
+    desc = "What if i want to parse stdout and stderr"
+    args = ["/root", "main.go"]
+
+    [Test.expected]
+        status = 2
+        stdout = "main.go"
+        stderrFile = "modules/funcTests/tests/exp/failingExpectedStderrFile"

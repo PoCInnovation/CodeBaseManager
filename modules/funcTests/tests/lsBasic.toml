@@ -8,4 +8,4 @@
 
     [Test.expected]
         status = 0
-        stdout = "main.go" # Optional
+        stdout = "main.go"
