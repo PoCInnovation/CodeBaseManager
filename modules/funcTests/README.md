@@ -159,5 +159,7 @@ This section is used to
 ## Predicted
 
 When describing tests, options to expect a failure, a timeout or to time or repeat the test.
+
 When describing tests, possibility to declare variables to ease the writing of a TestSuite under a `[vars]` table.
+
 Usage of CBM's backend to be able to omit the `bin` field & add new fields such as `build`
