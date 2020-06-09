@@ -1,0 +1,88 @@
+[default]
+    bin = "ls"
+    name = "ftInteractions"
+    desc = "Test suite for interactions"
+    [default.expected]
+        status = 0
+        stdout = "main.go"
+
+[vars]
+    longPath = "modules/funcTests/tests/v2/unknown_test"
+
+[[Test]]
+    name = "Stderr with pipe"
+    args = ["./", "unknown", "lol"]
+
+    [Test.expected]
+        status = 2
+        stderr = "/usr/bin/ls: cannot access 'unknown': No such file or directory"
+    [Test.interactions]
+        stdoutPipe = "grep main.go"
+        stderrPipe = "grep unknown"
+
+[[Test]]
+    name = "Stderr pipe with argument"
+    args = ["xd", "unknown", "main.go"]
+
+    [Test.expected]
+        status = 2
+        stderrFile = "modules/funcTests/tests/exp/failing_interactions_stderr_file"
+    [Test.interactions]
+        stderrPipe = "grep xd -A 1"
+
+[[Test]]
+    name = "Adding an environnment variable"
+    bin = "cbm"
+    args = ["ft", "run", '$longPath']
+
+    [Test.expected]
+        status = 1
+
+[[Test]]
+    args = ["yolo"]
+    bin = "cat"
+    name = "Creating a file, giving him some content, removing him"
+
+    [Test.expected]
+        stdout = "salut"
+    [Test.interactions]
+        pre = "touch yolo; echo salut > yolo"
+        post = "rm yolo"
+
+[[Test]]
+    name = "cat using stdin"
+    bin = "cat"
+
+    [Test.expected]
+        stdout = "lol"
+    [Test.interactions]
+        stdin = "lol"
+
+[[Test]]
+    name = "Having fun with environnment"
+    bin = "env"
+
+    [Test.expected]
+        stdout = "xlkEesgF"
+    [Test.interactions]
+        stdoutPipe = "grep key"
+        addEnv = ["key=xlkEesgF"]
+
+[[Test]]
+    name = "My environnment"
+    bin = "env"
+
+    [Test.expected]
+        stdout = "lol=cc\nsalut=tulas"
+    [Test.interactions]
+        env = ["lol=cc", "salut=tulas"]
+
+[[Test]]
+    name = "Stdin is kinda hard"
+    bin = "cat"
+
+    [Test.expected]
+        stdout = "Heyyyyy"
+    [Test.interactions]
+        stdinPipe = "cat modules/funcTests/tests/exp/stdin_test"
+        stdoutPipe = "grep Hey"

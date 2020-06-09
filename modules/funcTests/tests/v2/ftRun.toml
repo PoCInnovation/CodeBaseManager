@@ -1,0 +1,30 @@
+[default]
+    status = 0
+    name = "Test to test cbm ft"
+    bin = "cbm"
+    desc = "Test suite for cbm functionnal tests"
+
+[vars]
+    refFolder = "modules/funcTests/tests/v2"
+    expFolder = "modules/funcTests/tests/exp/v2"
+
+[[Test]]
+    name = "Basic ls"
+    args = ["ft", "run", '$refFolder/ls_basic.toml']
+
+    [Test.expected]
+        stdoutFile = '$expFolder/ls_basic'
+
+[[Test]]
+    name = "Interactions"
+    args = ["ft", "run", '$refFolder/interactions.toml']
+
+    [Test.expected]
+        stdoutFile = '$expFolder/interactions'
+
+[[Test]]
+    name = "refComparing"
+    args = ["ft", "run", '$refFolder/refComparing.toml']
+
+    [Test.expected]
+        stdoutFile = '$expFolder/refComparing'

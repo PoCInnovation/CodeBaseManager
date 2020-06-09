@@ -1,0 +1,29 @@
+[default]
+    desc = "Comparing two binaries"
+    bin = "ls"
+    name = "refComparing"
+    refBin = "ls"
+    status = 0
+
+[[Test]]
+    name = "Ls's help"
+    args = ["-h"]
+    refArgs = ["-h"]
+
+[[Test]]
+    args = ["main.go"]
+    refBin = ""
+
+    [Tests.expected]
+        stdout = "main.go\nmain.go"
+    [Tests.options]
+        repeat = 2
+
+[[Test]]
+    name = "comparing echo and ls with a pipe"
+    refBin = "echo"
+    refArgs = "main.go"
+    args = ["./"]
+
+    [Test.interations]
+        stdoutPipe = "grep main.go"

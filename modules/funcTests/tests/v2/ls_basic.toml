@@ -1,0 +1,29 @@
+[default]
+    bin = "ls"
+    name = "Basic ls"
+    desc = "Some random tests on ls"
+
+[[Test]]
+    args = ["main.go"]
+
+    [Test.expected]
+        status = 0
+        stdout = "main.go"
+
+[[Test]]
+    desc = "testing return value of the ls program if trying to access random file"
+    args = ["lol"]
+
+    [Test.expected]
+        status = 2
+
+[[Test]]
+    args = []
+
+[[Test]]
+    name = "I will timeout but i know it"
+    args = ["/", "-R"]
+
+    [Test.options]
+        timeout = 1
+        shouldFail = true
