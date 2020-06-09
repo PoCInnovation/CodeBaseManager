@@ -1,8 +1,9 @@
 [default]
-    status = 0
     name = "Test to test cbm ft"
     bin = "cbm"
     desc = "Test suite for cbm functionnal tests"
+    [default.expected]
+        status = 0
 
 [vars]
     refFolder = "modules/funcTests/tests/v2"

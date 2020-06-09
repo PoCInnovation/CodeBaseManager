@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"os"
-	"time"
 )
 
 func errorPrompt(err error) bool {
@@ -44,11 +43,12 @@ func Run(av []string) {
 		fmt.Println(cfg.Default.Options)
 		// TODO: if no bin ask build module for binary
 		for _, test := range cfg.Tests {
+			test = test
 			//TODO: now that config is load, launch fts
 			/*test.Init(&cfg.Common)
 			test.ref.execTime = time.Now()
 			test.Run(test.Opt)
-			test.GetResults().Show(test.Name)/*
+			test.GetResults().Show(test.Name)*/
 		}
 	}
 }
