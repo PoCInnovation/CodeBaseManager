@@ -5,6 +5,7 @@ import (
     "errors"
     "fmt"
     "github.com/BurntSushi/toml"
+    "github.com/PoCFrance/CodeBaseManager/modules/logs"
     "os"
     "strings"
 )
@@ -62,12 +63,12 @@ func NewTestSuite(cfgPath string) (*ftTestSuite, error) {
         return cfg, nil
     }
     ignoredErr := getErrorToml(ignored, cfgPath)
-    NewLogger(ErrLog).Error("Syntax error at lines:")
+    logs.CBMLogs.Error("Syntax error at lines:")
     for _, k := range ignoredErr {
         if len(k.line) == 0 {
             continue
         }
-        NewLogger(ErrLog).Error("%d:\t%s", k.lineNumber, k.line)
+        logs.CBMLogs.Error("%d:\t%s", k.lineNumber, k.line)
     }
     return nil, errors.New("Error while loading toml")
 }
