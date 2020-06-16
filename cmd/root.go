@@ -8,6 +8,7 @@ import (
 	"github.com/PoCFrance/CodeBaseManager/cmd/funcTests"
 	"github.com/PoCFrance/CodeBaseManager/cmd/repository"
 	"github.com/PoCFrance/CodeBaseManager/cmd/unitTests"
+	"github.com/PoCFrance/CodeBaseManager/modules/logs"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -18,6 +19,8 @@ func Execute() {
 		Short: "Multi-langage CLI tool to manage your code base.",
 	}
 
+	rootCmd.PersistentFlags().StringVar(&logs.Verbosity, "verbosity", "error", "debug | warn | error")
+	rootCmd.PersistentFlags().StringVar(&logs.LogsFP, "logs-path", "stderr", "logs to the given file")
 	registerSubCmds(rootCmd)
 
 	if err := rootCmd.Execute(); err != nil {
