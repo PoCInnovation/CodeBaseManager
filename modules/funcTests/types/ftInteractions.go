@@ -13,12 +13,6 @@ type ftInteractions struct {
 	AddEnv []string `toml:"addEnv"`
 }
 
-func ApplyIfEmpty(current, ref string) {
-	if len(current) == 0 {
-		
-	}
-}
-
 func (test *ftInteractions) ApplyDefault(reference ftInteractions) {
 	if len(test.AddEnv) == 0 {
 		test.AddEnv = reference.AddEnv
@@ -35,22 +29,16 @@ func (test *ftInteractions) ApplyDefault(reference ftInteractions) {
 	if len(test.StderrPipe) == 0 {
 		test.StderrPipe = reference.StderrPipe
 	}
+	if len(test.StdinPipe) == 0 {
+		test.StdinPipe = reference.StdinPipe
+	}
+	if len(test.StdoutPipe) == 0 {
+		test.StdoutPipe = reference.StdoutPipe
+	}
 	if len(test.Stdin) == 0 {
-		test.Stdin = reference.
+		test.Stdin = reference.Stdin
 	}
-	if len() == 0 {
-		test. = reference.
-	}
-	if len() == 0 {
-		test. = reference.
-	}
-	if len() == 0 {
-		test. = reference.
-	}
-	if len() == 0 {
-		test. = reference.
-	}
-	if len() == 0 {
-		test. = reference.
+	if len(test.StdinFile) == 0 {
+		test.StdinFile = reference.StdinFile
 	}
 }

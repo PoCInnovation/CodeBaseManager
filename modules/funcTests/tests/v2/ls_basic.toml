@@ -4,6 +4,8 @@
     desc = "Some random tests on ls"
 
 [[Test]]
+    name = "ls: file"
+    desc = "file is given as parameter, exit status 0 is expected"
     args = ["main.go"]
 
     [Test.expected]
@@ -11,6 +13,7 @@
         stdout = "main.go"
 
 [[Test]]
+    name = "ls: random file"
     desc = "testing return value of the ls program if trying to access random file"
     args = ["lol"]
 
@@ -18,10 +21,12 @@
         status = 2
 
 [[Test]]
+    name = "doing nothing"
     args = []
 
 [[Test]]
     name = "I will timeout but i know it"
+    desc = "such a long path to ls recursively !"
     args = ["/", "-R"]
 
     [Test.options]

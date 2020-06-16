@@ -23,7 +23,6 @@ type errConf struct {
 
 func retrieveErr(toFind []string, line string, err *[]errConf, lineNumber int) {
     for _, separated := range toFind {
-        fmt.Println(separated)
         if strings.Contains(line, separated){
             *err = append(*err, errConf{
                 lineNumber: lineNumber,
@@ -77,11 +76,82 @@ func (Test *ftDescription) Init(Default ftDescription) {
     Test.ftBasic.ApplyDefault(Default.ftBasic)
     Test.Expected.ApplyDefault(Default.Expected)
     Test.Interactions.ApplyDefault(Default.Interactions)
+    Test.Options.ApplyDefault(Default.Options)
 }
 
-func (cfg *ftTestSuite) BuildExec() {
-    for _, Test := range cfg.Tests {
+func (Test *ftDescription) PrintStateInteractions() {
+    fmt.Println("Pre:")
+    fmt.Println(Test.Interactions.Pre)
+    fmt.Println("Post:")
+    fmt.Println(Test.Interactions.Post)
+    fmt.Println("Stdin file:")
+    fmt.Println(Test.Interactions.StdinFile)
+    fmt.Println("Stdin:")
+    fmt.Println(Test.Interactions.Stdin)
+    fmt.Println("StdinPipe:")
+    fmt.Println(Test.Interactions.StdinPipe)
+    fmt.Println("StdoutPipe:")
+    fmt.Println(Test.Interactions.StdoutPipe)
+    fmt.Println("StderrPipe:")
+    fmt.Println(Test.Interactions.StderrPipe)
+    fmt.Println("Env:")
+    fmt.Println(Test.Interactions.Env)
+    fmt.Println("AddEnv:")
+    fmt.Println(Test.Interactions.AddEnv)
+}
+
+func (Test *ftDescription) PrintStateBasic() {
+    fmt.Println("Name:")
+    fmt.Println(Test.Name)
+    fmt.Println("Desc:")
+    fmt.Println(Test.Desc)
+    fmt.Println("Bin:")
+    fmt.Println(Test.ftBasic.Bin)
+    fmt.Println("RefBin:")
+    fmt.Println(Test.RefBin)
+    fmt.Println("Args:")
+    fmt.Println(Test.Args)
+    fmt.Println("RefArgs:")
+    fmt.Println(Test.RefArgs)
+}
+
+func (Test *ftDescription) PrintStateOptions() {
+    fmt.Println("Time:")
+    fmt.Println(Test.Options.Time)
+    fmt.Println("Timeout")
+    fmt.Println(Test.Options.Timeout)
+    fmt.Println("ShouldFail:")
+    fmt.Println(Test.Options.ShouldFail)
+    fmt.Println("Repeat:")
+    fmt.Println(Test.Options.Repeat)
+}
+
+func (Test *ftDescription) PrintStateExpected() {
+    fmt.Println("Stdout:")
+    fmt.Println(Test.Expected.Stdout)
+    fmt.Println("Status:")
+    fmt.Println(Test.Expected.Status)
+    fmt.Println("Stderr:")
+    fmt.Println(Test.Expected.Stderr)
+    fmt.Println("StdoutFile")
+    fmt.Println(Test.Expected.StdoutFile)
+    fmt.Println("StderrFile")
+    fmt.Println(Test.Expected.StderrFile)
+}
+
+func (cfg *ftTestSuite) BuildExec() error {
+    for index, Test := range cfg.Tests {
         Test.Init(cfg.Default)
+        cfg.Tests[index] = Test
     }
+    /*for _, Test := range cfg.Tests {
+        fmt.Println("-----------------------------------")
+        Test.PrintStateBasic()
+        Test.PrintStateExpected()
+        Test.PrintStateInteractions()
+        Test.PrintStateOptions()
+    }*/
+    // TODO: now that building is done, need to execute this
+    return nil
 }
 

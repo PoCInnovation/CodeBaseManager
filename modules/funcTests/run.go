@@ -4,7 +4,6 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/PoCFrance/CodeBaseManager/modules/funcTests/types"
 	"os"
-	"time"
 )
 
 func errorPrompt(err error) {
@@ -25,9 +24,6 @@ func Run(av []string) {
 			errorPrompt(err)
 			continue
 		}
-		// TODO: if no bin ask build module for binary
-		// TODO: separe init and run
-		_, err := cfg.BuildExec()
-			//TODO: now that config is load, launch fts
+		err = cfg.BuildExec()
 	}
 }

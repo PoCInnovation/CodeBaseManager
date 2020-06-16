@@ -8,7 +8,7 @@ type ftOptions struct {
 	// TODO: BuildWith  string
 }
 
-func (opt *ftOptions) SetDefault(common *ftOptions) {
+func (opt *ftOptions) ApplyDefault(common ftOptions) {
 	if opt.Repeat == 0 {
 		opt.Repeat = common.Repeat
 	}
