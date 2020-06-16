@@ -25,5 +25,5 @@
     args = ["/", "-R"]
 
     [Test.options]
-        timeout = 1
+        timeout = 1.0
         shouldFail = true

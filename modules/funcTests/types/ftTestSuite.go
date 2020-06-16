@@ -72,3 +72,15 @@ func NewTestSuite(cfgPath string) (*ftTestSuite, error) {
     return nil, errors.New("Error while loading toml")
 }
 
+func (Test *ftDescription) Init(Default ftDescription) {
+    Test.ftBasic.ApplyDefault(Default.ftBasic)
+    Test.Expected.ApplyDefault(Default.Expected)
+    Test.Interactions.ApplyDefault(Default.Interactions)
+}
+
+func (cfg *ftTestSuite) BuildExec() {
+    for _, Test := range cfg.Tests {
+        Test.Init(cfg.Default)
+    }
+}
+

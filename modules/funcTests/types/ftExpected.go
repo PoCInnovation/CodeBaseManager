@@ -38,3 +38,21 @@ func (exp *ftExpected) getExpErr() string {
 	}
 	return getFile(exp.StderrFile)
 }
+
+func (test *ftExpected) ApplyDefault(reference ftExpected) {
+	if len(test.Stderr) == 0 {
+		test.Stderr = reference.Stderr
+	}
+	if len(test.Stdout) == 0 {
+		test.Stdout = reference.Stdout
+	}
+	if test.Status == 0 && reference.Status != 0 {
+		test.Status = reference.Status
+	}
+	if len(test.StderrFile) == 0 {
+		test.StderrFile = reference.StderrFile
+	}
+	if len(test.StdoutFile) == 0 {
+		test.StdoutFile = reference.StdoutFile
+	}
+}
