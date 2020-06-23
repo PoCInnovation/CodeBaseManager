@@ -6,15 +6,15 @@
         status = 0
 
 [vars]
-    refFolder = "modules/funcTests/tests/v2"
-    expFolder = "modules/funcTests/tests/exp/v2"
+    refFolder = "modules/funcTests/tests"
+    expFolder = "modules/funcTests/tests/exp"
 
 [[Test]]
     name = "Basic ls"
-    args = ["ft", "run", '$refFolder/ls_basic.toml']
+    args = ["ft", "run", "$refFolder/ls_basic.toml"]
 
     [Test.expected]
-        stdoutFile = '$expFolder/ls_basic'
+        stdoutFile = "$expFolder/ls_basic"
 
 [[Test]]
     name = "Interactions"

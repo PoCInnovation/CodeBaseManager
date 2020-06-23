@@ -42,7 +42,6 @@ func InitCBMLogs(verbosity, fpLogs string) {
     if CBMLogs.init == true {
         return
     }
-    fmt.Println(verbosity, fpLogs)
     level, ok := levelNames[verbosity]
     if ok {
         CBMLogs.level = level

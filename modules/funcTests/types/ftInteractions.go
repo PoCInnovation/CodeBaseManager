@@ -13,7 +13,19 @@ type ftInteractions struct {
 	AddEnv []string `toml:"addEnv"`
 }
 
-func (test *ftInteractions) ApplyDefault(reference ftInteractions) {
+func (test *ftInteractions) ApplyVars(vars map[string]string) {
+	test.AddEnv = ApplyVarsTab(test.AddEnv, vars)
+	test.Env = ApplyVarsTab(test.Env, vars)
+	test.Post = ApplyVarsString(test.Post, vars)
+	test.Pre = ApplyVarsString(test.Pre, vars)
+	test.StderrPipe = ApplyVarsString(test.StderrPipe, vars)
+	test.StdinPipe = ApplyVarsString(test.StderrPipe, vars)
+	test.StdoutPipe = ApplyVarsString(test.StdoutPipe, vars)
+	test.Stdin = ApplyVarsString(test.Stdin, vars)
+	test.StdinFile = ApplyVarsString(test.StdinFile, vars)
+}
+
+func (test *ftInteractions) ApplyDefault(reference ftInteractions, vars map[string]string) {
 	if len(test.AddEnv) == 0 {
 		test.AddEnv = reference.AddEnv
 	}
@@ -41,4 +53,5 @@ func (test *ftInteractions) ApplyDefault(reference ftInteractions) {
 	if len(test.StdinFile) == 0 {
 		test.StdinFile = reference.StdinFile
 	}
+	test.ApplyVars(vars)
 }

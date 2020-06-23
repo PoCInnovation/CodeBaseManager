@@ -1,0 +1,11 @@
+Success: [Stderr with pipe]
+Expected: open modules/funcTests/tests/exp/failing_interactions_stderr_file: no such file or directory
+Success: [Stderr pipe with argument]
+Success: [Adding an environnment variable]
+Success: [Creating a file, giving him some content, removing him]
+Success: [cat using stdin]
+Success: [Having fun with environnment]
+Success: [My environnment]
+stdoutPipe: exit status 1
+Failure: [Stdin is kinda hard]
+stdout differs

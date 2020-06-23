@@ -2,23 +2,23 @@
     name = "refComparing"
     desc = "Comparing two binaries"
     bin = "ls"
-    refBin = "ls"
     [default.expected]
         status = 0
 
 [[Test]]
     name = "Ls's help"
     args = ["-h"]
+    refBin = "ls"
     refArgs = ["-h"]
 
 [[Test]]
+    name = "binary is not given"
     args = ["main.go"]
     refBin = ""
 
-    [Test.expected]
-        stdout = "main.go\nmain.go"
     [Test.options]
         repeat = 2
+        shouldFail = true
 
 [[Test]]
     name = "comparing echo and ls with a pipe"

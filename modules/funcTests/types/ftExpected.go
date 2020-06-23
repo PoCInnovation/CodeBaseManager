@@ -39,20 +39,28 @@ func (exp *ftExpected) getExpErr() string {
 	return getFile(exp.StderrFile)
 }
 
-func (test *ftExpected) ApplyDefault(reference ftExpected) {
-	if len(test.Stderr) == 0 {
-		test.Stderr = reference.Stderr
+func (Test *ftExpected) ApplyVars(vars map[string]string) {
+	Test.Stderr = ApplyVarsString(Test.Stderr, vars)
+	Test.Stdout = ApplyVarsString(Test.Stdout, vars)
+	Test.StderrFile = ApplyVarsString(Test.StderrFile, vars)
+	Test.StdoutFile = ApplyVarsString(Test.StdoutFile, vars)
+}
+
+func (Test *ftExpected) ApplyDefault(reference ftExpected, vars map[string]string) {
+	if len(Test.Stderr) == 0 {
+		Test.Stderr = reference.Stderr
 	}
-	if len(test.Stdout) == 0 {
-		test.Stdout = reference.Stdout
+	if len(Test.Stdout) == 0 {
+		Test.Stdout = reference.Stdout
 	}
-	if test.Status == 0 && reference.Status != 0 {
-		test.Status = reference.Status
+	if Test.Status == 0 && reference.Status != 0 {
+		Test.Status = reference.Status
 	}
-	if len(test.StderrFile) == 0 {
-		test.StderrFile = reference.StderrFile
+	if len(Test.StderrFile) == 0 {
+		Test.StderrFile = reference.StderrFile
 	}
-	if len(test.StdoutFile) == 0 {
-		test.StdoutFile = reference.StdoutFile
+	if len(Test.StdoutFile) == 0 {
+		Test.StdoutFile = reference.StdoutFile
 	}
+	Test.ApplyVars(vars)
 }

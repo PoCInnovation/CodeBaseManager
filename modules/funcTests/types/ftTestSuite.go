@@ -7,6 +7,7 @@ import (
     "github.com/BurntSushi/toml"
     "github.com/PoCFrance/CodeBaseManager/modules/logs"
     "os"
+    "reflect"
     "strings"
 )
 
@@ -56,7 +57,6 @@ func NewTestSuite(cfgPath string) (*ftTestSuite, error) {
     if err != nil {
         return nil, err
     }
-    // Checks if any key in the cfg were ignored
     ignored := md.Undecoded()
     if len(ignored) == 0 {
         return cfg, nil
@@ -72,86 +72,102 @@ func NewTestSuite(cfgPath string) (*ftTestSuite, error) {
     return nil, errors.New("Error while loading toml")
 }
 
-func (Test *ftDescription) Init(Default ftDescription) {
-    Test.ftBasic.ApplyDefault(Default.ftBasic)
-    Test.Expected.ApplyDefault(Default.Expected)
-    Test.Interactions.ApplyDefault(Default.Interactions)
+func searchInVars(toFind string, vars map[string]string) string {
+    if !strings.Contains(toFind, "$") {
+        return toFind
+    }
+
+    found := false
+    for _, s := range reflect.ValueOf(vars).MapKeys() {
+        str := s.String()
+        if strings.Contains(toFind, str) {
+            toFind = strings.Replace(toFind, fmt.Sprintf("$%s", str), vars[str], -1)
+            found = true
+        }
+    }
+
+    if found == false {
+        logs.CBMLogs.Error(fmt.Sprintf("Variable not found in %s", toFind))
+    }
+
+    return toFind
+}
+
+func ApplyVarsString(toApplyString string, vars map[string]string) string {
+    if toApplyString != "" {
+        toApplyString = searchInVars(toApplyString, vars)
+    }
+    return toApplyString
+}
+
+func ApplyVarsTab(toApplyTab []string, vars map[string]string) []string {
+    if len(toApplyTab) != 0 {
+        for index, str := range toApplyTab {
+            toApplyTab[index] = searchInVars(str, vars)
+        }
+    }
+    return toApplyTab
+}
+
+func (Test *ftDescription) Init(Default ftDescription, vars map[string]string) {
+    Test.ftBasic.ApplyDefault(Default.ftBasic, vars)
+    Test.Expected.ApplyDefault(Default.Expected, vars)
+    Test.Interactions.ApplyDefault(Default.Interactions, vars)
     Test.Options.ApplyDefault(Default.Options)
 }
 
-func (Test *ftDescription) PrintStateInteractions() {
-    fmt.Println("Pre:")
-    fmt.Println(Test.Interactions.Pre)
-    fmt.Println("Post:")
-    fmt.Println(Test.Interactions.Post)
-    fmt.Println("Stdin file:")
-    fmt.Println(Test.Interactions.StdinFile)
-    fmt.Println("Stdin:")
-    fmt.Println(Test.Interactions.Stdin)
-    fmt.Println("StdinPipe:")
-    fmt.Println(Test.Interactions.StdinPipe)
-    fmt.Println("StdoutPipe:")
-    fmt.Println(Test.Interactions.StdoutPipe)
-    fmt.Println("StderrPipe:")
-    fmt.Println(Test.Interactions.StderrPipe)
-    fmt.Println("Env:")
-    fmt.Println(Test.Interactions.Env)
-    fmt.Println("AddEnv:")
-    fmt.Println(Test.Interactions.AddEnv)
-}
-
-func (Test *ftDescription) PrintStateBasic() {
-    fmt.Println("Name:")
-    fmt.Println(Test.Name)
-    fmt.Println("Desc:")
-    fmt.Println(Test.Desc)
-    fmt.Println("Bin:")
-    fmt.Println(Test.ftBasic.Bin)
-    fmt.Println("RefBin:")
-    fmt.Println(Test.RefBin)
-    fmt.Println("Args:")
-    fmt.Println(Test.Args)
-    fmt.Println("RefArgs:")
-    fmt.Println(Test.RefArgs)
-}
-
-func (Test *ftDescription) PrintStateOptions() {
-    fmt.Println("Time:")
-    fmt.Println(Test.Options.Time)
-    fmt.Println("Timeout")
-    fmt.Println(Test.Options.Timeout)
-    fmt.Println("ShouldFail:")
-    fmt.Println(Test.Options.ShouldFail)
-    fmt.Println("Repeat:")
-    fmt.Println(Test.Options.Repeat)
-}
-
-func (Test *ftDescription) PrintStateExpected() {
-    fmt.Println("Stdout:")
-    fmt.Println(Test.Expected.Stdout)
-    fmt.Println("Status:")
-    fmt.Println(Test.Expected.Status)
-    fmt.Println("Stderr:")
-    fmt.Println(Test.Expected.Stderr)
-    fmt.Println("StdoutFile")
-    fmt.Println(Test.Expected.StdoutFile)
-    fmt.Println("StderrFile")
-    fmt.Println(Test.Expected.StderrFile)
-}
-
-func (cfg *ftTestSuite) BuildExec() error {
+func (cfg *ftTestSuite) SetTestDefault() error {
     for index, Test := range cfg.Tests {
-        Test.Init(cfg.Default)
+        Test.Init(cfg.Default, cfg.Vars)
         cfg.Tests[index] = Test
+        if len(Test.Name) == 0 {
+            return errors.New("no name found on the test")
+        }
     }
-    /*for _, Test := range cfg.Tests {
-        fmt.Println("-----------------------------------")
-        Test.PrintStateBasic()
-        Test.PrintStateExpected()
-        Test.PrintStateInteractions()
-        Test.PrintStateOptions()
-    }*/
-    // TODO: now that building is done, need to execute this
     return nil
 }
 
+func (cfg *ftTestSuite) BuildExec() {
+    if err := cfg.SetTestDefault(); err != nil {
+        logs.CBMLogs.Error(err)
+    }
+    //Build done
+    for _, Test := range cfg.Tests {
+        for i := 0; i < Test.Options.Repeat; i++ { // Repeat handling
+            //Pre command execution
+            if err := QuickRun(Test.Interactions.Pre); err != nil {
+                logs.CBMLogs.Error(err)
+                continue
+            }
+            result, err := Test.Run()
+            if err != nil {
+                logs.CBMLogs.Error(err.Error())
+                continue
+            }
+            result.AfterPipe(Test.Interactions.StdoutPipe, Test.Interactions.StderrPipe)
+            //Post command execution
+            if err := QuickRun(Test.Interactions.Post); err != nil {
+                logs.CBMLogs.Error(err)
+                continue
+            }
+            Test.GetResults(&result).Show(Test.Name)
+            //TODO : check the result of the test
+        }
+    }
+}
+
+func (Test *ftDescription) GetResults(testOut *ftExecution) *ftResult {
+    result := &ftResult{}
+    if Test.RefBin != "" {
+        Test.Bin = Test.RefBin
+        Test.Args = Test.RefArgs
+        ref, err := Test.Run()
+        if err != nil {
+            logs.CBMLogs.Error(err)
+        }
+        result.CompareToRef(&ref, testOut)
+    } else {
+        result.CompareToExp(testOut, &Test.Expected)
+    }
+    return result
+}

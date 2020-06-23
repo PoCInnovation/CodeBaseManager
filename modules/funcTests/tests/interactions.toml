@@ -7,7 +7,7 @@
         stdout = "main.go"
 
 [vars]
-    longPath = "modules/funcTests/tests/v2/unknown_test"
+    longPath = "modules/funcTests/tests/unknown_test"
 
 [[Test]]
     name = "Stderr with pipe"
@@ -36,7 +36,7 @@
     args = ["ft", "run", '$longPath']
 
     [Test.expected]
-        status = 1
+        stdout = "modules/funcTests/tests/unknown_test open modules/funcTests/tests/unknown_test: no such file or directory\nFailed 0 tests in total"
 
 [[Test]]
     args = ["yolo"]
@@ -63,7 +63,7 @@
     bin = "env"
 
     [Test.expected]
-        stdout = "xlkEesgF"
+        stdout = "key=xlkEesgF"
     [Test.interactions]
         stdoutPipe = "grep key"
         addEnv = ["key=xlkEesgF"]

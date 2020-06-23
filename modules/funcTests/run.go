@@ -2,7 +2,7 @@ package funcTests
 
 import (
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/PoCFrance/CodeBaseManager/modules/funcTests/types"
+	ft_types "github.com/PoCFrance/CodeBaseManager/modules/funcTests/types"
 	"os"
 )
 
@@ -24,6 +24,6 @@ func Run(av []string) {
 			errorPrompt(err)
 			continue
 		}
-		err = cfg.BuildExec()
+		cfg.BuildExec()
 	}
 }

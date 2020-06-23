@@ -9,7 +9,15 @@ type ftBasic struct {
     RefArgs []string `toml:"refArgs"`
 }
 
-func (test *ftBasic) ApplyDefault(reference ftBasic) {
+func (test *ftBasic) ApplyVars(vars map[string]string) {
+    test.RefArgs = ApplyVarsTab(test.RefArgs, vars)
+    test.Args = ApplyVarsTab(test.Args, vars)
+    test.Bin = ApplyVarsString(test.Bin, vars)
+    test.RefBin = ApplyVarsString(test.RefBin, vars)
+}
+
+
+func (test *ftBasic) ApplyDefault(reference ftBasic, vars map[string]string) {
     if len(test.RefArgs) == 0 {
         test.RefArgs = reference.RefArgs
     }
@@ -22,4 +30,5 @@ func (test *ftBasic) ApplyDefault(reference ftBasic) {
     if len(test.RefBin) == 0 {
         test.RefBin = reference.RefBin
     }
+    test.ApplyVars(vars)
 }
