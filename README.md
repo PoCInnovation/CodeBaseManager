@@ -9,16 +9,16 @@ It will have a backend inspired by **[Unison project](https://www.unisonweb.org/
 
 :warning: Requires go 1.14
 ```
- $ git clone https://github.com/PoCFrance/CodeBaseManager
- $ cd CodeBaseManager
- $ ./install.sh
+ git clone https://github.com/PoCFrance/CodeBaseManager
+ cd CodeBaseManager
+ ./install.sh
 ```
 ## Quick Start
 
 ```
-$ cbm module [command]
+cbm module [command]
 or
-$ cbm help
+cbm help
 ```
 
 If no command is provided then, depending on the module, you may enter a shell. This shell can execute a command at a time and the module's commands.
