@@ -52,6 +52,6 @@ A module fills up a specific task. In the future they will be able to interact w
 ------------
 ## Maintainers
 
- - Allan Debeve ([GitHub](https://github.com/Gfaim))
- - Quentin Veyrenc ([GitHub](https://github.com/VrncQuentin))
- - Damien Bernard ([GitHub](https://github.com/Encorpluptit))
+ - [Allan Debeve](https://github.com/Gfaim)
+ - [Quentin Veyrenc](https://github.com/VrncQuentin)
+ - [Damien Bernard](https://github.com/Encorpluptit)
