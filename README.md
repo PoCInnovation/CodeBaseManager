@@ -33,6 +33,10 @@ A module fills up a specific task. In the future they will be able to interact w
 
 ### Current
 
+- [Server](/modules/server/README.md): Allows you to interact with CBM's backend.
+
+- [Repository](/modules/repository/README.md): Provides helpers for the organization of the repository (as well as project).
+
 - [CodeBase](/modules/codebase/README.md): Allows to find informations about the codebase. The available commands are `cat` & `find`, they can target functions or files.
 
 - [Functional Tests](/modules/funcTests/README.md): Allows to test a binary through the use of [TOML](https://github.com/toml-lang/toml) files to describe tests. It has one command: `run`
