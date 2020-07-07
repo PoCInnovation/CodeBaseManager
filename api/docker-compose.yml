@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  cbm-api:
+    container_name: Cbm-Api
+    build: .
+    environment:
+      API_PORT: 5342
+      API_SECRET: 98hbun98h
+    ports:
+      - 5342:5342
+    restart: on-failure
+    volumes:
+      - api:/usr/src/api/
+
+volumes:
+  api:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  fullstack:
+    driver: bridge
+

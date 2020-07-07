@@ -35,6 +35,7 @@ func TestFindCFunction(t *testing.T) {
 
 	for _, table := range tables {
 		res := codebase.Cat(table.args)
+		//res := codebase.Cat(table.args)
 		if res == nil {
 			t.Errorf("For argument(s) [%v]), res is nil\n", table.args)
 		}
