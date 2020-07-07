@@ -29,7 +29,4 @@ func registerSubCmds(rootCmd *cobra.Command) {
 	repository.RegisterCmd(rootCmd)
 	funcTests.RegisterCmd(rootCmd)
 	server.RegisterCmd(rootCmd)
-	//unitTests.RegisterCmd(rootCmd)
-	//build.RegisterCmd(rootCmd)
-	//debug.RegisterCmd(rootCmd)
 }
