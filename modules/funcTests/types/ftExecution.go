@@ -20,6 +20,7 @@ type ftExecution struct {
 	timeoutChan <-chan time.Time
 	execChan chan error
 	status int
+	timeout bool
 }
 
 func (e *ftExecution) setEnv(env, addEnv []string) {
@@ -32,7 +33,7 @@ func (e *ftExecution) setEnv(env, addEnv []string) {
 	e.cmd.Env = append(e.cmd.Env, addEnv...)
 }
 
-func (e *ftExecution) setStdin(stdin, stdinFile string) {
+func (e *ftExecution) setStdin(stdin, stdinFile, stdinPipe string) {
 	if stdin != "" {
 		e.cmd.Stdin = bytes.NewReader([]byte(stdin))
 	} else if stdinFile != "" {
@@ -43,6 +44,14 @@ func (e *ftExecution) setStdin(stdin, stdinFile string) {
 			return
 		}
 		e.cmd.Stdin = file
+	} else if stdinPipe != "" {
+		tmp := exec.Command("bash", "-c", stdinPipe)
+		output, err := tmp.Output()
+		if err != nil {
+			fmt.Println("stdinPipe:", err)
+			return
+		}
+		e.cmd.Stdin = bytes.NewReader(output)
 	}
 }
 
@@ -65,7 +74,7 @@ func (e *ftExecution) Set(inter ftInteractions, bin string, timeString string, a
 	}
 	e.execChan = make(chan error)
 
-	e.setStdin(inter.Stdin, inter.StdinFile)
+	e.setStdin(inter.Stdin, inter.StdinFile, inter.StdinPipe)
 	e.setEnv(inter.Env, inter.AddEnv)
 }
 
@@ -110,10 +119,10 @@ func (Test *ftDescription) Run() (ftExecution, error) {
 	go func() { execInfo.execChan <- execInfo.cmd.Wait() }()
 
 	select {
-	case <- execInfo.timeoutChan: // Check for timeout
+	case <- execInfo.timeoutChan:
 		execInfo.cmd.Process.Kill()
-		return ftExecution{}, errors.New("Timeout")
-	case err := <- execInfo.execChan: // Check for Wait()
+		return ftExecution{timeout: true}, nil
+	case err := <- execInfo.execChan:
 		if err == nil {
 			execInfo.status = execInfo.cmd.ProcessState.Sys().(syscall.WaitStatus).ExitStatus()
 		} else {

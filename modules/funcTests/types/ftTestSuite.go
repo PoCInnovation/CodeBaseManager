@@ -6,6 +6,7 @@ import (
     "fmt"
     "github.com/BurntSushi/toml"
     "github.com/PoCFrance/CodeBaseManager/modules/logs"
+    "github.com/logrusorgru/aurora"
     "os"
     "reflect"
     "strings"
@@ -127,25 +128,34 @@ func (cfg *ftTestSuite) SetTestDefault() error {
     return nil
 }
 
-func (cfg *ftTestSuite) BuildExec() {
+func isErrOrTimeout(err error, result ftExecution, Test ftDescription) bool {
+    if err != nil {
+        logs.CBMLogs.Error(err.Error())
+        return true
+    }
+    if result.timeout {
+        fmt.Printf("%s%s%s%s: timeout has been set to %.2fs\n", aurora.Red("Timeout").Bold(),
+            aurora.Bold(": ["), Test.Name, aurora.Bold("]"), Test.Options.Timeout)
+        return true
+    }
+    return false
+}
+
+func (cfg *ftTestSuite) Exec() {
     if err := cfg.SetTestDefault(); err != nil {
         logs.CBMLogs.Error(err)
     }
-    //Build done
     for _, Test := range cfg.Tests {
-        for i := 0; i < Test.Options.Repeat; i++ { // Repeat handling
-            //Pre command execution
+        for i := 0; i < Test.Options.Repeat; i++ {
             if err := QuickRun(Test.Interactions.Pre); err != nil {
                 logs.CBMLogs.Error(err)
                 continue
             }
             result, err := Test.Run()
-            if err != nil {
-                logs.CBMLogs.Error(err.Error())
+            if issue := isErrOrTimeout(err, result, Test); issue {
                 continue
             }
             result.AfterPipe(Test.Interactions.StdoutPipe, Test.Interactions.StderrPipe)
-            //Post command execution
             if err := QuickRun(Test.Interactions.Post); err != nil {
                 logs.CBMLogs.Error(err)
                 continue

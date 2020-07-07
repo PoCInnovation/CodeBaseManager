@@ -24,6 +24,6 @@ func Run(av []string) {
 			errorPrompt(err)
 			continue
 		}
-		cfg.BuildExec()
+		cfg.Exec()
 	}
 }

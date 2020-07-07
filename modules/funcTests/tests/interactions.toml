@@ -4,7 +4,6 @@
     desc = "Test suite for interactions"
     [default.expected]
         status = 0
-        stdout = "main.go"
 
 [vars]
     longPath = "modules/funcTests/tests/unknown_test"
@@ -15,6 +14,7 @@
 
     [Test.expected]
         status = 2
+        stdout = "main.go"
         stderr = "/usr/bin/ls: cannot access 'unknown': No such file or directory"
     [Test.interactions]
         stdoutPipe = "grep main.go"
@@ -26,6 +26,7 @@
 
     [Test.expected]
         status = 2
+        stdout = "main.go"
         stderrFile = "modules/funcTests/tests/exp/failing_interactions_stderr_file"
     [Test.interactions]
         stderrPipe = "grep xd -A 1"
@@ -36,7 +37,7 @@
     args = ["ft", "run", '$longPath']
 
     [Test.expected]
-        stdout = "modules/funcTests/tests/unknown_test open modules/funcTests/tests/unknown_test: no such file or directory\nFailed 0 tests in total"
+        status = 1
 
 [[Test]]
     args = ["yolo"]

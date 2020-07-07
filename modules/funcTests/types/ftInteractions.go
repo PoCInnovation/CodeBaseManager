@@ -19,7 +19,7 @@ func (test *ftInteractions) ApplyVars(vars map[string]string) {
 	test.Post = ApplyVarsString(test.Post, vars)
 	test.Pre = ApplyVarsString(test.Pre, vars)
 	test.StderrPipe = ApplyVarsString(test.StderrPipe, vars)
-	test.StdinPipe = ApplyVarsString(test.StderrPipe, vars)
+	test.StdinPipe = ApplyVarsString(test.StdinPipe, vars)
 	test.StdoutPipe = ApplyVarsString(test.StdoutPipe, vars)
 	test.Stdin = ApplyVarsString(test.Stdin, vars)
 	test.StdinFile = ApplyVarsString(test.StdinFile, vars)

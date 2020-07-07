@@ -12,9 +12,10 @@
     refArgs = ["-h"]
 
 [[Test]]
-    name = "binary is not given"
+    name = "failing on prupose"
     args = ["main.go"]
-    refBin = ""
+    refBin = "echo"
+    refArgs = ["lol"]
 
     [Test.options]
         repeat = 2
