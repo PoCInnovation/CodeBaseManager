@@ -9,8 +9,12 @@ func RegisterCmd(parentCmd *cobra.Command) {
     }
 
     serverCmd.Args = cobra.ExactArgs(0)
+
+    registerStart(serverCmd)
+    registerStop(serverCmd)
     registerAdd(serverCmd)
     registerDrop(serverCmd)
     registerList(serverCmd)
+
     parentCmd.AddCommand(serverCmd)
 }
