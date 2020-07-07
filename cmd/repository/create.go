@@ -7,7 +7,7 @@ import (
 
 func registerCreate(parentCmd *cobra.Command) {
 	var createCmd = &cobra.Command{
-		Use:   "create link.to.template",
+		Use:   "create <github link>",
 		Short: "Create your project repository based on the given template.",
 		Run: func(_ *cobra.Command, args []string) {
 			repository.CreateRepository(args[0])

@@ -1,3 +1,4 @@
-Language = ["C", "Go"]
+Languages = ["C", "Go"]
+Features = 
 Modules = ["parser", "repl"]
 Tests = ["tests", "olala"]
