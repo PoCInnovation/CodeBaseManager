@@ -13,7 +13,7 @@ type Database struct {
 // Init : Initialise the db
 func (db *Database) Init() error {
 	var err error
-	db.DB, err = gorm.Open("sqlite3", "../dev.db")
+	db.DB, err = gorm.Open("sqlite3", "./dev.db")
 	if err != nil {
 		return err
 	}

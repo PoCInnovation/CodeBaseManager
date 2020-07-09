@@ -13,6 +13,6 @@ func main() {
 
 	defer server.Destroy()
 	log.Println("Server runs on http://localhost:" + server.Port)
-	log.Fatal(
+	log.Print(
 		http.ListenAndServe(":"+server.Port, server.HandelerCores()(server.Router)))
 }
