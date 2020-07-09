@@ -1,17 +1,16 @@
 package repository
 
 import (
-	"fmt"
+	"github.com/PoCFrance/CodeBaseManager/modules/repository"
 	"github.com/spf13/cobra"
 )
 
 func registerCreate(parentCmd *cobra.Command) {
 	var createCmd = &cobra.Command{
-		Use:   "create link.to.template",
+		Use:   "create <github link>",
 		Short: "Create your project repository based on the given template.",
 		Run: func(_ *cobra.Command, args []string) {
-			//TODO: Add its real behavior
-			fmt.Println("Creating repo based on:", args[0])
+			repository.CreateRepository(args[0])
 		},
 	}
 

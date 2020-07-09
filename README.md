@@ -25,6 +25,8 @@ If no command is provided then, depending on the module, you may enter a shell. 
 
 |        Modules    | Aliases | Shell |
 |-------------------|:-------:|:-----:|
+|server             | none    | no |
+|repository         | none    | no |
 |codebase           | none    | yes |
 |functional-tests   | "ft" | yes |
 
@@ -32,6 +34,10 @@ If no command is provided then, depending on the module, you may enter a shell. 
 A module fills up a specific task. In the future they will be able to interact with the backend and with each other (for specific features).
 
 ### Current
+
+- [Server](/modules/server/README.md): Allows you to interact with CBM's backend.
+
+- [Repository](/modules/repository/README.md): Provides helpers for the organization of the repository (as well as project).
 
 - [CodeBase](/modules/codebase/README.md): Allows to find informations about the codebase. The available commands are `cat` & `find`, they can target functions or files.
 

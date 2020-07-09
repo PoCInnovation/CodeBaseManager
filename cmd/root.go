@@ -2,12 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/PoCFrance/CodeBaseManager/cmd/build"
 	"github.com/PoCFrance/CodeBaseManager/cmd/codebase"
-	"github.com/PoCFrance/CodeBaseManager/cmd/debug"
 	"github.com/PoCFrance/CodeBaseManager/cmd/funcTests"
 	"github.com/PoCFrance/CodeBaseManager/cmd/repository"
-	"github.com/PoCFrance/CodeBaseManager/cmd/unitTests"
+	"github.com/PoCFrance/CodeBaseManager/cmd/server"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -29,8 +27,6 @@ func Execute() {
 func registerSubCmds(rootCmd *cobra.Command) {
 	codebase.RegisterCmd(rootCmd)
 	repository.RegisterCmd(rootCmd)
-	unitTests.RegisterCmd(rootCmd)
 	funcTests.RegisterCmd(rootCmd)
-	build.RegisterCmd(rootCmd)
-	debug.RegisterCmd(rootCmd)
+	server.RegisterCmd(rootCmd)
 }
