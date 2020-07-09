@@ -8,10 +8,11 @@ import (
 
 //Start Server -> Serve routes -> Defer server destroy
 func main() {
-	server := new(controllers.Server)
-	server.Init()
+	// TODO: add go routine for watcher.
+	// Find how to request to api
+	server, closer := controllers.NewServer()
 
-	defer server.Destroy()
+	defer closer()
 	log.Println("Server runs on http://localhost:" + server.Port)
 	log.Print(
 		http.ListenAndServe(":"+server.Port, server.HandelerCores()(server.Router)))
