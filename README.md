@@ -25,6 +25,8 @@ If no command is provided then, depending on the module, you may enter a shell. 
 
 |        Modules    | Aliases | Shell |
 |-------------------|:-------:|:-----:|
+|server             | none    | no |
+|repository         | none    | no |
 |codebase           | none    | yes |
 |functional-tests   | "ft" | yes |
 
