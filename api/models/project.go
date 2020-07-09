@@ -1,1 +1,13 @@
 package models
+
+import (
+	"github.com/jinzhu/gorm"
+)
+
+type Project struct {
+	gorm.Model
+	Name string `gorm:"size:255;not null;unique" json:"Name"`
+	//ID        uint32    `gorm:"primary_key;auto_increment" json:"id"`
+	//CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	//UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
