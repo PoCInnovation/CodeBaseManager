@@ -54,19 +54,25 @@ func (s *Server) initialiseRoutes() {
 	s.Router.HandleFunc("/hello", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
 
 	proj := s.Router.PathPrefix("/project/").Subrouter()
-	proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-	proj.HandleFunc("/list", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-	proj.HandleFunc("/add", middlewares.SetMiddlewareJSON(s.CreateProject)).Methods("POST")
-	proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
-	proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DELETE")
+	{
+		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+		proj.HandleFunc("/list", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+		proj.HandleFunc("/add", middlewares.SetMiddlewareJSON(s.CreateProject)).Methods("POST")
+		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
+		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DELETE")
+	}
 
 	mod := s.Router.PathPrefix("/module").Subrouter()
-	mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-	mod.HandleFunc("/{project_name}/add/", middlewares.SetMiddlewareJSON(Hello)).Methods("POST")
-	mod.HandleFunc("/{project_name}/list/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-	mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
-	mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DEL")
+	{
+		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+		mod.HandleFunc("/{project_name}/add/", middlewares.SetMiddlewareJSON(Hello)).Methods("POST")
+		mod.HandleFunc("/{project_name}/list/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
+		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DEL")
+	}
 
 	file := s.Router.PathPrefix("/file").Subrouter()
-	file.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+	{
+		file.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+	}
 }

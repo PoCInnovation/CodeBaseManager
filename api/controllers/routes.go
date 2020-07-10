@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"cbm-api/responses"
+	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
@@ -12,4 +13,8 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 func Hello(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, "World")
+}
+
+func GHello(c *gin.Context) {
+	c.String(http.StatusOK, "World")
 }
