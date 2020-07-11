@@ -43,6 +43,17 @@ A module fills up a specific task. In the future they will be able to interact w
 | build      | Allows to describe a build system in a unique way |
 | debug      | Allows to debug your program or functions |
 
+
+## Dependencies
+
+|                          Dependency                        |      License       |
+|:----------------------------------------------------------:|:------------------:|
+| [spf13/Cobra](https://github.com/spf13/cobra)              | Apache License 2.0 |
+| [BurntSushi/toml](https://github.com/BurntSushi/toml)      | MIT License        |
+| [gin-gonic/gin](https://github.com/gin-gonic/gin)          | MIT License        |
+| [logrusorgu/aurora](https://github.com/logrusorgru/aurora) | Unlicense License  |
+
+
 ------------
 ## Maintainers
 
