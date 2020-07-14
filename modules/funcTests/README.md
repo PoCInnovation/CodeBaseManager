@@ -7,27 +7,36 @@ The goal of this module is to allow the user to describe tests for their binarie
 ## Quick Start
 Let's take a simple go program, say `helloworld.go`
 ```go
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
 func main() {
-    if len(os.Args) == 1 {
-        fmt.Println("hello world")
-    } else {
-        fmt.Fprintln(os.Stderr, "yeah.. no")
-        os.Exit(1)
-    }
+	if len(os.Args) == 1 {
+		fmt.Println("hello world")
+	} else {
+		fmt.Fprintln(os.Stderr, "yeah.. no")
+		os.Exit(1)
+	}
 }
 ```
+Just build your go file :
+```go build -o helloworld helloworld.go```
 Then you can write tests which can be as simple as this
 ```TOML
 [[Test]]
     name = "OK" # Name of the test
-    bin = "helloworld" # The binary being tested
+    bin = "./helloworld" # The binary being tested
 ```
 Of course you may want to write some more tests and have more control over them. Each file is a TestSuite so you can write multiple tests inside a file.
 ```TOML
 [default] # Parameters for the TestSuite
     name = "My hello world"
     desc = "TestSuite of this special special version of mine"
-    bin = "helloworld" # Binary used in all tests
+    bin = "./helloworld" # Binary used in all tests
     
 [[Test]]
     name = "ok"
@@ -38,12 +47,13 @@ Of course you may want to write some more tests and have more control over them.
 # This test expect helloworld to exit with 0 after printing "hello world"
 
 [[Test]]
-    name = "failure"
+    name = "wentNice"
+    args = ["anArgument"]
     [Test.expected]
         status = 1
-        stderrFile = "path/to/expected/file_exp"
+        stderr = "yeah.. no"
         
-# This one expect helloworld to exit with 1 after printing on stderr the same thing as "file_exp"'s content
+# This one expect helloworld to exit with 1 after printing on stderr "yeah.. no"
 ```
 
 ## Details
