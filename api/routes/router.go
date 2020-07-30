@@ -19,6 +19,7 @@ func NewRouter() *gin.Engine {
         modules.GET("/", func(c *gin.Context) {
             c.String(http.StatusOK, "Welcome to " + c.Param(rModule))
         })
+        modules.GET("/list", GH)
     }
     return r
 }

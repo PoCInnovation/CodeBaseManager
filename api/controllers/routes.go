@@ -18,3 +18,4 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 func GHello(c *gin.Context) {
 	c.String(http.StatusOK, "World")
 }
+
