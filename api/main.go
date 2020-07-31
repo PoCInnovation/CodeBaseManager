@@ -13,6 +13,9 @@ func main() {
 
 	defer closer()
 	log.Println("Server runs on http://localhost:" + server.Port)
+	//if err := http.ListenAndServe(server.Port, server.Router); err != nil {
+	//	log.Fatal(err)
+	//}
 	if err := server.Router.Run(); err != nil {
 		log.Fatal(err)
 	}

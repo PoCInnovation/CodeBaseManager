@@ -30,7 +30,9 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN GOOS=linux go build -a -installsuffix cgo -o main .
+#RUN GOOS=linux go build -a -installsuffix cgo -o main .
+#RUN go build -a -o main .
+RUN go build -o main .
 
 # Start a new stage from scratch
 FROM alpine:latest
