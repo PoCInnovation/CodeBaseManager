@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "cd48ad43-5615-4c57-b8b4-40d00661b685",
+		"name": "Cbm-Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "991e4705-f42e-4fae-a766-a663246854c2",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});",
+							"pm.test(\"Check Posted Datas\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(ProjectName);",
+							"    pm.environment.set(\"ResultProjectName\", jsonData.name)",
+							"    pm.environment.set(\"ResultProjectPath\", jsonData.path)",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2af6a736-3942-4538-97ff-1a03328d43a5",
+						"exec": [
+							"pm.environment.unset(\"ResultProjectName\")",
+							"pm.environment.unset(\"ResultProjectPath\")",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:{{ProjectPort}}/add?name={{TestProjectName_1}}&path={{TestProjectPath_1}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{ProjectPort}}",
+					"path": [
+						"add"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{TestProjectName_1}}",
+							"description": "Project name"
+						},
+						{
+							"key": "path",
+							"value": "{{TestProjectPath_1}}",
+							"description": "Project Path"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get project",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://localhost:{{ProjectPort}}/project/?name={{TestProjectName_1}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{ProjectPort}}",
+					"path": [
+						"project",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{TestProjectName_1}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListProject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d6102bc0-3bfa-4d1f-92aa-f39233a6a5f9",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:{{ProjectPort}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{ProjectPort}}"
+				},
+				"description": "Test Home page Response"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f5ca894f-dc7d-484e-b2c7-7ff97e0a0ee7",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});",
+							"pm.test(\"Check Posted Datas\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(ProjectName);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:{{ProjectPort}}/delete?name={{TestProjectName_1}}&path={{TestProjectPath_1}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{ProjectPort}}",
+					"path": [
+						"delete"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{TestProjectName_1}}",
+							"description": "Project name"
+						},
+						{
+							"key": "path",
+							"value": "{{TestProjectPath_1}}",
+							"description": "Project Path"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
