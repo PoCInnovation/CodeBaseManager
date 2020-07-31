@@ -24,7 +24,7 @@ func (db *Database) initTables() {
 
 // Init : Initialise the db
 func (db *Database) Init() (err error) {
-	if os.Getenv("PORT") == "release" {
+	if os.Getenv("GIN_MODE") == "release" {
 		log.Print("Database in Production mode")
 		db.DB, err = gorm.Open("sqlite3", "./prod.db")
 	} else {
