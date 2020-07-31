@@ -4,8 +4,8 @@ services:
     container_name: cbm-Api
     build: .
     environment:
-      API_PORT: 5342
-      API_SECRET: 98hbun98h
+      PORT: 5342
+      SECRET: 98hbun98h
     ports:
       - 5342:5342
     restart: on-failure

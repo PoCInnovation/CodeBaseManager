@@ -3,7 +3,6 @@ package main
 import (
 	"cbm-api/controllers"
 	"log"
-	"net/http"
 )
 
 //Start Server -> Serve routes -> Defer server destroy
@@ -14,6 +13,9 @@ func main() {
 
 	defer closer()
 	log.Println("Server runs on http://localhost:" + server.Port)
-	log.Print(
-		http.ListenAndServe(":"+server.Port, server.HandelerCores()(server.Router)))
+	if err := server.Router.Run(); err != nil {
+		log.Fatal(err)
+	}
+	//log.Print(
+	//	http.ListenAndServe(":"+server.Port, server.HandelerCores()(server.Router)))
 }

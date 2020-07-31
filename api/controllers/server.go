@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"cbm-api/database"
-	"cbm-api/middlewares"
+	"cbm-api/routes"
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
@@ -12,8 +12,9 @@ import (
 
 type Server struct {
 	Port   string
-	Router *mux.Router
-	DB     database.Database
+	Router *gin.Engine
+	//Router *mux.Router
+	DB database.Database
 }
 
 func NewServer() (*Server, func()) {
@@ -32,9 +33,7 @@ func (s *Server) Init() {
 	if err := s.DB.Init(); err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
-
-	s.Router = mux.NewRouter().StrictSlash(false)
-	s.initialiseRoutes()
+	s.Router = routes.NewRouter()
 }
 
 func (s *Server) Destroy() {
@@ -48,31 +47,32 @@ func (s *Server) HandelerCores() func(http.Handler) http.Handler {
 		handlers.AllowedOrigins([]string{"*"}))
 }
 
-func (s *Server) initialiseRoutes() {
-	// Home Route
-	s.Router.HandleFunc("/", middlewares.SetMiddlewareJSON(Home)).Methods("GET")
-	s.Router.HandleFunc("/hello", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-
-	proj := s.Router.PathPrefix("/project/").Subrouter()
-	{
-		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-		proj.HandleFunc("/list", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-		proj.HandleFunc("/add", middlewares.SetMiddlewareJSON(s.CreateProject)).Methods("POST")
-		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
-		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DELETE")
-	}
-
-	mod := s.Router.PathPrefix("/module").Subrouter()
-	{
-		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-		mod.HandleFunc("/{project_name}/add/", middlewares.SetMiddlewareJSON(Hello)).Methods("POST")
-		mod.HandleFunc("/{project_name}/list/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
-		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DEL")
-	}
-
-	file := s.Router.PathPrefix("/file").Subrouter()
-	{
-		file.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
-	}
-}
+//
+//func (s *Server) initialiseRoutes() {
+//	// Home Route
+//	s.Router.HandleFunc("/", middlewares.SetMiddlewareJSON(Home)).Methods("GET")
+//	s.Router.HandleFunc("/hello", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+//
+//	proj := s.Router.PathPrefix("/project/").Subrouter()
+//	{
+//		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+//		proj.HandleFunc("/list", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+//		proj.HandleFunc("/add", middlewares.SetMiddlewareJSON(s.CreateProject)).Methods("POST")
+//		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
+//		proj.HandleFunc("/{project_name}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DELETE")
+//	}
+//
+//	mod := s.Router.PathPrefix("/module").Subrouter()
+//	{
+//		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+//		mod.HandleFunc("/{project_name}/add/", middlewares.SetMiddlewareJSON(Hello)).Methods("POST")
+//		mod.HandleFunc("/{project_name}/list/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+//		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("PUT")
+//		mod.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("DEL")
+//	}
+//
+//	file := s.Router.PathPrefix("/file").Subrouter()
+//	{
+//		file.HandleFunc("/{project_name}/{module_id}/", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
+//	}
+//}
