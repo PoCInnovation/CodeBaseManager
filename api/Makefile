@@ -8,20 +8,20 @@ API_DIR					=	api
 ######################################################################################
 # API
 api-start:
-	@cd $(API_DIR) && docker-compose up -d --build
+	@docker-compose up -d --build
 
 api-run:
-	@cd $(API_DIR) && docker-compose up --build
+	@docker-compose up --build
 
 api-test:
-	@cd $(API_DIR) && docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
+	@docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 
 api-unit-test: api-start
-	-@cd $(API_DIR) && go test ./...
+	-@go test ./...
 	@make --no-print-directory api-stop
 
 api-stop:
-	@cd $(API_DIR) && docker-compose down --remove-orphans --volumes
+	@docker-compose down --remove-orphans --volumes
 
 
 .PHONY: api-main api-run api-test api-stop
