@@ -24,15 +24,13 @@ func NewRouter() *gin.Engine {
 	//})
 	r.GET("/", listProject)
 	//r.GET("/list", listProject)
-	//r.GET("/add", addProject)
+	r.POST("/add", addProject)
 	//r.GET("/update", listProject)
-	//r.GET("/delete", listProject)
+	r.DELETE("/delete", deleteProject)
 
-	projects := r.Group("/:" + rProject)
+	projects := r.Group("/project/:" + rProject)
 	{
-		projects.GET("/", func(c *gin.Context) {
-			c.String(http.StatusOK, "list of all modules in "+c.Param(rProject))
-		})
+		projects.GET("/", findProject)
 		modules := projects.Group("/" + rModule)
 		{
 			//modules.GET("/list", listProject)
