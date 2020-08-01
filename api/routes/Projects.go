@@ -4,6 +4,7 @@ import (
 	"cbm-api/controllers"
 	"cbm-api/database"
 	"cbm-api/models"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -28,24 +29,17 @@ func listProject(c *gin.Context) {
 	projects := controllers.ListProjects(database.CbmDb)
 
 	if projects == nil {
-		c.Value(http.StatusNotFound)
-		return
+		_ = c.AbortWithError(http.StatusNotFound, errors.New("no project found"))
 	}
 	c.JSON(http.StatusOK, projects)
-	//var projects []models.Project
-	//result := database.CbmDb.DB.Find(&projects)
-	//if result.Error != nil {
-	//	c.Value(http.StatusNotFound)
-	//}
-	//c.JSON(http.StatusOK, projects)
 }
 
 func findProject(c *gin.Context) {
-	project := controllers.FindProject(database.CbmDb, c.Param(rProject))
+	projectName := c.Param(rProject)
+	project := controllers.FindProject(database.CbmDb, projectName)
 
 	if project == nil {
-		c.Value(http.StatusNotFound)
-		return
+		_ = c.AbortWithError(http.StatusNotFound, errors.New("project "+projectName+" not found"))
 	}
 	c.JSON(http.StatusOK, project)
 }

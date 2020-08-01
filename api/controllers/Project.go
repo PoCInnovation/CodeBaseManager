@@ -18,8 +18,7 @@ func FindProject(db database.Database, name string) *models.Project {
 
 func ListProjects(db database.Database) []models.Project {
 	var projects []models.Project
-	result := db.DB.Find(&projects)
-	if result.Error != nil {
+	if err := db.DB.Find(&projects).Error; err != nil {
 		return nil
 	}
 	return projects

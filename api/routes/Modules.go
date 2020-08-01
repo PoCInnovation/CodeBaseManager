@@ -4,6 +4,7 @@ import (
 	"cbm-api/controllers"
 	"cbm-api/database"
 	"cbm-api/models"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -24,34 +25,33 @@ func addModule(c *gin.Context) {
 	}
 
 	if _, err := newModule.Save(database.CbmDb.DB); err != nil {
-		c.AbortWithError(http.StatusForbidden, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusCreated, newModule)
 	}
 }
 
-func listModule(c *gin.Context) {
+func listModules(c *gin.Context) {
 	projectName := c.Param(rProject)
 	project := controllers.FindProject(database.CbmDb, projectName)
 	if project == nil {
-		c.Value(http.StatusNotFound)
+		_ = c.AbortWithError(http.StatusNotFound, errors.New("project "+projectName+" not found"))
 	}
-	c.JSON(http.StatusOK, project)
+	modules := controllers.ListModule(database.CbmDb, project)
+	if modules == nil {
+		_ = c.AbortWithError(http.StatusNotFound, errors.New("no modules found for project "+projectName))
+	}
+	c.JSON(http.StatusOK, modules)
 }
 
 func findModule(c *gin.Context) {
-	name := c.Param(rProject)
-	project := controllers.FindProject(database.CbmDb, name)
-
+	projectName := c.Param(rProject)
+	project := controllers.FindProject(database.CbmDb, projectName)
 	if project == nil {
-		c.String(http.StatusNotFound, "project not found")
+		_ = c.AbortWithError(http.StatusNotFound, errors.New("project "+projectName+" not found"))
 	}
-
-	result := database.CbmDb.DB.First(&project)
-	if result.Error != nil {
-		c.Value(http.StatusNotFound)
-	}
-	c.JSON(http.StatusOK, result)
+	module := controllers.FindModule(database.CbmDb, project, "TODO")
+	c.JSON(http.StatusOK, module)
 }
 
 func deleteModule(c *gin.Context) {
