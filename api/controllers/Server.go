@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"cbm-api/database"
-	"cbm-api/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/handlers"
 	"log"
@@ -33,7 +32,8 @@ func (s *Server) Init() {
 	if err := database.CbmDb.Init(); err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
-	s.Router = routes.NewRouter()
+	s.Router = gin.Default()
+	//s.Router = routes.NewRouter()
 }
 
 func (s *Server) Destroy() {

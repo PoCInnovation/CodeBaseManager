@@ -2,11 +2,11 @@ package controllers
 
 import (
 	"cbm-api/database"
-	"cbm-api/models_v2"
+	"cbm-api/models"
 )
 
-func FindProject(db database.Database, name string) *models_v2.Project {
-	project := models_v2.Project{
+func FindProject(db database.Database, name string) *models.Project {
+	project := models.Project{
 		Name: name,
 	}
 	result := db.DB.First(&project)

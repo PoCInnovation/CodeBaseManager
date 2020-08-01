@@ -1,7 +1,7 @@
 package database
 
 import (
-	"cbm-api/models_v2"
+	"cbm-api/models"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite" // need for gorm
 	"log"
@@ -16,10 +16,10 @@ type Database struct {
 var CbmDb = Database{}
 
 func (db *Database) initTables() {
-	db.DB.CreateTable(&models_v2.Project{})
-	db.DB.CreateTable(&models_v2.Module{})
-	db.DB.CreateTable(&models_v2.Function{})
-	db.DB.CreateTable(&models_v2.Type{})
+	db.DB.CreateTable(&models.Project{})
+	db.DB.CreateTable(&models.Module{})
+	db.DB.CreateTable(&models.Function{})
+	db.DB.CreateTable(&models.Type{})
 }
 
 // Init : Initialise the db
@@ -37,10 +37,10 @@ func (db *Database) Init() (err error) {
 	db.DB.LogMode(true)
 	//db.initTables()
 	db.DB.AutoMigrate(
-		&models_v2.Project{},
-		&models_v2.Module{},
-		&models_v2.Function{},
-		&models_v2.Type{},
+		&models.Project{},
+		&models.Module{},
+		&models.Function{},
+		&models.Type{},
 	)
 	return err
 }

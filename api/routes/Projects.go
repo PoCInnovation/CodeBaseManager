@@ -3,7 +3,7 @@ package routes
 import (
 	"cbm-api/controllers"
 	"cbm-api/database"
-	"cbm-api/models_v2"
+	"cbm-api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -11,12 +11,12 @@ import (
 func addProject(c *gin.Context) {
 	name := c.Query("name")
 	path := c.Query("path")
-	newProject := models_v2.Project{
+	newProject := models.Project{
 		Name: name,
 		Path: path,
 	}
-	var err error
-	if _, err = newProject.Save(database.CbmDb.DB); err != nil {
+
+	if _, err := newProject.Save(database.CbmDb.DB); err != nil {
 		c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusCreated, newProject)
@@ -24,23 +24,24 @@ func addProject(c *gin.Context) {
 }
 
 func listProject(c *gin.Context) {
-	result := database.CbmDb.DB.Find(&models_v2.Project{})
+	var projects []models.Project
+	result := database.CbmDb.DB.Find(&projects)
 	if result.Error != nil {
 		c.Value(http.StatusNotFound)
 	}
-	c.JSON(http.StatusOK, result)
+	c.JSON(http.StatusOK, projects)
 	//c.String(http.StatusOK, "List of all project")
 }
 
 func findProject(c *gin.Context) {
-	name := c.Param(rProject)
-	project := controllers.FindProject(database.CbmDb, name)
+	projectName := c.Param(rProject)
+	project := controllers.FindProject(database.CbmDb, projectName)
 
 	if project == nil {
 		c.Value(http.StatusNotFound)
 	}
 	c.JSON(http.StatusOK, project)
-	//project := models_v2.Project{
+	//project := models.Project{
 	//	Name: name,
 	//}
 	//
@@ -56,7 +57,7 @@ func deleteProject(c *gin.Context) {
 	name := c.Query("name")
 	path := c.Query("path")
 
-	project := models_v2.Project{
+	project := models.Project{
 		Name: name,
 		Path: path,
 	}
