@@ -1,5 +1,21 @@
 package controllers
 
+import (
+	"cbm-api/database"
+	"cbm-api/models_v2"
+)
+
+func FindProject(db database.Database, name string) *models_v2.Project {
+	project := models_v2.Project{
+		Name: name,
+	}
+	result := db.DB.First(&project)
+	if result.Error != nil {
+		return nil
+	}
+	return &project
+}
+
 //func (s *Server) CreateProject(w http.ResponseWriter, r *http.Request) {
 //	body, err := ioutil.ReadAll(r.Body)
 //	if err != nil {
@@ -11,7 +27,7 @@ package controllers
 //		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 //		return
 //	}
-//	userCreated, err := proj.SaveProject(s.DB.DB)
+//	userCreated, err := proj.Save(s.DB.DB)
 //	if err != nil {
 //		responses.ERROR(w, http.StatusInternalServerError,
 //			err)

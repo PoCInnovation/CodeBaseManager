@@ -35,8 +35,13 @@ func (db *Database) Init() (err error) {
 		return err
 	}
 	db.DB.LogMode(true)
-	db.initTables()
-	db.DB.AutoMigrate()
+	//db.initTables()
+	db.DB.AutoMigrate(
+		&models_v2.Project{},
+		&models_v2.Module{},
+		&models_v2.Function{},
+		&models_v2.Type{},
+	)
 	return err
 }
 
