@@ -1,10 +1,7 @@
 package routes
 
 import (
-	"cbm-api/database"
-	"cbm-api/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func addModule(c *gin.Context) {
@@ -53,24 +50,24 @@ func findModule(c *gin.Context) {
 }
 
 func deleteModule(c *gin.Context) {
-	name := c.Query("name")
-	path := c.Query("path")
-	db := c.MustGet("db").(*database.Database)
-
-	project := models.Project{
-		Name: name,
-		Path: path,
-	}
-	//var err error
-
-	result := database.CbmDb.DB.First(&project)
-	if result.Error != nil {
-		c.Value(http.StatusNotFound)
-		return
-	}
-	if _, err := project.Delete(db); err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
-	} else {
-		c.JSON(http.StatusOK, result)
-	}
+	//name := c.Query("name")
+	//path := c.Query("path")
+	//db := c.MustGet("db").(*database.Database)
+	//
+	//project := models.Project{
+	//	Name: name,
+	//	Path: path,
+	//}
+	////var err error
+	//
+	//result := database.CbmDb.DB.First(&project)
+	//if result.Error != nil {
+	//	c.Value(http.StatusNotFound)
+	//	return
+	//}
+	//if _, err := project.Delete(db); err != nil {
+	//	_ = c.AbortWithError(http.StatusNotFound, err)
+	//} else {
+	//	c.JSON(http.StatusOK, result)
+	//}
 }

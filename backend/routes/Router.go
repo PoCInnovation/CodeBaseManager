@@ -20,10 +20,17 @@ func ApplyRoutes(r *gin.Engine) {
 		projects.GET("/list", listProject)
 		projects.GET("/get", findProject)
 		projects.POST("/add", addProject)
+		projects.PATCH("/add", addProject)
 		projects.DELETE("/delete", deleteProject)
 	}
 	modules := projects.Group("/" + rModule)
 	{
+		modules.GET("/list", func(c *gin.Context) {
+			c.String(http.StatusOK, "Adding module "+c.Param(rModule)+" in project "+c.Param(rProject))
+		})
+		modules.GET("/get", func(c *gin.Context) {
+			c.String(http.StatusOK, "Adding module "+c.Param(rModule)+" in project "+c.Param(rProject))
+		})
 		//modules.POST("/add", func(c *gin.Context) {
 		modules.GET("/add", func(c *gin.Context) {
 			c.String(http.StatusOK, "Adding module "+c.Param(rModule)+" in project "+c.Param(rProject))

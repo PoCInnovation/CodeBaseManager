@@ -30,7 +30,7 @@ func (p *Project) Save(db *database.Database) (*Project, error) {
 }
 
 func (p *Project) Find(db *database.Database) (*Project, error) {
-	if err := db.DB.First(p).Error; err != nil {
+	if err := db.DB.First(&p).Error; err != nil {
 		return nil, err
 	}
 	return p, nil

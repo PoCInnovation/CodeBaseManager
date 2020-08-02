@@ -11,6 +11,7 @@ import (
 type Server struct {
 	Port   string
 	Router *gin.Engine
+	Db     *database.Database
 }
 
 func NewServer() (*Server, func()) {
@@ -25,15 +26,16 @@ func (s *Server) Init() {
 		s.Port = "5342"
 		log.Printf("Defaulting to port %s", s.Port)
 	}
-	db, err := database.Init()
+	var err error
+	s.Db, err = database.Init()
 	if err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
-	models.MigrateModels(db)
+	models.MigrateModels(s.Db)
 	s.Router = gin.Default()
-	s.Router.Use(database.SetDatabase(db))
+	s.Router.Use(database.SetDatabase(s.Db))
 }
 
 func (s *Server) Destroy() {
-	database.CbmDb.Destroy()
+	s.Db.Destroy()
 }

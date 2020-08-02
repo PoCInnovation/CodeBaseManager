@@ -29,20 +29,7 @@ func Init() (db *Database, err error) {
 	return db, err
 }
 
-func (db *Database) Init() (err error) {
-	if os.Getenv("GIN_MODE") == "release" {
-		log.Print("Database in Production mode")
-		db.DB, err = gorm.Open("sqlite3", "./prod.db")
-	} else {
-		log.Print("Database in Debug mode")
-		db.DB, err = gorm.Open("sqlite3", "./dev.db")
-	}
-	if err != nil {
-		return err
-	}
-	return err
-}
-
+// Add Database to gin context
 func SetDatabase(db *Database) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set("db", db)
