@@ -1,4 +1,4 @@
-package controllers
+package main
 
 import (
 	"cbm-api/database"
@@ -31,10 +31,9 @@ func (s *Server) Init() {
 	if s.Db, err = database.Init(); err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
-	models.MigrateModels(s.Db)
+	models.MigrateModels()
 
 	s.Router = gin.Default()
-	s.Router.Use(database.SetDatabase(s.Db))
 }
 
 func (s *Server) Destroy() {

@@ -1,20 +1,19 @@
 package controllers
 
 import (
-	"cbm-api/database"
 	"cbm-api/models"
 	"errors"
 )
 
-func FindProject(db *database.Database, project *models.Project) (*models.Project, error) {
-	if _, err := project.Find(db); err != nil {
+func FindProject(project *models.Project) (*models.Project, error) {
+	if _, err := project.Find(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
 	return project, nil
 }
 
-func ListProjects(db *database.Database) ([]models.Project, error) {
-	projects, err := models.ListProject(db)
+func ListProjects() ([]models.Project, error) {
+	projects, err := models.ListProject()
 	if err != nil {
 		return nil, err
 	}
@@ -24,16 +23,16 @@ func ListProjects(db *database.Database) ([]models.Project, error) {
 	return projects, nil
 }
 
-func AddProject(db *database.Database, project *models.Project) (*models.Project, error) {
-	return project.Save(db)
+func AddProject(project *models.Project) (*models.Project, error) {
+	return project.Save()
 }
 
-func DeleteProject(db *database.Database, project *models.Project) (*models.Project, error) {
+func DeleteProject(project *models.Project) (*models.Project, error) {
 	var err error
-	if project, err = FindProject(db, project); err != nil {
+	if project, err = FindProject(project); err != nil {
 		return nil, err
 	}
-	if project, err = project.Delete(db); err != nil {
+	if project, err = project.Delete(); err != nil {
 		return nil, err
 	}
 	return project, nil

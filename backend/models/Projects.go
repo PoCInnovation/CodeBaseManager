@@ -15,36 +15,36 @@ type Project struct {
 	Todos   []Module `json:"todo"`
 }
 
-func ListProject(db *database.Database) (projects []Project, err error) {
-	if err = db.DB.Find(&projects).Error; err != nil {
+func ListProject() (projects []Project, err error) {
+	if err = database.BackendDB.DB.Find(&projects).Error; err != nil {
 		return nil, err
 	}
 	return projects, nil
 }
 
-func (p *Project) Save(db *database.Database) (*Project, error) {
-	if err := db.DB.Create(&p).Error; err != nil {
+func (p *Project) Save() (*Project, error) {
+	if err := database.BackendDB.DB.Create(&p).Error; err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (p *Project) Find(db *database.Database) (*Project, error) {
-	if err := db.DB.First(&p).Error; err != nil {
+func (p *Project) Find() (*Project, error) {
+	if err := database.BackendDB.DB.First(&p).Error; err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (p *Project) Update(db *database.Database) (*Project, error) {
-	if err := db.DB.Update(&p).Error; err != nil {
+func (p *Project) Update() (*Project, error) {
+	if err := database.BackendDB.DB.Update(&p).Error; err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (p *Project) Delete(db *database.Database) (*Project, error) {
-	if err := db.DB.Delete(&p).Error; err != nil {
+func (p *Project) Delete() (*Project, error) {
+	if err := database.BackendDB.DB.Delete(&p).Error; err != nil {
 		return nil, err
 	}
 	return p, nil

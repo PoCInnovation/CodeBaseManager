@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cbm-api/controllers"
 	"cbm-api/routes"
 	"cbm-api/watcher"
 	"log"
@@ -14,7 +13,7 @@ func main() {
 	defer close(stopWatcher)
 
 	// Setup the server for CLI's needs & gets ready to properly close it
-	server, stopServer := controllers.NewServer()
+	server, stopServer := NewServer()
 	routes.ApplyRoutes(server.Router)
 	defer stopServer()
 

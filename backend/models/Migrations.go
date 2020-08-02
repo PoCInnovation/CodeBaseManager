@@ -4,8 +4,8 @@ import (
 	"cbm-api/database"
 )
 
-func MigrateModels(db *database.Database) {
-	db.DB.AutoMigrate(
+func MigrateModels() {
+	database.BackendDB.DB.AutoMigrate(
 		&Project{},
 		&Module{},
 		&Function{},

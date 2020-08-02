@@ -6,14 +6,14 @@ import (
 )
 
 func FindModule(db database.Database, project *models.Project, name string) *models.Module {
-	module := models.Module{
+	module := &models.Module{
 		Name: name,
 	}
-	result := db.DB.Model(project).Related(&module)
+	result := db.DB.Model(project).Related(module)
 	if result.Error != nil {
 		return nil
 	}
-	return &module
+	return module
 }
 
 func ListModule(db database.Database, project *models.Project) []models.Module {
