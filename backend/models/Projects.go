@@ -1,6 +1,7 @@
 package models
 
 import (
+	"cbm-api/database"
 	"github.com/jinzhu/gorm"
 )
 
@@ -14,23 +15,37 @@ type Project struct {
 	Todos   []Module `json:"todo"`
 }
 
-func (p *Project) Save(db *gorm.DB) (*Project, error) {
-	if err := db.Create(&p).Error; err != nil {
-		return &Project{}, err
+func ListProject(db *database.Database) (projects []Project, err error) {
+	if err = db.DB.Find(&projects).Error; err != nil {
+		return nil, err
+	}
+	return projects, nil
+}
+
+func (p *Project) Save(db *database.Database) (*Project, error) {
+	if err := db.DB.Create(&p).Error; err != nil {
+		return nil, err
 	}
 	return p, nil
 }
 
-func (p *Project) Update(db *gorm.DB) (*Project, error) {
-	if err := db.Update(&p).Error; err != nil {
-		return &Project{}, err
+func (p *Project) Find(db *database.Database) (*Project, error) {
+	if err := db.DB.First(p).Error; err != nil {
+		return nil, err
 	}
 	return p, nil
 }
 
-func (p *Project) Delete(db *gorm.DB) (*Project, error) {
-	if err := db.Delete(&p).Error; err != nil {
-		return &Project{}, err
+func (p *Project) Update(db *database.Database) (*Project, error) {
+	if err := db.DB.Update(&p).Error; err != nil {
+		return nil, err
+	}
+	return p, nil
+}
+
+func (p *Project) Delete(db *database.Database) (*Project, error) {
+	if err := db.DB.Delete(&p).Error; err != nil {
+		return nil, err
 	}
 	return p, nil
 }

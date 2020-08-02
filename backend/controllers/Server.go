@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"cbm-api/database"
+	"cbm-api/models"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
@@ -24,21 +25,15 @@ func (s *Server) Init() {
 		s.Port = "5342"
 		log.Printf("Defaulting to port %s", s.Port)
 	}
-
-	if err := database.CbmDb.Init(); err != nil {
+	db, err := database.Init()
+	if err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
+	models.MigrateModels(db)
 	s.Router = gin.Default()
-	//s.Router = routes.NewRouter()
+	s.Router.Use(database.SetDatabase(db))
 }
 
 func (s *Server) Destroy() {
 	database.CbmDb.Destroy()
 }
-
-//func (s *Server) HandelerCores() func(http.Handler) http.Handler {
-//	return handlers.CORS(
-//		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
-//		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "DELETE"}),
-//		handlers.AllowedOrigins([]string{"*"}))
-//}

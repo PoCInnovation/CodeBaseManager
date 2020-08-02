@@ -16,7 +16,7 @@ func addType(c *gin.Context) {
 	}
 	var err error
 	if _, err = newType.SaveType(database.CbmDb.DB); err != nil {
-		c.AbortWithError(http.StatusForbidden, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusCreated, newType)
 	}
@@ -61,7 +61,7 @@ func deleteType(c *gin.Context) {
 		return
 	}
 	if _, err := toFindType.DeleteType(database.CbmDb.DB); err != nil {
-		c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusNotFound, err)
 	} else {
 		c.JSON(http.StatusOK, result)
 	}

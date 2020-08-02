@@ -1,3 +1,4 @@
+github.com/PoCFrance/CodeBaseManager v0.0.0-20200703132644-6284717ae716 h1:XSj7RPMDg9ZQfrTKOEi2JNuq/rV0CNDVebsJgPcUVEM=
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

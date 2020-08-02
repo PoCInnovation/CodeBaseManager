@@ -5,21 +5,23 @@ import (
 	"cbm-api/models"
 )
 
-func FindProject(db database.Database, name string) *models.Project {
+func FindProject(db *database.Database, name string) (*models.Project, error) {
 	project := models.Project{
 		Name: name,
 	}
-	result := db.DB.First(&project)
-	if result.Error != nil {
-		return nil
-	}
-	return &project
+	return project.Find(db)
 }
 
-func ListProjects(db database.Database) []models.Project {
-	var projects []models.Project
-	if err := db.DB.Find(&projects).Error; err != nil {
-		return nil
+func ListProjects(db *database.Database) ([]models.Project, error) {
+	return models.ListProject(db)
+}
+
+func DeleteProject(db *database.Database, name string) (project *models.Project, err error) {
+	if project, err = FindProject(db, name); err != nil {
+		return nil, err
 	}
-	return projects
+	if project, err = project.Delete(db); err != nil {
+		return nil, err
+	}
+	return project, nil
 }

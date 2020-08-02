@@ -7,14 +7,6 @@ import (
 	"log"
 )
 
-//func setDatabase(db *gorm.DB) gin.HandlerFunc {
-//	return func(c *gin.Context) {
-//		c.Set("db", db)
-//		c.Next()
-//	}
-//}
-//server.Router.Use(database(db))
-
 func main() {
 	//Setup the watcher to keep track of projects' files & gets ready to properly close it
 	stopWatcher := make(chan struct{})
@@ -23,7 +15,6 @@ func main() {
 
 	// Setup the server for CLI's needs & gets ready to properly close it
 	server, stopServer := controllers.NewServer()
-	// TODO: change database management with above function call
 	routes.ApplyRoutes(server.Router)
 	defer stopServer()
 
