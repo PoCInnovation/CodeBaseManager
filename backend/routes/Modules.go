@@ -1,29 +1,26 @@
 package routes
 
 import (
+	"cbm-api/controllers"
+	"cbm-api/models"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func addModule(c *gin.Context) {
-	//projectName := c.Param(rProject)
-	//db := c.MustGet("db").(*database.Database)
-	//project, err := controllers.FindProject(db, projectName)
-	//if err != nil {
-	//	_ = c.AbortWithError(http.StatusNotFound, errors.New("project "+projectName+" not found"))
-	//}
-	//
-	//name := c.Query("name")
-	//path := c.Query("path")
-	//newModule := models.Module{
-	//	Name: name,
-	//	Path: path,
-	//}
-	//
-	//if _, err := newModule.Save(database.CbmDb.DB); err != nil {
-	//	_ = c.AbortWithError(http.StatusForbidden, err)
-	//} else {
-	//	c.JSON(http.StatusCreated, newModule)
-	//}
+	queryProject := &models.Project{
+		Name: c.Query("projectName"),
+	}
+	queryModule := &models.Module{
+		Name: c.Query("moduleName"),
+		Path: c.Query("modulePath"),
+	}
+
+	if module, err := controllers.AddModule(queryProject, queryModule); err != nil {
+		_ = c.AbortWithError(http.StatusForbidden, err)
+	} else {
+		c.JSON(http.StatusCreated, module)
+	}
 }
 
 func listModules(c *gin.Context) {
@@ -40,13 +37,18 @@ func listModules(c *gin.Context) {
 }
 
 func findModule(c *gin.Context) {
-	//projectName := c.Param(rProject)
-	//project := controllers.FindProject(database.CbmDb, projectName)
-	//if project == nil {
-	//	_ = c.AbortWithError(http.StatusNotFound, errors.New("project "+projectName+" not found"))
-	//}
-	//module := controllers.FindModule(database.CbmDb, project, "TODO")
-	//c.JSON(http.StatusOK, module)
+	queryProject := &models.Project{
+		Name: c.Query("projectName"),
+	}
+	queryModule := &models.Module{
+		Name: c.Query("moduleName"),
+	}
+
+	if module, err := controllers.FindModule(queryProject, queryModule); err != nil {
+		_ = c.AbortWithError(http.StatusForbidden, err)
+	} else {
+		c.JSON(http.StatusOK, module)
+	}
 }
 
 func deleteModule(c *gin.Context) {

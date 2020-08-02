@@ -1,25 +1,34 @@
 package controllers
 
 import (
-	"cbm-api/database"
 	"cbm-api/models"
+	"errors"
 )
 
-func FindModule(db database.Database, project *models.Project, name string) *models.Module {
-	module := &models.Module{
-		Name: name,
+func AddModule(project *models.Project, module *models.Module) (*models.Module, error) {
+	if _, err := project.Find(); err != nil {
+		return nil, errors.New("project " + project.Name + " not found")
 	}
-	result := db.DB.Model(project).Related(module)
-	if result.Error != nil {
-		return nil
-	}
-	return module
+	return module.Save(project)
 }
 
-func ListModule(db database.Database, project *models.Project) []models.Module {
-	var modules []models.Module
-	if err := db.DB.Model(project).Related(&modules).Error; err != nil {
-		return nil
+func FindModule(project *models.Project, module *models.Module) (*models.Module, error) {
+	if _, err := project.Find(); err != nil {
+		return nil, errors.New("project " + project.Name + " not found")
 	}
-	return modules
+	if _, err := module.Find(project); err != nil {
+		return nil, errors.New("module " + module.Name + " not found")
+	}
+	return module, nil
+}
+
+func ListModule(project *models.Project) ([]models.Module, error) {
+	modules, err := models.ListModules(project)
+	if err != nil {
+		return nil, err
+	}
+	if len(modules) == 0 {
+		return nil, errors.New("no project found")
+	}
+	return modules, nil
 }

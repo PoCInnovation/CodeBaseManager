@@ -21,25 +21,22 @@ func addProject(c *gin.Context) {
 }
 
 func listProject(c *gin.Context) {
-	projects, err := controllers.ListProjects()
-
-	if err != nil {
+	if projects, err := controllers.ListProjects(); err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)
+	} else {
+		c.JSON(http.StatusOK, projects)
 	}
-	c.JSON(http.StatusOK, projects)
 }
 
 func findProject(c *gin.Context) {
 	queryProject := &models.Project{
 		Name: c.Query("projectName"),
 	}
-
 	if project, err := controllers.FindProject(queryProject); err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)
 	} else {
 		c.JSON(http.StatusOK, project)
 	}
-
 }
 
 func deleteProject(c *gin.Context) {
@@ -52,5 +49,4 @@ func deleteProject(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, project)
 	}
-
 }

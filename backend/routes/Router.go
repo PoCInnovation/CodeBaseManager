@@ -13,6 +13,10 @@ const (
 	rName     = "name"
 )
 
+//TODO:
+// update project controller and model
+// list Modules controller and models
+
 func ApplyRoutes(r *gin.Engine) {
 
 	projects := r.Group("/" + rProject)
@@ -23,18 +27,11 @@ func ApplyRoutes(r *gin.Engine) {
 		projects.PATCH("/add", addProject)
 		projects.DELETE("/delete", deleteProject)
 	}
-	modules := projects.Group("/" + rModule)
+	modules := r.Group("/" + rModule)
 	{
-		modules.GET("/list", func(c *gin.Context) {
-			c.String(http.StatusOK, "Adding module "+c.Param(rModule)+" in project "+c.Param(rProject))
-		})
-		modules.GET("/get", func(c *gin.Context) {
-			c.String(http.StatusOK, "Adding module "+c.Param(rModule)+" in project "+c.Param(rProject))
-		})
-		//modules.POST("/add", func(c *gin.Context) {
-		modules.GET("/add", func(c *gin.Context) {
-			c.String(http.StatusOK, "Adding module "+c.Param(rModule)+" in project "+c.Param(rProject))
-		})
+		modules.GET("/list", listModules)
+		modules.GET("/get", findModule)
+		modules.POST("/add", addModule)
 		//modules.PATCH("/update", func(c *gin.Context) {
 		modules.GET("/update", func(c *gin.Context) {
 			c.String(http.StatusOK, "Updating module "+c.Param(rModule)+" in project "+c.Param(rProject))
