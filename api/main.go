@@ -3,6 +3,7 @@ package main
 import (
 	"cbm-api/controllers"
 	"cbm-api/routes"
+	"cbm-api/watcher"
 	"log"
 )
 
@@ -14,19 +15,20 @@ import (
 //}
 //server.Router.Use(database(db))
 
-//Start Server -> Serve routes -> Defer server destroy
 func main() {
-	// TODO: add go routine for watcher.
-	// TODO: Find how to request to api
-	// TODO: change database management with above function call
-	server, closer := controllers.NewServer()
+	//Setup the watcher to keep track of projects' files & gets ready to properly close it
+	stopWatcher := make(chan struct{})
+	go watcher.Run(stopWatcher)
+	defer close(stopWatcher)
 
+	// Setup the server for CLI's needs & gets ready to properly close it
+	server, stopServer := controllers.NewServer()
+	// TODO: change database management with above function call
 	routes.ApplyRoutes(server.Router)
-	defer closer()
+	defer stopServer()
+
+	// Starts the server
 	log.Println("Server runs on http://localhost:" + server.Port)
-	//if err := http.ListenAndServe(server.Port, server.Router); err != nil {
-	//	log.Fatal(err)
-	//}
 	if err := server.Router.Run(); err != nil {
 		log.Fatal(err)
 	}
