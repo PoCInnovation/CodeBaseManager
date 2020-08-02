@@ -11,6 +11,7 @@ type Project struct {
 	//Name    string   `gorm:"size:255;not null;unique" json:"name"`
 	//Path    string   `gorm:"size:255;not null;unique" json:"path"`
 	Modules []Module `json:"modules"`
+	Todos   []Module `json:"todo"`
 }
 
 func (p *Project) Save(db *gorm.DB) (*Project, error) {
