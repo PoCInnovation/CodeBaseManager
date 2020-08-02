@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"cbm-api/database"
+	"github.com/jinzhu/gorm"
+)
 
 type Function struct {
 	gorm.Model
@@ -8,22 +11,22 @@ type Function struct {
 	Path string `gorm:"size:255;not null;unique" json:"path"`
 }
 
-func (f *Function) SaveFunction(db *gorm.DB) (*Function, error) {
-	if err := db.Create(&f).Error; err != nil {
+func (f *Function) Save(db *database.Database) (*Function, error) {
+	if err := db.DB.Create(&f).Error; err != nil {
 		return &Function{}, err
 	}
 	return f, nil
 }
 
-func (f *Function) UpdateFunction(db *gorm.DB) (*Function, error) {
-	if err := db.Update(&f).Error; err != nil {
+func (f *Function) Update(db *database.Database) (*Function, error) {
+	if err := db.DB.Update(&f).Error; err != nil {
 		return &Function{}, err
 	}
 	return f, nil
 }
 
-func (f *Function) DeleteFunction(db *gorm.DB) (*Function, error) {
-	if err := db.Delete(&f).Error; err != nil {
+func (f *Function) Delete(db *database.Database) (*Function, error) {
+	if err := db.DB.Delete(&f).Error; err != nil {
 		return &Function{}, err
 	}
 	return f, nil

@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"cbm-api/database"
+	"github.com/jinzhu/gorm"
+)
 
 type Type struct {
 	gorm.Model
@@ -8,22 +11,22 @@ type Type struct {
 	Path string `gorm:"size:255;not null;unique" json:"path"`
 }
 
-func (t *Type) SaveType(db *gorm.DB) (*Type, error) {
-	if err := db.Create(&t).Error; err != nil {
+func (t *Type) Save(db *database.Database) (*Type, error) {
+	if err := db.DB.Create(&t).Error; err != nil {
 		return &Type{}, err
 	}
 	return t, nil
 }
 
-func (t *Type) UpdateType(db *gorm.DB) (*Type, error) {
-	if err := db.Update(&t).Error; err != nil {
+func (t *Type) Update(db *database.Database) (*Type, error) {
+	if err := db.DB.Update(&t).Error; err != nil {
 		return &Type{}, err
 	}
 	return t, nil
 }
 
-func (t *Type) DeleteType(db *gorm.DB) (*Type, error) {
-	if err := db.Delete(&t).Error; err != nil {
+func (t *Type) Delete(db *database.Database) (*Type, error) {
+	if err := db.DB.Delete(&t).Error; err != nil {
 		return &Type{}, err
 	}
 	return t, nil

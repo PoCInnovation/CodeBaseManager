@@ -13,8 +13,6 @@ type Database struct {
 	DB *gorm.DB
 }
 
-var CbmDb = Database{}
-
 // Init : Initialise the db
 func Init() (db *Database, err error) {
 	db = &Database{}

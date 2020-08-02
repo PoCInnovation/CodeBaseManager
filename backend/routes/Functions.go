@@ -15,7 +15,7 @@ func addFunction(c *gin.Context) {
 		Path: path,
 	}
 	var err error
-	if _, err = newFunction.SaveFunction(database.CbmDb.DB); err != nil {
+	if _, err = newFunction.Save(database.CbmDb.DB); err != nil {
 		c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusCreated, newFunction)
@@ -60,7 +60,7 @@ func deleteFunction(c *gin.Context) {
 		c.Value(http.StatusNotFound)
 		return
 	}
-	if _, err := function.DeleteFunction(database.CbmDb.DB); err != nil {
+	if _, err := function.Delete(database.CbmDb.DB); err != nil {
 		c.AbortWithError(http.StatusNotFound, err)
 	} else {
 		c.JSON(http.StatusOK, result)
