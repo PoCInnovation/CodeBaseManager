@@ -41,10 +41,10 @@ RUN go build -installsuffix cgo -o main .
 
 # Start a new stage from scratch
 FROM alpine:latest
-LABEL name='Cbm - go Rest API'
+LABEL name='CBM - go Rest API'
 LABEL maintainer="Damien Bernard <damien.bernard@epitech.eu>"
 LABEL version="1.0"
-LABEL description="Go Api for cbm"
+LABEL description="Go Api for CBM"
 
 RUN apk --no-cache add ca-certificates
 
