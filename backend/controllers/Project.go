@@ -7,7 +7,10 @@ import (
 )
 
 func FindProject(db *database.Database, project *models.Project) (*models.Project, error) {
-	return project.Find(db)
+	if _, err := project.Find(db); err != nil {
+		return nil, errors.New("project " + project.Name + " not found")
+	}
+	return project, nil
 }
 
 func ListProjects(db *database.Database) ([]models.Project, error) {

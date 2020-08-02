@@ -26,12 +26,13 @@ func (s *Server) Init() {
 		s.Port = "5342"
 		log.Printf("Defaulting to port %s", s.Port)
 	}
+
 	var err error
-	s.Db, err = database.Init()
-	if err != nil {
+	if s.Db, err = database.Init(); err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
 	models.MigrateModels(s.Db)
+
 	s.Router = gin.Default()
 	s.Router.Use(database.SetDatabase(s.Db))
 }
