@@ -1,0 +1,22 @@
+# Can be used as global & local config
+# Tells what files the watcher should track
+# Possible values:
+    # [] -> nothing
+    # "code" -> files which match project's languages
+    # "build" -> makefiles, docker, ...
+    # "config" -> json, toml, ...
+# If not provided defaults to "code"
+files = ["code"]
+
+# Can be used as global & local config
+# Tells what event the watch should track
+# Possible values:
+    # [] -> Nothing
+    # "creates", "deletes", "moves", "renames"
+    # "all" -> all the above
+# If not provided defaults to "all"
+events = ["all"]
+
+# Can be used as global & local config
+# Tells the watcher to ignore the given patterns
+ignore = [".git", "*.yolo"]

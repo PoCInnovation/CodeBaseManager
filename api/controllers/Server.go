@@ -2,19 +2,14 @@ package controllers
 
 import (
 	"cbm-api/database"
-	"cbm-api/routes"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/handlers"
 	"log"
-	"net/http"
 	"os"
 )
 
 type Server struct {
 	Port   string
 	Router *gin.Engine
-	//Router *mux.Router
-	//DB database.Database
 }
 
 func NewServer() (*Server, func()) {
@@ -33,16 +28,17 @@ func (s *Server) Init() {
 	if err := database.CbmDb.Init(); err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
-	s.Router = routes.NewRouter()
+	s.Router = gin.Default()
+	//s.Router = routes.NewRouter()
 }
 
 func (s *Server) Destroy() {
 	database.CbmDb.Destroy()
 }
 
-func (s *Server) HandelerCores() func(http.Handler) http.Handler {
-	return handlers.CORS(
-		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
-		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "DELETE"}),
-		handlers.AllowedOrigins([]string{"*"}))
-}
+//func (s *Server) HandelerCores() func(http.Handler) http.Handler {
+//	return handlers.CORS(
+//		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
+//		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "DELETE"}),
+//		handlers.AllowedOrigins([]string{"*"}))
+//}

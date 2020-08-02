@@ -1,4 +1,4 @@
-package models_v2
+package models
 
 import (
 	"github.com/jinzhu/gorm"
@@ -13,21 +13,21 @@ type Project struct {
 	Modules []Module `json:"modules"`
 }
 
-func (p *Project) SaveProject(db *gorm.DB) (*Project, error) {
+func (p *Project) Save(db *gorm.DB) (*Project, error) {
 	if err := db.Create(&p).Error; err != nil {
 		return &Project{}, err
 	}
 	return p, nil
 }
 
-func (p *Project) UpdateProject(db *gorm.DB) (*Project, error) {
+func (p *Project) Update(db *gorm.DB) (*Project, error) {
 	if err := db.Update(&p).Error; err != nil {
 		return &Project{}, err
 	}
 	return p, nil
 }
 
-func (p *Project) DeleteProject(db *gorm.DB) (*Project, error) {
+func (p *Project) Delete(db *gorm.DB) (*Project, error) {
 	if err := db.Delete(&p).Error; err != nil {
 		return &Project{}, err
 	}

@@ -18,6 +18,9 @@ api-start:
 api-run:
 	@docker-compose up --build
 
+api-dev:
+	watchexec --restart --filter "$(pwd)/*" --watch . "docker-compose -f docker-compose.dev.yml up --build"
+
 api-test:
 	@docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 

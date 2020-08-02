@@ -1,4 +1,4 @@
-package models_v2
+package models
 
 import "github.com/jinzhu/gorm"
 
@@ -10,21 +10,21 @@ type Module struct {
 	Types     []Type     `json:"types"`
 }
 
-func (m *Module) SaveModule(db *gorm.DB) (*Module, error) {
+func (m *Module) Save(db *gorm.DB) (*Module, error) {
 	if err := db.Create(&m).Error; err != nil {
 		return &Module{}, err
 	}
 	return m, nil
 }
 
-func (m *Module) UpdateModule(db *gorm.DB) (*Module, error) {
-	if err := db.Update(&m).Error; err != nil {
+func (m *Module) Update(db *gorm.DB) (*Module, error) {
+	if err := db.Create(&m).Error; err != nil {
 		return &Module{}, err
 	}
 	return m, nil
 }
 
-func (m *Module) DeleteModule(db *gorm.DB) (*Module, error) {
+func (m *Module) Delete(db *gorm.DB) (*Module, error) {
 	if err := db.Delete(&m).Error; err != nil {
 		return &Module{}, err
 	}

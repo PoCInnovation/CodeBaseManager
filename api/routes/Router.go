@@ -13,19 +13,9 @@ const (
 	rName     = "name"
 )
 
-func NewRouter() *gin.Engine {
-	r := gin.Default()
-
-	//r.GET("/", func(c *gin.Context) {
-	//	c.String(http.StatusOK, "Welcome to Api-CBM")
-	//})
-	//r.GET("/lol", func(c *gin.Context) {
-	//	c.String(http.StatusOK, "Welcome to Api-CBM")
-	//})
+func ApplyRoutes(r *gin.Engine) {
 	r.GET("/", listProject)
-	//r.GET("/list", listProject)
 	r.POST("/add", addProject)
-	//r.GET("/update", listProject)
 	r.DELETE("/delete", deleteProject)
 
 	projects := r.Group("/project/:" + rProject)
@@ -33,10 +23,6 @@ func NewRouter() *gin.Engine {
 		projects.GET("/", findProject)
 		modules := projects.Group("/" + rModule)
 		{
-			//modules.GET("/list", listProject)
-			//modules.GET("/list", func(c *gin.Context) {
-			//	c.String(http.StatusOK, "List of all modules in project "+c.Param(rProject))
-			//})
 			//modules.POST("/add/:" + rName, func(c *gin.Context) {
 			modules.GET("/add/:"+rModule, func(c *gin.Context) {
 				c.String(http.StatusOK, "Adding module "+c.Param(rModule)+" in project "+c.Param(rProject))
@@ -101,5 +87,4 @@ func NewRouter() *gin.Engine {
 	//	})
 	//	//modules.GET("/list", GH)
 	//}
-	return r
 }
