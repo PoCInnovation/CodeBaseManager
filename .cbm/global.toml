@@ -1,0 +1,31 @@
+[backend]
+    port = "8080"
+
+[watcher] # These values can be overriden by per-project configs
+    # Used to auto-watch repositories on startup
+    # Possible values:
+        # [] -> nothing
+        # "all" -> load all repository in CBM's DB
+        # "repoX", "repoY" -> load only repoX & repoY
+    # If not provided defaults to "all"
+    repositories = ["all"]
+
+    # Tells what files the watcher should track
+    # Possible values:
+        # [] -> nothing
+        # "code" -> files which match project's languages
+        # "build" -> makefiles, docker, ...
+        # "config" -> json, toml, ...
+    # If not provided defaults to "code"
+    files = ["code"]
+
+    # Tells what event the watch should track
+    # Possible values:
+        # [] -> Nothing
+        # "creates", "deletes", "moves", "renames"
+        # "all" -> all the above
+    # If not provided defaults to "all"
+    events = ["all"]
+
+    # Tells the watcher to ignore the given patterns
+    ignore = [".git", "*.yolo"]
