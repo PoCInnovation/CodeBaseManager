@@ -2,7 +2,7 @@ package routes
 
 import (
 	"cbm-api/database"
-	"cbm-api/models_v2"
+	"cbm-api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -10,7 +10,7 @@ import (
 func addType(c *gin.Context) {
 	name := c.Query("name")
 	path := c.Query("path")
-	newType := models_v2.Type{
+	newType := models.Type{
 		Name: name,
 		Path: path,
 	}
@@ -23,7 +23,7 @@ func addType(c *gin.Context) {
 }
 
 func listType(c *gin.Context) {
-	result := database.CbmDb.DB.Find(&models_v2.Type{})
+	result := database.CbmDb.DB.Find(&models.Type{})
 	if result.Error != nil {
 		c.Value(http.StatusNotFound)
 	}
@@ -33,7 +33,7 @@ func listType(c *gin.Context) {
 
 func findType(c *gin.Context) {
 	name := c.Param(rType)
-	toFindType := models_v2.Type{
+	toFindType := models.Type{
 		Name: name,
 	}
 
@@ -49,7 +49,7 @@ func deleteType(c *gin.Context) {
 	name := c.Query("name")
 	path := c.Query("path")
 
-	toFindType := models_v2.Type{
+	toFindType := models.Type{
 		Name: name,
 		Path: path,
 	}

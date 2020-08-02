@@ -2,7 +2,7 @@ package routes
 
 import (
 	"cbm-api/database"
-	"cbm-api/models_v2"
+	"cbm-api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -10,7 +10,7 @@ import (
 func addFunction(c *gin.Context) {
 	name := c.Query("name")
 	path := c.Query("path")
-	newFunction := models_v2.Function{
+	newFunction := models.Function{
 		Name: name,
 		Path: path,
 	}
@@ -23,7 +23,7 @@ func addFunction(c *gin.Context) {
 }
 
 func listFunction(c *gin.Context) {
-	result := database.CbmDb.DB.Find(&models_v2.Function{})
+	result := database.CbmDb.DB.Find(&models.Function{})
 	if result.Error != nil {
 		c.Value(http.StatusNotFound)
 	}
@@ -33,7 +33,7 @@ func listFunction(c *gin.Context) {
 
 func findFunction(c *gin.Context) {
 	name := c.Param(rFunction)
-	function := models_v2.Function{
+	function := models.Function{
 		Name: name,
 	}
 
@@ -49,7 +49,7 @@ func deleteFunction(c *gin.Context) {
 	name := c.Query("name")
 	path := c.Query("path")
 
-	function := models_v2.Function{
+	function := models.Function{
 		Name: name,
 		Path: path,
 	}
