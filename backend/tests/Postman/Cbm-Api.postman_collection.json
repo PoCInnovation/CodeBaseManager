@@ -6,201 +6,1058 @@
 	},
 	"item": [
 		{
-			"name": "Add project",
-			"event": [
+			"name": "Project",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "991e4705-f42e-4fae-a766-a663246854c2",
-						"exec": [
-							"pm.test(\"Successful POST request\", function () {",
-							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
-							"});",
-							"pm.test(\"Check Posted Datas\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.name).to.eql(ProjectName);",
-							"    pm.environment.set(\"ResultProjectName\", jsonData.name)",
-							"    pm.environment.set(\"ResultProjectPath\", jsonData.path)",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "2af6a736-3942-4538-97ff-1a03328d43a5",
-						"exec": [
-							"pm.environment.unset(\"ResultProjectName\")",
-							"pm.environment.unset(\"ResultProjectPath\")",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:{{ProjectPort}}/add?name={{TestProjectName_1}}&path={{TestProjectPath_1}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "{{ProjectPort}}",
-					"path": [
-						"add"
-					],
-					"query": [
+					"name": "Add project 1",
+					"event": [
 						{
-							"key": "name",
-							"value": "{{TestProjectName_1}}",
-							"description": "Project name"
+							"listen": "test",
+							"script": {
+								"id": "991e4705-f42e-4fae-a766-a663246854c2",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_1\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
 						},
 						{
-							"key": "path",
-							"value": "{{TestProjectPath_1}}",
-							"description": "Project Path"
+							"listen": "prerequest",
+							"script": {
+								"id": "2af6a736-3942-4538-97ff-1a03328d43a5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get project",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "file",
-					"file": {}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProjectName_1}}&projectPath={{TestProjectPath_1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProjectPath_1}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:{{ProjectPort}}/project/?name={{TestProjectName_1}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "{{ProjectPort}}",
-					"path": [
-						"project",
-						""
-					],
-					"query": [
-						{
-							"key": "name",
-							"value": "{{TestProjectName_1}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ListProject",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "d6102bc0-3bfa-4d1f-92aa-f39233a6a5f9",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:{{ProjectPort}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "{{ProjectPort}}"
-				},
-				"description": "Test Home page Response"
-			},
-			"response": []
-		},
-		{
-			"name": "Delete project",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "f5ca894f-dc7d-484e-b2c7-7ff97e0a0ee7",
-						"exec": [
-							"pm.test(\"Successful POST request\", function () {",
-							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
-							"});",
-							"pm.test(\"Check Posted Datas\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.name).to.eql(ProjectName);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:{{ProjectPort}}/delete?name={{TestProjectName_1}}&path={{TestProjectPath_1}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "{{ProjectPort}}",
-					"path": [
-						"delete"
-					],
-					"query": [
+					"name": "Add project 2",
+					"event": [
 						{
-							"key": "name",
-							"value": "{{TestProjectName_1}}",
-							"description": "Project name"
+							"listen": "test",
+							"script": {
+								"id": "36e6b381-b4e5-41c4-8c42-f19d0f319841",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_2\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
 						},
 						{
-							"key": "path",
-							"value": "{{TestProjectPath_1}}",
-							"description": "Project Path"
+							"listen": "prerequest",
+							"script": {
+								"id": "6af2812c-e06b-46ba-9dc2-90e05ec2549e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProjectName_2}}&projectPath={{TestProjectPath_2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_2}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProjectPath_2}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get project 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e16f247a-2c77-4589-b58b-a91974155688",
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200)",
+									"});",
+									"pm.test(\"Check Asked Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_1\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/get?projectName={{TestProjectName_1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"get"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get project 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "11821b16-ae54-43a0-8874-c279b5276b11",
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200)",
+									"});",
+									"pm.test(\"Check Asked Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_2\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/get?projectName={{TestProjectName_2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"get"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListProject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d6102bc0-3bfa-4d1f-92aa-f39233a6a5f9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check Listed Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
+									"    pm.expect(jsonData[0].path).to.eql(pm.environment.get(\"TestProjectPath_1\"));",
+									"    pm.expect(jsonData[1].name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
+									"    pm.expect(jsonData[1].path).to.eql(pm.environment.get(\"TestProjectPath_2\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"list"
+							]
+						},
+						"description": "Test Home page Response"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f5ca894f-dc7d-484e-b2c7-7ff97e0a0ee7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check Deleted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectName={{TestProjectName_1}}&projectPath={{TestProjectPath_1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProjectPath_1}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ac11e634-d730-4230-94c1-d496849fb57c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check Deleted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectName={{TestProjectName_2}}&projectPath={{TestProjectPath_2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_2}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProjectPath_2}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Modules",
+			"item": [
+				{
+					"name": "Add project 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6471679-338f-4009-a4cc-53f486e43973",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_1\"));",
+									"    pm.environment.set(\"TestProject_1.ID\", jsonData.ID);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3fa545d7-fb25-41c4-9bb3-7fffb67e749a",
+								"exec": [
+									"pm.environment.unset(\"TestProject_1.ID\")",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProjectName_1}}&projectPath={{TestProjectPath_1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProjectPath_1}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add module 1-1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d95668f9-b696-48a5-92b0-7d2f62d47150",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestModuleName_1-1\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestModulePath_1-1\"));",
+									"    pm.expect(jsonData.ProjectID).to.eql(pm.environment.get(\"TestProject_1.ID\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "89ee8cc7-66a9-4d68-9fe8-5dbcf0fcf612",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/module/add?projectName={{TestProjectName_1}}&moduleName={{TestModuleName_1-1}}&modulePath={{TestModulePath_1-1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"module",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								},
+								{
+									"key": "moduleName",
+									"value": "{{TestModuleName_1-1}}",
+									"description": "Module name"
+								},
+								{
+									"key": "modulePath",
+									"value": "{{TestModulePath_1-1}}",
+									"description": "Module Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get module 1-1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d90e3f82-17ef-4421-b889-0d12ffc44e8e",
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200)",
+									"});",
+									"pm.test(\"Check Asked Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestModuleName_1-1\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestModulePath_1-1\"));",
+									"    pm.expect(jsonData.ProjectID).to.eql(pm.environment.get(\"TestProject_1.ID\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20c6f906-1eb4-4e65-bc1a-d51dad221c6c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/module/get?projectName={{TestProjectName_1}}&moduleName={{TestModuleName_1-1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"module",
+								"get"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								},
+								{
+									"key": "moduleName",
+									"value": "{{TestModuleName_1-1}}",
+									"description": "Module name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add module 1-2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "69a54f9f-1e4d-4084-be88-efe27689b742",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestModuleName_1-2\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestModulePath_1-2\"));",
+									"    pm.expect(jsonData.ProjectID).to.eql(pm.environment.get(\"TestProject_1.ID\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "00a0d398-28bd-4ca1-8143-1a74d0f114d9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/module/add?projectName={{TestProjectName_1}}&moduleName={{TestModuleName_1-2}}&modulePath={{TestModulePath_1-2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"module",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								},
+								{
+									"key": "moduleName",
+									"value": "{{TestModuleName_1-2}}",
+									"description": "Module name"
+								},
+								{
+									"key": "modulePath",
+									"value": "{{TestModulePath_1-2}}",
+									"description": "Module Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get module 1-2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d25e57e4-298d-48ee-bdfb-74af40aea46f",
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200)",
+									"});",
+									"pm.test(\"Check Asked Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestModuleName_1-2\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestModulePath_1-2\"));",
+									"    pm.expect(jsonData.ProjectID).to.eql(pm.environment.get(\"TestProject_1.ID\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c8bf1f61-c54a-4b0b-98bc-717669d267a3",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/module/get?projectName={{TestProjectName_1}}&moduleName={{TestModuleName_1-2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"module",
+								"get"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								},
+								{
+									"key": "moduleName",
+									"value": "{{TestModuleName_1-2}}",
+									"description": "Module name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get module List Project 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f95f4fa-54d5-40e9-b342-06626f1bb601",
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200)",
+									"});",
+									"pm.test(\"Check Asked Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestModuleName_1-2\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestModulePath_1-2\"));",
+									"    pm.expect(jsonData.ProjectID).to.eql(pm.environment.get(\"TestProject_1.ID\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "be7ef7e8-44f6-4a3d-b674-f72e3b1015c2",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/module/list?projectName={{TestProjectName_1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"module",
+								"list"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add project 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b45e98da-417c-4f1d-8144-c49f875c1fd5",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_2\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bd8f475d-75e9-437c-ac13-c8c3b99de7bf",
+								"exec": [
+									"pm.environment.unset(\"ResultProjectName\")",
+									"pm.environment.unset(\"ResultProjectPath\")",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProjectName_2}}&projectPath={{TestProjectPath_2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_2}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProjectPath_2}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ed28d0b-6b28-441f-9626-3e0bc918d49f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check Deleted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectName={{TestProjectName_1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_1}}",
+									"description": "Project name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "738be4bb-688e-4c6b-954f-4725e4b6a36b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check Deleted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectName={{TestProjectName_2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProjectName_2}}",
+									"description": "Project name"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
