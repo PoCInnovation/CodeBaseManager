@@ -15,7 +15,7 @@ const (
 
 //TODO:
 // update project controller and model
-// list Modules controller and models
+// list Modules controller and model
 
 func ApplyRoutes(r *gin.Engine) {
 

@@ -2,7 +2,7 @@ package main
 
 import (
 	"cbm-api/database"
-	"cbm-api/models"
+	"cbm-api/model"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
@@ -31,7 +31,7 @@ func (s *Server) Init() {
 	if s.Db, err = database.Init(); err != nil {
 		log.Fatalf("Database Initialisation Failed: %v", err)
 	}
-	models.MigrateModels()
+	model.MigrateModels()
 
 	s.Router = gin.Default()
 }

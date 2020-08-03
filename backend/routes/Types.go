@@ -7,7 +7,7 @@ import (
 func addType(c *gin.Context) {
 	//name := c.Query("name")
 	//path := c.Query("path")
-	//newType := models.Type{
+	//newType := model.Type{
 	//	Name: name,
 	//	Path: path,
 	//}
@@ -20,7 +20,7 @@ func addType(c *gin.Context) {
 }
 
 func listType(c *gin.Context) {
-	//result := database.CbmDb.DB.Find(&models.Type{})
+	//result := database.CbmDb.DB.Find(&model.Type{})
 	//if result.Error != nil {
 	//	c.Value(http.StatusNotFound)
 	//}
@@ -30,7 +30,7 @@ func listType(c *gin.Context) {
 
 func findType(c *gin.Context) {
 	//name := c.Param(rType)
-	//toFindType := models.Type{
+	//toFindType := model.Type{
 	//	Name: name,
 	//}
 	//
@@ -46,7 +46,7 @@ func deleteType(c *gin.Context) {
 	//name := c.Query("name")
 	//path := c.Query("path")
 	//
-	//toFindType := models.Type{
+	//toFindType := model.Type{
 	//	Name: name,
 	//	Path: path,
 	//}

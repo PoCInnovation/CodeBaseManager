@@ -9,7 +9,7 @@ func addFunction(c *gin.Context) {
 	//path := c.Query("path")
 	//db := c.MustGet("db").(*database.Database)
 	//
-	//newFunction := models.Function{
+	//newFunction := model.Function{
 	//	Name: name,
 	//	Path: path,
 	//}
@@ -23,7 +23,7 @@ func addFunction(c *gin.Context) {
 
 func listFunction(c *gin.Context) {
 	//db := c.MustGet("db").(*database.Database)
-	//result := database.CbmDb.DB.Find(&models.Function{})
+	//result := database.CbmDb.DB.Find(&model.Function{})
 	//if result.Error != nil {
 	//	c.Value(http.StatusNotFound)
 	//}
@@ -33,7 +33,7 @@ func listFunction(c *gin.Context) {
 
 func findFunction(c *gin.Context) {
 	//name := c.Param(rFunction)
-	//function := models.Function{
+	//function := model.Function{
 	//	Name: name,
 	//}
 	//
@@ -49,7 +49,7 @@ func deleteFunction(c *gin.Context) {
 	//name := c.Query("name")
 	//path := c.Query("path")
 	//
-	//function := models.Function{
+	//function := model.Function{
 	//	Name: name,
 	//	Path: path,
 	//}

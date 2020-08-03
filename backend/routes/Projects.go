@@ -2,13 +2,13 @@ package routes
 
 import (
 	"cbm-api/controllers"
-	"cbm-api/models"
+	"cbm-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func addProject(c *gin.Context) {
-	newProject := &models.Project{
+	newProject := &model.Project{
 		Name: c.Query("projectName"),
 		Path: c.Query("projectPath"),
 	}
@@ -29,7 +29,7 @@ func listProject(c *gin.Context) {
 }
 
 func findProject(c *gin.Context) {
-	queryProject := &models.Project{
+	queryProject := &model.Project{
 		Name: c.Query("projectName"),
 	}
 	if project, err := controllers.FindProject(queryProject); err != nil {
@@ -40,7 +40,7 @@ func findProject(c *gin.Context) {
 }
 
 func deleteProject(c *gin.Context) {
-	queryProject := &models.Project{
+	queryProject := &model.Project{
 		Name: c.Query("projectName"),
 	}
 

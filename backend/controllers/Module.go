@@ -1,18 +1,18 @@
 package controllers
 
 import (
-	"cbm-api/models"
+	"cbm-api/model"
 	"errors"
 )
 
-func AddModule(project *models.Project, module *models.Module) (*models.Module, error) {
+func AddModule(project *model.Project, module *model.Module) (*model.Module, error) {
 	if _, err := project.Find(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
 	return module.Save(project)
 }
 
-func FindModule(project *models.Project, module *models.Module) (*models.Module, error) {
+func FindModule(project *model.Project, module *model.Module) (*model.Module, error) {
 	if _, err := project.Find(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
@@ -22,11 +22,11 @@ func FindModule(project *models.Project, module *models.Module) (*models.Module,
 	return module, nil
 }
 
-func ListModules(project *models.Project) ([]models.Module, error) {
+func ListModules(project *model.Project) ([]model.Module, error) {
 	if _, err := project.Find(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
-	modules, err := models.ListModules(project)
+	modules, err := model.ListModules(project)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func ListModules(project *models.Project) ([]models.Module, error) {
 	return modules, nil
 }
 
-func DeleteModule(project *models.Project, module *models.Module) (*models.Project, error) {
+func DeleteModule(project *model.Project, module *model.Module) (*model.Project, error) {
 	var err error
 	if module, err = FindModule(project, module); err != nil {
 		return nil, err

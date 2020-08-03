@@ -2,16 +2,16 @@ package routes
 
 import (
 	"cbm-api/controllers"
-	"cbm-api/models"
+	"cbm-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func addModule(c *gin.Context) {
-	queryProject := &models.Project{
+	queryProject := &model.Project{
 		Name: c.Query("projectName"),
 	}
-	queryModule := &models.Module{
+	queryModule := &model.Module{
 		Name: c.Query("moduleName"),
 		Path: c.Query("modulePath"),
 	}
@@ -24,7 +24,7 @@ func addModule(c *gin.Context) {
 }
 
 func listModules(c *gin.Context) {
-	queryProject := &models.Project{
+	queryProject := &model.Project{
 		Name: c.Query("projectName"),
 	}
 	if modules, err := controllers.ListModules(queryProject); err != nil {
@@ -35,10 +35,10 @@ func listModules(c *gin.Context) {
 }
 
 func findModule(c *gin.Context) {
-	queryProject := &models.Project{
+	queryProject := &model.Project{
 		Name: c.Query("projectName"),
 	}
-	queryModule := &models.Module{
+	queryModule := &model.Module{
 		Name: c.Query("moduleName"),
 	}
 
@@ -50,10 +50,10 @@ func findModule(c *gin.Context) {
 }
 
 func deleteModule(c *gin.Context) {
-	queryProject := &models.Project{
+	queryProject := &model.Project{
 		Name: c.Query("projectName"),
 	}
-	queryModule := &models.Module{
+	queryModule := &model.Module{
 		Name: c.Query("moduleName"),
 	}
 	if module, err := controllers.DeleteModule(queryProject, queryModule); err != nil {

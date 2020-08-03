@@ -7,14 +7,15 @@ import (
 	"os"
 )
 
-// DB is the database pointer
+// Database: Typedef For holding Generic database, DB is the database pointer
 type Database struct {
 	DB *gorm.DB
 }
 
+// BackendDB: Package variable of type Database for easy access across backend
 var BackendDB = &Database{}
 
-// Init : Initialise the db
+// Init : Initialise the Database Struct
 func Init() (db *Database, err error) {
 	if os.Getenv("GIN_MODE") == "release" {
 		log.Print("Database in Production mode")
@@ -29,7 +30,7 @@ func Init() (db *Database, err error) {
 	return BackendDB, err
 }
 
-// Destroy : Destroy the db
+// Destroy : Close the Database
 func (db *Database) Destroy() {
 	err := db.DB.Close()
 	if err != nil {
