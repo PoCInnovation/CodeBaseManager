@@ -36,6 +36,7 @@ func ApplyRoutes(r *gin.Engine) {
 		modules.GET("/update", func(c *gin.Context) {
 			c.String(http.StatusOK, "Updating module "+c.Param(rModule)+" in project "+c.Param(rProject))
 		})
+		modules.DELETE("/delete", deleteModule)
 		//modules.DELETE("/delete", func(c *gin.Context) {
 		modules.GET("/delete", func(c *gin.Context) {
 			c.String(http.StatusOK, "Deleting module "+c.Param(rModule)+" in project "+c.Param(rProject))

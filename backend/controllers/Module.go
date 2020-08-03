@@ -22,13 +22,27 @@ func FindModule(project *models.Project, module *models.Module) (*models.Module,
 	return module, nil
 }
 
-func ListModule(project *models.Project) ([]models.Module, error) {
+func ListModules(project *models.Project) ([]models.Module, error) {
+	if _, err := project.Find(); err != nil {
+		return nil, errors.New("project " + project.Name + " not found")
+	}
 	modules, err := models.ListModules(project)
 	if err != nil {
 		return nil, err
 	}
 	if len(modules) == 0 {
-		return nil, errors.New("no project found")
+		return nil, errors.New("no modules found")
 	}
 	return modules, nil
+}
+
+func DeleteModule(project *models.Project, module *models.Module) (*models.Project, error) {
+	var err error
+	if module, err = FindModule(project, module); err != nil {
+		return nil, err
+	}
+	if module, err = module.Delete(); err != nil {
+		return nil, err
+	}
+	return project, nil
 }

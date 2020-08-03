@@ -29,7 +29,7 @@ func Init() (db *Database, err error) {
 	return BackendDB, err
 }
 
-// Destroy db
+// Destroy : Destroy the db
 func (db *Database) Destroy() {
 	err := db.DB.Close()
 	if err != nil {

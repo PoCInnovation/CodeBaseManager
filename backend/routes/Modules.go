@@ -24,16 +24,14 @@ func addModule(c *gin.Context) {
 }
 
 func listModules(c *gin.Context) {
-	//projectName := c.Param(rProject)
-	//project := controllers.FindProject(database.CbmDb, projectName)
-	//if project == nil {
-	//	_ = c.AbortWithError(http.StatusNotFound, errors.New("project "+projectName+" not found"))
-	//}
-	//modules := controllers.ListModule(database.CbmDb, project)
-	//if modules == nil {
-	//	_ = c.AbortWithError(http.StatusNotFound, errors.New("no modules found for project "+projectName))
-	//}
-	//c.JSON(http.StatusOK, modules)
+	queryProject := &models.Project{
+		Name: c.Query("projectName"),
+	}
+	if modules, err := controllers.ListModules(queryProject); err != nil {
+		_ = c.AbortWithError(http.StatusForbidden, err)
+	} else {
+		c.JSON(http.StatusCreated, modules)
+	}
 }
 
 func findModule(c *gin.Context) {
@@ -52,24 +50,15 @@ func findModule(c *gin.Context) {
 }
 
 func deleteModule(c *gin.Context) {
-	//name := c.Query("name")
-	//path := c.Query("path")
-	//db := c.MustGet("db").(*database.Database)
-	//
-	//project := models.Project{
-	//	Name: name,
-	//	Path: path,
-	//}
-	////var err error
-	//
-	//result := database.CbmDb.DB.First(&project)
-	//if result.Error != nil {
-	//	c.Value(http.StatusNotFound)
-	//	return
-	//}
-	//if _, err := project.Delete(db); err != nil {
-	//	_ = c.AbortWithError(http.StatusNotFound, err)
-	//} else {
-	//	c.JSON(http.StatusOK, result)
-	//}
+	queryProject := &models.Project{
+		Name: c.Query("projectName"),
+	}
+	queryModule := &models.Module{
+		Name: c.Query("moduleName"),
+	}
+	if module, err := controllers.DeleteModule(queryProject, queryModule); err != nil {
+		_ = c.AbortWithError(http.StatusForbidden, err)
+	} else {
+		c.JSON(http.StatusOK, module)
+	}
 }
