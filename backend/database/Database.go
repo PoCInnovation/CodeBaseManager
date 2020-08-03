@@ -15,7 +15,7 @@ type Database struct {
 // BackendDB: Package variable of type Database for easy access across backend
 var BackendDB = &Database{}
 
-// Init : Initialise the Database Struct
+// Init : Open database stream in BackendDB variable (create database if not present)
 func Init() (db *Database, err error) {
 	if os.Getenv("GIN_MODE") == "release" {
 		log.Print("Database in Production mode")

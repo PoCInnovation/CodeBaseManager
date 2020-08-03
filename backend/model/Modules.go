@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+// Module: Typedef for Module model
 type Module struct {
 	gorm.Model
 	Name      string `gorm:"size:255;not null" json:"name"`
@@ -15,6 +16,7 @@ type Module struct {
 	Types     []Type     `json:"types"`
 }
 
+// ListProject: Return list of all Module from database.Database
 func ListModules(project *Project) (modules []Module, err error) {
 	if err = database.BackendDB.DB.Model(project).Related(&modules).Error; err != nil {
 		log.Print(err)

@@ -6,15 +6,13 @@ import (
 	"log"
 )
 
-// Project: Typedef for project model
+// Project: Typedef for Project model in database.Database
 type Project struct {
 	gorm.Model
-	Name string `gorm:"size:255;not null" json:"name"`
-	Path string `gorm:"size:255;not null" json:"path"`
-	//Name    string   `gorm:"size:255;not null;unique" json:"name"`
-	//Path    string   `gorm:"size:255;not null;unique" json:"path"`
-	Modules []Module `json:"modules"`
-	Todos   []Module `json:"todo"`
+	Name    string   `gorm:"size:255;not null" json:"name"` // Name: name of the Project
+	Path    string   `gorm:"size:255;not null" json:"path"` // Path: Path of the Project
+	Modules []Module `json:"modules"`                       // Modules: List of Project's related Module
+	Todos   []Todo   `json:"todo"`                          // Todos: List of Project's related Todo
 }
 
 // ListProject: Return list of all Project from database.Database
