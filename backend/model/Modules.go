@@ -43,24 +43,6 @@ func (m *Module) FindById() (modules []Module, err error) {
 	return modules, nil
 }
 
-//// FindByName: Search for list of Project in database.Database with Project.Name
-//func (p *Project) FindByName() (projects []Project, err error) {
-//	if err = database.BackendDB.DB.Where("name = ?", p.Name).Find(&projects).Error; err != nil {
-//		log.Print(err)
-//		return nil, err
-//	}
-//	return projects, nil
-//}
-
-//// FindById: Search for list of Project in database.Database with Project ID
-//func (p *Project) FindById() (*Project, error) {
-//	if err := database.BackendDB.DB.Where("id = ?", p.ID).First(p).Error; err != nil {
-//		log.Print(err)
-//		return nil, err
-//	}
-//	return p, nil
-//}
-
 // Save: create Module into database.Database with associated Project
 func (m *Module) Save(project *Project) (*Module, error) {
 	if err := database.BackendDB.DB.Model(project).Association("Modules").Append(m).Error; err != nil {

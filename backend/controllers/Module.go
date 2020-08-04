@@ -39,16 +39,6 @@ func FindModuleById(module *model.Module) (*model.Module, error) {
 	return module, nil
 }
 
-//func FindModuleById(project *model.Project, module *model.Module) (*model.Module, error) {
-//	if _, err := project.FindById(); err != nil {
-//		return nil, errors.New("project " + project.Name + " not found")
-//	}
-//	if _, err := module.Find(project); err != nil {
-//		return nil, errors.New("module " + module.Name + " not found")
-//	}
-//	return module, nil
-//}
-
 func ListModules(project *model.Project) ([]model.Module, error) {
 	if _, err := project.FindByName(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
