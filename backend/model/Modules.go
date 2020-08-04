@@ -16,7 +16,7 @@ type Module struct {
 	Types     []Type     `json:"types"`
 }
 
-// ListProject: Return list of all Module from database.Database.
+// ListProjects: Return list of all Module from database.Database.
 func ListModules(project *Project) (modules []Module, err error) {
 	if err = database.BackendDB.DB.Model(project).Related(&modules).Error; err != nil {
 		log.Print(err)

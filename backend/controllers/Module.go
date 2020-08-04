@@ -6,14 +6,14 @@ import (
 )
 
 func AddModule(project *model.Project, module *model.Module) (*model.Module, error) {
-	if _, err := project.Find(); err != nil {
+	if _, err := project.FindByName(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
 	return module.Save(project)
 }
 
 func FindModule(project *model.Project, module *model.Module) (*model.Module, error) {
-	if _, err := project.Find(); err != nil {
+	if _, err := project.FindByName(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
 	if _, err := module.Find(project); err != nil {
@@ -23,7 +23,7 @@ func FindModule(project *model.Project, module *model.Module) (*model.Module, er
 }
 
 func ListModules(project *model.Project) ([]model.Module, error) {
-	if _, err := project.Find(); err != nil {
+	if _, err := project.FindByName(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
 	modules, err := model.ListModules(project)

@@ -7,15 +7,15 @@ import (
 	"os"
 )
 
-// Database: Typedef For holding Generic database, DB is the database pointer
+// Database: type for holding generic database, DB is the database pointer
 type Database struct {
 	DB *gorm.DB
 }
 
-// BackendDB: Package variable of type Database for easy access across backend
+// BackendDB: package variable of type Database for easy access across backend
 var BackendDB = &Database{}
 
-// Init : Open database stream in BackendDB variable (create database if not present)
+// Init : open database stream in BackendDB variable (create database if not present)
 func Init() (db *Database, err error) {
 	if os.Getenv("GIN_MODE") == "release" {
 		log.Print("Database in Production mode")

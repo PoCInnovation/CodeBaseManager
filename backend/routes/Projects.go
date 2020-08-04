@@ -5,6 +5,7 @@ import (
 	"cbm-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func addProject(c *gin.Context) {
@@ -28,11 +29,27 @@ func listProject(c *gin.Context) {
 	}
 }
 
-func findProject(c *gin.Context) {
+func findProjectByName(c *gin.Context) {
 	queryProject := &model.Project{
 		Name: c.Query("projectName"),
 	}
-	if project, err := controllers.FindProject(queryProject); err != nil {
+	if project, err := controllers.FindProjectByName(queryProject); err != nil {
+		_ = c.AbortWithError(http.StatusNotFound, err)
+	} else {
+		c.JSON(http.StatusOK, project)
+	}
+}
+
+func findProjectById(c *gin.Context) {
+	queryProject := &model.Project{}
+
+	id, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(http.StatusNotFound, err)
+	}
+	queryProject.ID = uint(id)
+
+	if project, err := controllers.FindProjectById(queryProject); err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)
 	} else {
 		c.JSON(http.StatusOK, project)
@@ -40,9 +57,13 @@ func findProject(c *gin.Context) {
 }
 
 func deleteProject(c *gin.Context) {
-	queryProject := &model.Project{
-		Name: c.Query("projectName"),
+	queryProject := &model.Project{}
+
+	id, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(http.StatusNotFound, err)
 	}
+	queryProject.ID = uint(id)
 
 	if project, err := controllers.DeleteProject(queryProject); err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)

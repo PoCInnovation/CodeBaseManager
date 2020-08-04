@@ -20,7 +20,7 @@ func addType(c *gin.Context) {
 }
 
 func listType(c *gin.Context) {
-	//result := database.CbmDb.DB.Find(&model.Type{})
+	//result := database.CbmDb.DB.FindByName(&model.Type{})
 	//if result.Error != nil {
 	//	c.Value(http.StatusNotFound)
 	//}

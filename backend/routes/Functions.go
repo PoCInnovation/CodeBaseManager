@@ -23,7 +23,7 @@ func addFunction(c *gin.Context) {
 
 func listFunction(c *gin.Context) {
 	//db := c.MustGet("db").(*database.Database)
-	//result := database.CbmDb.DB.Find(&model.Function{})
+	//result := database.CbmDb.DB.FindByName(&model.Function{})
 	//if result.Error != nil {
 	//	c.Value(http.StatusNotFound)
 	//}

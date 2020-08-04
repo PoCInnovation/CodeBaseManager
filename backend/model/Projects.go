@@ -8,15 +8,15 @@ import (
 
 // Project: Typedef for Project model in database.Database
 type Project struct {
-	gorm.Model
-	Name    string   `gorm:"size:255;not null" json:"name"` // Name: name of the Project
-	Path    string   `gorm:"size:255;not null" json:"path"` // Path: Path of the Project
-	Modules []Module `json:"modules"`                       // Modules: List of Project's related Module
-	Todos   []Todo   `json:"todo"`                          // Todos: List of Project's related Todo
+	gorm.Model          // gorm.Model:
+	Name       string   `gorm:"size:255;not null" json:"name"` // Name: name of the Project
+	Path       string   `gorm:"size:255;not null" json:"path"` // Path: Path of the Project
+	Modules    []Module `json:"modules"`                       // Modules: List of Project's related Module
+	Todos      []Todo   `json:"todo"`                          // Todos: List of Project's related Todo
 }
 
-// ListProject: Return list of all Project from database.Database
-func ListProject() (projects []Project, err error) {
+// ListProjects: Return list of all Project from database.Database
+func ListProjects() (projects []Project, err error) {
 	if err = database.BackendDB.DB.Find(&projects).Error; err != nil {
 		log.Print(err)
 		return nil, err
@@ -24,9 +24,18 @@ func ListProject() (projects []Project, err error) {
 	return projects, nil
 }
 
-// Find: Search for given Project in database.Database
-func (p *Project) Find() (*Project, error) {
-	if err := database.BackendDB.DB.Where("name = ?", p.Name).First(p).Error; err != nil {
+// FindByName: Search for list of Project in database.Database with Project.Name
+func (p *Project) FindByName() (projects []Project, err error) {
+	if err = database.BackendDB.DB.Where("name = ?", p.Name).Find(&projects).Error; err != nil {
+		log.Print(err)
+		return nil, err
+	}
+	return projects, nil
+}
+
+// FindById: Search for list of Project in database.Database with Project ID
+func (p *Project) FindById() (*Project, error) {
+	if err := database.BackendDB.DB.Where("id = ?", p.ID).First(p).Error; err != nil {
 		log.Print(err)
 		return nil, err
 	}
