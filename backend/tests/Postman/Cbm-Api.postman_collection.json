@@ -21,8 +21,9 @@
 									"});",
 									"pm.test(\"Check Posted Datas\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
-									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_1\"));",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.environment.set(\"TestProject_1(1).ID\", jsonData.ID)",
 									"});",
 									""
 								],
@@ -34,6 +35,7 @@
 							"script": {
 								"id": "2af6a736-3942-4538-97ff-1a03328d43a5",
 								"exec": [
+									"pm.environment.unset(\"TestProject_1(1).ID\")",
 									""
 								],
 								"type": "text/javascript"
@@ -53,7 +55,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProjectName_1}}&projectPath={{TestProjectPath_1}}",
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProject_1.Name}}&projectPath={{TestProject_1.Path}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -66,12 +68,12 @@
 							"query": [
 								{
 									"key": "projectName",
-									"value": "{{TestProjectName_1}}",
+									"value": "{{TestProject_1.Name}}",
 									"description": "Project name"
 								},
 								{
 									"key": "projectPath",
-									"value": "{{TestProjectPath_1}}",
+									"value": "{{TestProject_1.Path}}",
 									"description": "Project Path"
 								}
 							]
@@ -92,8 +94,9 @@
 									"});",
 									"pm.test(\"Check Posted Datas\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
-									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_2\"));",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
+									"    pm.environment.set(\"TestProject_2(1).ID\", jsonData.ID)",
 									"});",
 									""
 								],
@@ -105,6 +108,7 @@
 							"script": {
 								"id": "6af2812c-e06b-46ba-9dc2-90e05ec2549e",
 								"exec": [
+									"pm.environment.unset(\"TestProject_2(1).ID\")",
 									""
 								],
 								"type": "text/javascript"
@@ -124,7 +128,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProjectName_2}}&projectPath={{TestProjectPath_2}}",
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProject_2.Name}}&projectPath={{TestProject_2.Path}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -137,12 +141,12 @@
 							"query": [
 								{
 									"key": "projectName",
-									"value": "{{TestProjectName_2}}",
+									"value": "{{TestProject_2.Name}}",
 									"description": "Project name"
 								},
 								{
 									"key": "projectPath",
-									"value": "{{TestProjectPath_2}}",
+									"value": "{{TestProject_2.Path}}",
 									"description": "Project Path"
 								}
 							]
@@ -151,7 +155,7 @@
 					"response": []
 				},
 				{
-					"name": "Get project 1",
+					"name": "Get project 1 By Id",
 					"event": [
 						{
 							"listen": "test",
@@ -163,8 +167,9 @@
 									"});",
 									"pm.test(\"Check Asked Datas\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
-									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_1\"));",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.expect(jsonData.ID).to.eql(pm.environment.get(\"TestProject_1(1).ID\"));",
 									"});",
 									""
 								],
@@ -183,7 +188,7 @@
 							"file": {}
 						},
 						"url": {
-							"raw": "http://localhost:{{ProjectPort}}/project/get?projectName={{TestProjectName_1}}",
+							"raw": "http://localhost:{{ProjectPort}}/project/getById?projectId={{TestProject_1(1).ID}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -191,12 +196,12 @@
 							"port": "{{ProjectPort}}",
 							"path": [
 								"project",
-								"get"
+								"getById"
 							],
 							"query": [
 								{
-									"key": "projectName",
-									"value": "{{TestProjectName_1}}"
+									"key": "projectId",
+									"value": "{{TestProject_1(1).ID}}"
 								}
 							]
 						}
@@ -204,7 +209,7 @@
 					"response": []
 				},
 				{
-					"name": "Get project 2",
+					"name": "Get project 2 By Id",
 					"event": [
 						{
 							"listen": "test",
@@ -216,8 +221,9 @@
 									"});",
 									"pm.test(\"Check Asked Datas\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
-									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProjectPath_2\"));",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
+									"    pm.expect(jsonData.ID).to.eql(pm.environment.get(\"TestProject_2(1).ID\"));",
 									"});",
 									""
 								],
@@ -236,7 +242,7 @@
 							"file": {}
 						},
 						"url": {
-							"raw": "http://localhost:{{ProjectPort}}/project/get?projectName={{TestProjectName_2}}",
+							"raw": "http://localhost:{{ProjectPort}}/project/getById?projectId={{TestProject_2(1).ID}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -244,12 +250,12 @@
 							"port": "{{ProjectPort}}",
 							"path": [
 								"project",
-								"get"
+								"getById"
 							],
 							"query": [
 								{
-									"key": "projectName",
-									"value": "{{TestProjectName_2}}"
+									"key": "projectId",
+									"value": "{{TestProject_2(1).ID}}"
 								}
 							]
 						}
@@ -269,10 +275,10 @@
 									"});",
 									"pm.test(\"Check Listed Datas\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
-									"    pm.expect(jsonData[0].path).to.eql(pm.environment.get(\"TestProjectPath_1\"));",
-									"    pm.expect(jsonData[1].name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
-									"    pm.expect(jsonData[1].path).to.eql(pm.environment.get(\"TestProjectPath_2\"));",
+									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(jsonData[0].path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.expect(jsonData[1].name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(jsonData[1].path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
 									"});",
 									""
 								],
@@ -300,7 +306,281 @@
 					"response": []
 				},
 				{
-					"name": "Delete project 1",
+					"name": "Add project 1 SecondTime",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5919cc00-d3c7-4cbd-bbf3-437d89c14898",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.environment.set(\"TestProject_1(2).ID\", jsonData.ID)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "04d11dd6-7d69-4ce6-9547-9631a024be36",
+								"exec": [
+									"pm.environment.unset(\"TestProject_1(2).ID\")",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProject_1.Name}}&projectPath={{TestProject_1.Path}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProject_1.Name}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProject_1.Path}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get project 1 By Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "37f75b98-2f53-450e-a05b-dcfc4ea3be29",
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200)",
+									"});",
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Check Project list length\", function () {",
+									"    pm.expect(jsonData.length).to.eql(2);",
+									"});",
+									"var project_1 = jsonData[0];",
+									"var project_2 = jsonData[1];",
+									"pm.test(\"Check Project 1\", function () {",
+									"    pm.expect(project_1.name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(project_1.path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.expect(project_1.ID).to.eql(pm.environment.get(\"TestProject_1(1).ID\"));",
+									"});",
+									"pm.test(\"Check Project 2\", function () {",
+									"    pm.expect(project_2.name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(project_2.path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.expect(project_2.ID).to.eql(pm.environment.get(\"TestProject_1(2).ID\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/getByName?projectName={{TestProject_1.Name}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"getByName"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProject_1.Name}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add project 2 SecondTime",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f3edc82b-dddc-463d-852e-090ad3303f72",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"pm.test(\"Check Posted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
+									"    pm.environment.set(\"TestProject_2(2).ID\", jsonData.ID)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2b8799e7-0298-469c-ac18-3d7afd00e000",
+								"exec": [
+									"pm.environment.unset(\"TestProject_2(2).ID\")",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/add?projectName={{TestProject_2.Name}}&projectPath={{TestProject_2.Path}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"add"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProject_2.Name}}",
+									"description": "Project name"
+								},
+								{
+									"key": "projectPath",
+									"value": "{{TestProject_2.Path}}",
+									"description": "Project Path"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get project 2 By Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f3b95ed2-bc07-4925-ab02-b4113c2a9124",
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200)",
+									"});",
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Check Project list length\", function () {",
+									"    pm.expect(jsonData.length).to.eql(2);",
+									"});",
+									"var project_1 = jsonData[0];",
+									"var project_2 = jsonData[1];",
+									"pm.test(\"Check Project 1\", function () {",
+									"    pm.expect(project_1.name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(project_1.path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
+									"    pm.expect(project_1.ID).to.eql(pm.environment.get(\"TestProject_2(1).ID\"));",
+									"});",
+									"pm.test(\"Check Project 2\", function () {",
+									"    pm.expect(project_2.name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(project_2.path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
+									"    pm.expect(project_2.ID).to.eql(pm.environment.get(\"TestProject_2(2).ID\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/getByName?projectName={{TestProject_2.Name}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"getByName"
+							],
+							"query": [
+								{
+									"key": "projectName",
+									"value": "{{TestProject_2.Name}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project 1 (1)",
 					"event": [
 						{
 							"listen": "test",
@@ -312,8 +592,67 @@
 									"});",
 									"pm.test(\"Check Deleted Datas\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_1\"));",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.expect(jsonData.ID).to.eql(pm.environment.get(\"TestProject_1(1).ID\"));",
 									"});",
+									"pm.environment.unset(\"TestProject_1(1).ID\")"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectId={{TestProject_1(1).ID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "projectId",
+									"value": "{{TestProject_1(1).ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project 1 (2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bdb49ec3-4702-4067-8909-0ab14473cecb",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check Deleted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_1.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_1.Path\"));",
+									"    pm.expect(jsonData.ID).to.eql(pm.environment.get(\"TestProject_1(2).ID\"));",
+									"});",
+									"pm.environment.unset(\"TestProject_1(2).ID\")",
 									""
 								],
 								"type": "text/javascript"
@@ -333,7 +672,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectName={{TestProjectName_1}}&projectPath={{TestProjectPath_1}}",
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectId={{TestProject_1(2).ID}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -345,14 +684,8 @@
 							],
 							"query": [
 								{
-									"key": "projectName",
-									"value": "{{TestProjectName_1}}",
-									"description": "Project name"
-								},
-								{
-									"key": "projectPath",
-									"value": "{{TestProjectPath_1}}",
-									"description": "Project Path"
+									"key": "projectId",
+									"value": "{{TestProject_1(2).ID}}"
 								}
 							]
 						}
@@ -360,7 +693,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete project 2",
+					"name": "Delete project 2 (1)",
 					"event": [
 						{
 							"listen": "test",
@@ -372,8 +705,11 @@
 									"});",
 									"pm.test(\"Check Deleted Datas\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProjectName_2\"));",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
+									"    pm.expect(jsonData.ID).to.eql(pm.environment.get(\"TestProject_2(1).ID\"));",
 									"});",
+									"pm.environment.unset(\"TestProject_2(1).ID\")",
 									""
 								],
 								"type": "text/javascript"
@@ -393,7 +729,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectName={{TestProjectName_2}}&projectPath={{TestProjectPath_2}}",
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectId={{TestProject_2(1).ID}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -405,14 +741,66 @@
 							],
 							"query": [
 								{
-									"key": "projectName",
-									"value": "{{TestProjectName_2}}",
-									"description": "Project name"
-								},
+									"key": "projectId",
+									"value": "{{TestProject_2(1).ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project 2 (2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fd4a14fd-6b49-4f94-97f3-af62482436b7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Check Deleted Datas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"TestProject_2.Name\"));",
+									"    pm.expect(jsonData.path).to.eql(pm.environment.get(\"TestProject_2.Path\"));",
+									"    pm.expect(jsonData.ID).to.eql(pm.environment.get(\"TestProject_2(2).ID\"));",
+									"});",
+									"pm.environment.unset(\"TestProject_2(2).ID\")",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{ProjectPort}}/project/delete?projectId={{TestProject_2(2).ID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{ProjectPort}}",
+							"path": [
+								"project",
+								"delete"
+							],
+							"query": [
 								{
-									"key": "projectPath",
-									"value": "{{TestProjectPath_2}}",
-									"description": "Project Path"
+									"key": "projectId",
+									"value": "{{TestProject_2(2).ID}}",
+									"description": "Project name"
 								}
 							]
 						}
