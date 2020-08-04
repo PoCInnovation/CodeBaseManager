@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-// FindProject : Find with ProjectFind
+// FindProject : Find model.Project with Find method.
 func FindProject(project *model.Project) (*model.Project, error) {
 	if _, err := project.Find(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")

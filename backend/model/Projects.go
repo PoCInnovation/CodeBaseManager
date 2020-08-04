@@ -24,18 +24,18 @@ func ListProject() (projects []Project, err error) {
 	return projects, nil
 }
 
-// Save: create Project into database.Database
-func (p *Project) Save() (*Project, error) {
-	if err := database.BackendDB.DB.Create(p).Error; err != nil {
+// Find: Search for given Project in database.Database
+func (p *Project) Find() (*Project, error) {
+	if err := database.BackendDB.DB.Where("name = ?", p.Name).First(p).Error; err != nil {
 		log.Print(err)
 		return nil, err
 	}
 	return p, nil
 }
 
-// Find: Search for given Project in database.Database
-func (p *Project) Find() (*Project, error) {
-	if err := database.BackendDB.DB.Where("name = ?", p.Name).First(p).Error; err != nil {
+// Save: create Project into database.Database
+func (p *Project) Save() (*Project, error) {
+	if err := database.BackendDB.DB.Create(p).Error; err != nil {
 		log.Print(err)
 		return nil, err
 	}
