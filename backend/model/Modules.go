@@ -16,7 +16,7 @@ type Module struct {
 	Types     []Type     `json:"types"`
 }
 
-// ListProjects: Return list of all Module from database.Database.
+// ListProjects: Return list of all Module from database.Database with associated Project ID..
 func ListModules(project *Project) (modules []Module, err error) {
 	if err = database.BackendDB.DB.Model(project).Related(&modules).Error; err != nil {
 		log.Print(err)
@@ -25,15 +25,41 @@ func ListModules(project *Project) (modules []Module, err error) {
 	return modules, nil
 }
 
-// Find: Search for given Project in database.Database with associated Project
-func (m *Module) Find(project *Project) (*Module, error) {
-	var modules []Module
-	if err := database.BackendDB.DB.Model(project).Related(&modules).Where("name = ? ", m.Name).First(m).Error; err != nil {
+// Find: Search for given Module.Name in database.Database with associated Project ID.
+func (m *Module) FindByName(project *Project) (modules []Module, err error) {
+	if err = database.BackendDB.DB.Model(project).Related(&modules).Where("name = ? ", m.Name).Error; err != nil {
 		log.Print(err)
 		return nil, err
 	}
-	return m, nil
+	return modules, nil
 }
+
+// Find: Search for given Module ID in database.Database with associated Project ID.
+func (m *Module) FindById() (modules []Module, err error) {
+	if err = database.BackendDB.DB.Model(m).Where("id = ?", m.ID).First(m).Error; err != nil {
+		log.Print(err)
+		return nil, err
+	}
+	return modules, nil
+}
+
+//// FindByName: Search for list of Project in database.Database with Project.Name
+//func (p *Project) FindByName() (projects []Project, err error) {
+//	if err = database.BackendDB.DB.Where("name = ?", p.Name).Find(&projects).Error; err != nil {
+//		log.Print(err)
+//		return nil, err
+//	}
+//	return projects, nil
+//}
+
+//// FindById: Search for list of Project in database.Database with Project ID
+//func (p *Project) FindById() (*Project, error) {
+//	if err := database.BackendDB.DB.Where("id = ?", p.ID).First(p).Error; err != nil {
+//		log.Print(err)
+//		return nil, err
+//	}
+//	return p, nil
+//}
 
 // Save: create Module into database.Database with associated Project
 func (m *Module) Save(project *Project) (*Module, error) {

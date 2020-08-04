@@ -43,11 +43,11 @@ func findProjectByName(c *gin.Context) {
 func findProjectById(c *gin.Context) {
 	queryProject := &model.Project{}
 
-	id, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
+	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
 	if err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)
 	}
-	queryProject.ID = uint(id)
+	queryProject.ID = uint(projectId)
 
 	if project, err := controllers.FindProjectById(queryProject); err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)
@@ -59,11 +59,11 @@ func findProjectById(c *gin.Context) {
 func deleteProject(c *gin.Context) {
 	queryProject := &model.Project{}
 
-	id, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
+	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
 	if err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)
 	}
-	queryProject.ID = uint(id)
+	queryProject.ID = uint(projectId)
 
 	if project, err := controllers.DeleteProject(queryProject); err != nil {
 		_ = c.AbortWithError(http.StatusNotFound, err)

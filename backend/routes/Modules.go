@@ -5,12 +5,18 @@ import (
 	"cbm-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func addModule(c *gin.Context) {
-	queryProject := &model.Project{
-		Name: c.Query("projectName"),
+	queryProject := &model.Project{}
+
+	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(http.StatusNotFound, err)
 	}
+	queryProject.ID = uint(projectId)
+
 	queryModule := &model.Module{
 		Name: c.Query("moduleName"),
 		Path: c.Query("modulePath"),
@@ -34,29 +40,51 @@ func listModules(c *gin.Context) {
 	}
 }
 
-func findModule(c *gin.Context) {
-	queryProject := &model.Project{
-		Name: c.Query("projectName"),
-	}
-	queryModule := &model.Module{
-		Name: c.Query("moduleName"),
-	}
+func findModuleById(c *gin.Context) {
+	queryModule := &model.Module{}
 
-	if module, err := controllers.FindModule(queryProject, queryModule); err != nil {
+	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(http.StatusNotFound, err)
+	}
+	queryModule.ID = uint(moduleId)
+
+	if module, err := controllers.FindModuleById(queryModule); err != nil {
 		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusOK, module)
 	}
 }
 
-func deleteModule(c *gin.Context) {
-	queryProject := &model.Project{
-		Name: c.Query("projectName"),
+func findModuleByName(c *gin.Context) {
+	queryProject := &model.Project{}
+
+	projectId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(http.StatusNotFound, err)
 	}
+	queryProject.ID = uint(projectId)
+
 	queryModule := &model.Module{
-		Name: c.Query("moduleName"),
+		Name: c.Param(rModule),
 	}
-	if module, err := controllers.DeleteModule(queryProject, queryModule); err != nil {
+
+	if modules, err := controllers.FindModuleByName(queryProject, queryModule); err != nil {
+		_ = c.AbortWithError(http.StatusForbidden, err)
+	} else {
+		c.JSON(http.StatusOK, modules)
+	}
+}
+
+func deleteModule(c *gin.Context) {
+	queryModule := &model.Module{}
+
+	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(http.StatusNotFound, err)
+	}
+	queryModule.ID = uint(moduleId)
+	if module, err := controllers.DeleteModule(queryModule); err != nil {
 		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusOK, module)

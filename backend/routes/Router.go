@@ -15,7 +15,7 @@ const (
 
 //TODO:
 // update project controller and model
-// list Modules controller and model
+// testing postman
 
 func ApplyRoutes(r *gin.Engine) {
 
@@ -31,7 +31,8 @@ func ApplyRoutes(r *gin.Engine) {
 	modules := r.Group("/" + rModule)
 	{
 		modules.GET("/list", listModules)
-		modules.GET("/get", findModule)
+		modules.GET("/get", findModuleById)
+		modules.GET("/get/:"+rModule, findModuleByName)
 		modules.POST("/add", addModule)
 		//modules.PATCH("/update", func(c *gin.Context) {
 		modules.GET("/update", func(c *gin.Context) {
