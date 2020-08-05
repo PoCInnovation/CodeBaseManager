@@ -13,7 +13,7 @@ func addModule(c *gin.Context) {
 
 	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	}
 	queryProject.ID = uint(projectId)
 
@@ -30,13 +30,18 @@ func addModule(c *gin.Context) {
 }
 
 func listModules(c *gin.Context) {
-	queryProject := &model.Project{
-		Name: c.Query("projectName"),
+	queryProject := &model.Project{}
+
+	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	}
+	queryProject.ID = uint(projectId)
+
 	if modules, err := controllers.ListModules(queryProject); err != nil {
 		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
-		c.JSON(http.StatusCreated, modules)
+		c.JSON(http.StatusOK, modules)
 	}
 }
 
@@ -45,7 +50,7 @@ func findModuleById(c *gin.Context) {
 
 	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	}
 	queryModule.ID = uint(moduleId)
 
@@ -61,7 +66,7 @@ func findModuleByName(c *gin.Context) {
 
 	projectId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	}
 	queryProject.ID = uint(projectId)
 
@@ -81,7 +86,7 @@ func deleteModule(c *gin.Context) {
 
 	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	}
 	queryModule.ID = uint(moduleId)
 	if module, err := controllers.DeleteModule(queryModule); err != nil {

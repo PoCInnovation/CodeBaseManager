@@ -15,8 +15,8 @@ func AddModule(project *model.Project, module *model.Module) (*model.Module, err
 	return module.Save(project)
 }
 
-// FindProjectByName : search for model.Project with FindByName method.
-//  Return an error if no project found or error in database.Database query.
+// FindModuleByName : search for model.Module with FindByName method.
+//  Return an error if no project or module found or error in database.Database query.
 func FindModuleByName(project *model.Project, module *model.Module) (modules []model.Module, err error) {
 	if _, err = project.FindById(); err != nil {
 		return nil, errors.New(fmt.Sprintf("project %d not found", project.ID))
@@ -39,8 +39,10 @@ func FindModuleById(module *model.Module) (*model.Module, error) {
 	return module, nil
 }
 
+// ListModules: search for list of all model.Model with associated model.ListProjects ID.
+//  Return an error if no project found or error in database.Database listing.
 func ListModules(project *model.Project) ([]model.Module, error) {
-	if _, err := project.FindByName(); err != nil {
+	if _, err := project.FindById(); err != nil {
 		return nil, errors.New("project " + project.Name + " not found")
 	}
 	modules, err := model.ListModules(project)
