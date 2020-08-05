@@ -23,7 +23,7 @@ func addProject(c *gin.Context) {
 
 func listProject(c *gin.Context) {
 	if projects, err := controllers.ListProjects(); err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusOK, projects)
 	}
@@ -31,10 +31,10 @@ func listProject(c *gin.Context) {
 
 func findProjectByName(c *gin.Context) {
 	queryProject := &model.Project{
-		Name: c.Query("projectName"),
+		Name: c.Param(rProject),
 	}
 	if project, err := controllers.FindProjectByName(queryProject); err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusOK, project)
 	}
@@ -45,12 +45,12 @@ func findProjectById(c *gin.Context) {
 
 	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	}
 	queryProject.ID = uint(projectId)
 
 	if project, err := controllers.FindProjectById(queryProject); err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusOK, project)
 	}
@@ -61,12 +61,12 @@ func deleteProject(c *gin.Context) {
 
 	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	}
 	queryProject.ID = uint(projectId)
 
 	if project, err := controllers.DeleteProject(queryProject); err != nil {
-		_ = c.AbortWithError(http.StatusNotFound, err)
+		_ = c.AbortWithError(http.StatusForbidden, err)
 	} else {
 		c.JSON(http.StatusOK, project)
 	}

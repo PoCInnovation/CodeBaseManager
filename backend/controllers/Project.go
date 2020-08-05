@@ -53,6 +53,13 @@ func DeleteProject(project *model.Project) (*model.Project, error) {
 	if project, err = FindProjectById(project); err != nil {
 		return nil, err
 	}
+	if modules, err := ListModules(project); err == nil && modules != nil {
+		for _, module := range modules {
+			if _, err := module.Delete(); err != nil {
+				return nil, err
+			}
+		}
+	}
 	if project, err = project.Delete(); err != nil {
 		return nil, err
 	}
