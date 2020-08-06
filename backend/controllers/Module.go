@@ -39,6 +39,24 @@ func FindModuleById(module *model.Module) (*model.Module, error) {
 	return module, nil
 }
 
+// UpdateModule : search for model.Module with model.Module FindById method and update fields.
+//  Return an error if no Module found or error in database.Database query or save.
+func UpdateModule(queryModule *model.Module, updatedFields *model.Module) (*model.Module, error) {
+	if _, err := queryModule.FindById(); err != nil {
+		return nil, errors.New(fmt.Sprintf("Module %d not found", queryModule.ID))
+	}
+	if updatedFields.Path != "" {
+		queryModule.Path = updatedFields.Path
+	}
+	if updatedFields.Name != "" {
+		queryModule.Name = updatedFields.Name
+	}
+	if _, err := queryModule.Update(); err != nil {
+		return nil, err
+	}
+	return queryModule, nil
+}
+
 // ListModules: search for list of all model.Model with associated model.ListProjects ID.
 //  Return an error if no project found or error in database.Database listing.
 func ListModules(project *model.Project) ([]model.Module, error) {

@@ -10,7 +10,7 @@ import (
 type Module struct {
 	gorm.Model
 	Name      string `gorm:"size:255;not null" json:"name"`
-	Path      string `gorm:"size:255;not null;unique" json:"path"`
+	Path      string `gorm:"size:255;not null" json:"path"`
 	ProjectID uint
 	Functions []Function `json:"functions"`
 	Types     []Type     `json:"types"`

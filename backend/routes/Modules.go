@@ -81,6 +81,27 @@ func findModuleByName(c *gin.Context) {
 	}
 }
 
+func updateModule(c *gin.Context) {
+	queryModule := &model.Module{}
+
+	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryModule.ID = uint(moduleId)
+
+	updatedFields := &model.Module{
+		Name: c.Query("moduleName"),
+		Path: c.Query("modulePath"),
+	}
+
+	if project, err := controllers.UpdateModule(queryModule, updatedFields); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, project)
+	}
+}
+
 func deleteModule(c *gin.Context) {
 	queryModule := &model.Module{}
 

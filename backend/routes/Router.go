@@ -26,7 +26,7 @@ func ApplyRoutes(r *gin.Engine) {
 		projects.GET("/get", findProjectById)
 		projects.GET("/get/:"+rProject, findProjectByName)
 		projects.POST("/add", addProject)
-		projects.PATCH("/update", addProject)
+		projects.PATCH("/update", updateProject)
 		projects.DELETE("/delete", deleteProject)
 	}
 	modules := r.Group("/" + rModule)
