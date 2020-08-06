@@ -6,11 +6,12 @@ import (
 )
 
 const (
-	rModule   = "module"
-	rProject  = "project"
-	rFunction = "function"
-	rType     = "type"
-	rName     = "name"
+	rModule       = "module"
+	rProject      = "project"
+	rFunction     = "function"
+	rType         = "type"
+	rName         = "name"
+	InternalError = http.StatusForbidden
 )
 
 //TODO:

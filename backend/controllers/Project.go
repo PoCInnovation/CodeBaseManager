@@ -35,11 +35,20 @@ func FindProjectById(project *model.Project) (*model.Project, error) {
 
 // UpdateProject : search for model.Project with model.Project FindById method and update fields.
 //  Return an error if no project found or error in database.Database query or save.
-func UpdateProject(project *model.Project) (*model.Project, error) {
-	if _, err := project.FindById(); err != nil {
-		return nil, errors.New(fmt.Sprintf("project %d not found", project.ID))
+func UpdateProject(queryProject *model.Project, updatedFields *model.Project) (*model.Project, error) {
+	if _, err := queryProject.FindById(); err != nil {
+		return nil, errors.New(fmt.Sprintf("project %d not found", queryProject.ID))
 	}
-	return project, nil
+	if updatedFields.Path != "" {
+		queryProject.Path = updatedFields.Path
+	}
+	if updatedFields.Name != "" {
+		queryProject.Name = updatedFields.Name
+	}
+	if _, err := queryProject.Update(); err != nil {
+		return nil, err
+	}
+	return queryProject, nil
 }
 
 // ListProjects: search for list of all model.Project with model.ListProjects.
