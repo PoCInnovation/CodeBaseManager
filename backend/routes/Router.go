@@ -35,12 +35,18 @@ func ApplyRoutes(r *gin.Engine) {
 		modules.GET("/get", findModuleById)
 		modules.GET("/get/:"+rModule, findModuleByName)
 		modules.POST("/add", addModule)
-		//modules.PATCH("/update", func(c *gin.Context) {
-		modules.GET("/update", func(c *gin.Context) {
-			c.String(http.StatusOK, "Updating module "+c.Param(rModule)+" in project "+c.Param(rProject))
-		})
+		modules.PATCH("/update", updateModule)
 		modules.DELETE("/delete", deleteModule)
 	}
+	//functions := r.Group("/" + rFunction)
+	//{
+	//	functions.GET("/list", listModules)
+	//	functions.GET("/get", findModuleById)
+	//	functions.GET("/get/:"+rModule, findModuleByName)
+	//	functions.POST("/add", addModule)
+	//	functions.PATCH("/update", updateModule)
+	//	functions.DELETE("/delete", deleteModule)
+	//}
 	//	types := projects.Group("/" + rType)
 	//	{
 	//		types.GET("/", func(c *gin.Context) {
