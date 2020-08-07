@@ -95,10 +95,10 @@ func updateModule(c *gin.Context) {
 		Path: c.Query("modulePath"),
 	}
 
-	if project, err := controllers.UpdateModule(queryModule, updatedFields); err != nil {
+	if module, err := controllers.UpdateModule(queryModule, updatedFields); err != nil {
 		_ = c.AbortWithError(InternalError, err)
 	} else {
-		c.JSON(http.StatusOK, project)
+		c.JSON(http.StatusOK, module)
 	}
 }
 

@@ -16,7 +16,7 @@ type Module struct {
 	Types     []Type     `json:"types"`
 }
 
-// ListProjects: Return list of all Module from database.Database with associated Project ID..
+// ListModules: Return list of all Module from database.Database with associated Project ID..
 func ListModules(project *Project) (modules []Module, err error) {
 	if err = database.BackendDB.DB.Model(project).Related(&modules).Error; err != nil {
 		log.Print(err)
@@ -54,9 +54,9 @@ func (m *Module) Save(project *Project) (*Module, error) {
 
 // Update: update Module from database.Database
 func (m *Module) Update() (*Module, error) {
-	if err := database.BackendDB.DB.Update(m).Error; err != nil {
+	if err := database.BackendDB.DB.Save(m).Error; err != nil {
 		log.Print(err)
-		return &Module{}, err
+		return nil, err
 	}
 	return m, nil
 }
@@ -65,7 +65,7 @@ func (m *Module) Update() (*Module, error) {
 func (m *Module) Delete() (*Module, error) {
 	if err := database.BackendDB.DB.Delete(m).Error; err != nil {
 		log.Print(err)
-		return &Module{}, err
+		return nil, err
 	}
 	return m, nil
 }

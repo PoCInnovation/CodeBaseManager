@@ -23,20 +23,27 @@ api-unit-test: api-start
 	@make --no-print-directory api-stop
 
 api-stop:
+	@docker-compose down --remove-orphans
+
+api-clean-stop:
 	@docker-compose down --remove-orphans --volumes
 
+api-clean-run: api-clean-stop api-run
 
-.PHONY: api-main api-run api-test api-stop
+api-clean-start: api-clean-stop api-start
+
+
+.PHONY: api-main api-run api-test api-stop api-clean-stop
 
 
 
 ######################################################################################
 # Misc
-clean: api-stop
+clean: api-clean-stop
 	@echo "y" | docker system prune
 
 fclean: clean
-	@echo "y" | docker system prune -a --volumes
+	@echo "y" | docker system prune -a --volumes --remove-orphans
 
 restart: api-stop
 restart: clean

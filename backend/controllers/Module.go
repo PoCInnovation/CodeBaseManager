@@ -73,9 +73,23 @@ func ListModules(project *model.Project) ([]model.Module, error) {
 	return modules, nil
 }
 
+func DeleteModuleDependencies(module *model.Module) (*model.Module, error) {
+	if functions, err := ListFunctions(module); err == nil && functions != nil {
+		for _, function := range functions {
+			if _, err := function.Delete(); err != nil {
+				return nil, err
+			}
+		}
+	}
+	return module, nil
+}
+
 func DeleteModule(module *model.Module) (*model.Module, error) {
 	var err error
 	if module, err = FindModuleById(module); err != nil {
+		return nil, err
+	}
+	if module, err = DeleteModuleDependencies(module); err != nil {
 		return nil, err
 	}
 	if module, err = module.Delete(); err != nil {

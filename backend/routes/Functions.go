@@ -1,68 +1,118 @@
 package routes
 
 import (
+	"cbm-api/controllers"
+	"cbm-api/model"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 )
 
 func addFunction(c *gin.Context) {
-	//name := c.Query("name")
-	//path := c.Query("path")
-	//db := c.MustGet("db").(*database.Database)
-	//
-	//newFunction := model.Function{
-	//	Name: name,
-	//	Path: path,
-	//}
-	//var err error
-	//if _, err = newFunction.Save(db); err != nil {
-	//	c.AbortWithError(http.StatusForbidden, err)
-	//} else {
-	//	c.JSON(http.StatusCreated, newFunction)
-	//}
+	queryModule := &model.Module{}
+
+	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryModule.ID = uint(moduleId)
+
+	queryFunction := &model.Function{
+		Name: c.Query("functionName"),
+		Path: c.Query("functionPath"),
+	}
+
+	if function, err := controllers.AddFunction(queryModule, queryFunction); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusCreated, function)
+	}
 }
 
-func listFunction(c *gin.Context) {
-	//db := c.MustGet("db").(*database.Database)
-	//result := database.CbmDb.DB.FindByName(&model.Function{})
-	//if result.Error != nil {
-	//	c.Value(http.StatusNotFound)
-	//}
-	//c.JSON(http.StatusOK, result)
-	//c.String(http.StatusOK, "List of all project")
+func listFunctions(c *gin.Context) {
+	queryModule := &model.Module{}
+
+	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryModule.ID = uint(moduleId)
+
+	if functions, err := controllers.ListFunctions(queryModule); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, functions)
+	}
 }
 
-func findFunction(c *gin.Context) {
-	//name := c.Param(rFunction)
-	//function := model.Function{
-	//	Name: name,
-	//}
-	//
-	//result := database.CbmDb.DB.First(&function)
-	//if result.Error != nil {
-	//	c.Value(http.StatusNotFound)
-	//}
-	//c.JSON(http.StatusOK, result)
-	////c.String(http.StatusOK, "List of all project")
+func findFunctionById(c *gin.Context) {
+	queryFunction := &model.Function{}
+
+	functionId, err := strconv.ParseInt(c.Query("functionId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryFunction.ID = uint(functionId)
+
+	if function, err := controllers.FindFunctionById(queryFunction); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, function)
+	}
+}
+
+func findFunctionByName(c *gin.Context) {
+	queryModule := &model.Module{}
+
+	moduleId, err := strconv.ParseInt(c.Query("functionId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryModule.ID = uint(moduleId)
+
+	queryFunction := &model.Function{
+		Name: c.Param(rFunction),
+	}
+
+	if functions, err := controllers.FindFunctionByName(queryModule, queryFunction); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, functions)
+	}
+}
+
+func updateFunction(c *gin.Context) {
+	queryFunction := &model.Function{}
+
+	functionId, err := strconv.ParseInt(c.Query("functionId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryFunction.ID = uint(functionId)
+
+	updatedFields := &model.Function{
+		Name: c.Query("functionName"),
+		Path: c.Query("functionPath"),
+	}
+
+	if function, err := controllers.UpdateFunction(queryFunction, updatedFields); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, function)
+	}
 }
 
 func deleteFunction(c *gin.Context) {
-	//name := c.Query("name")
-	//path := c.Query("path")
-	//
-	//function := model.Function{
-	//	Name: name,
-	//	Path: path,
-	//}
-	////var err error
-	//
-	//result := database.CbmDb.DB.First(&function)
-	//if result.Error != nil {
-	//	c.Value(http.StatusNotFound)
-	//	return
-	//}
-	//if _, err := function.Delete(database.CbmDb.DB); err != nil {
-	//	c.AbortWithError(http.StatusNotFound, err)
-	//} else {
-	//	c.JSON(http.StatusOK, result)
-	//}
+	queryFunction := &model.Function{}
+
+	functionId, err := strconv.ParseInt(c.Query("functionId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryFunction.ID = uint(functionId)
+	if function, err := controllers.DeleteFunction(queryFunction); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, function)
+	}
 }

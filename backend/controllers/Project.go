@@ -64,6 +64,20 @@ func ListProjects() ([]model.Project, error) {
 	return projects, nil
 }
 
+func DeleteProjectDependencies(project *model.Project) (*model.Project, error) {
+	if modules, err := ListModules(project); err == nil && modules != nil {
+		for _, module := range modules {
+			if _, err := DeleteModuleDependencies(&module); err != nil {
+				return nil, err
+			}
+			if _, err := module.Delete(); err != nil {
+				return nil, err
+			}
+		}
+	}
+	return project, nil
+}
+
 // DeleteProject: Delete a model.Project with given Id.
 //  Return an error if no project found or error in database.Database deletion.
 func DeleteProject(project *model.Project) (*model.Project, error) {
@@ -71,12 +85,8 @@ func DeleteProject(project *model.Project) (*model.Project, error) {
 	if project, err = FindProjectById(project); err != nil {
 		return nil, err
 	}
-	if modules, err := ListModules(project); err == nil && modules != nil {
-		for _, module := range modules {
-			if _, err := module.Delete(); err != nil {
-				return nil, err
-			}
-		}
+	if project, err = DeleteProjectDependencies(project); err != nil {
+		return nil, err
 	}
 	if project, err = project.Delete(); err != nil {
 		return nil, err
