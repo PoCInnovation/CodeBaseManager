@@ -40,13 +40,27 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Start Api
+      env:
+        PORT: 8080
+        GIN_MODE: debug
       run: cd backend && make api-start
 
-    - name: Start Newman
-      uses: matt-ball/newman-action@master
+    - name: Run API Tests
+      id: run-newman
+      uses: anthonyvscode/newman-action@v1
       with:
         collection: backend/tests/Postamn/Cbm-Api.postman_collection.json
         environment: backend/tests/Postamn/Cbm-Api.postman_environment.json
+        reporters: cli
+
+    - name: Output summary to console
+      run: echo ${{ steps.run-api-tests.outputs.summary }}
+#
+#    - name: Start Newman
+#      uses: matt-ball/newman-action@master
+#      with:
+#        collection: backend/tests/Postamn/Cbm-Api.postman_collection.json
+#        environment: backend/tests/Postamn/Cbm-Api.postman_environment.json
 
 
   auto-pull-request:
