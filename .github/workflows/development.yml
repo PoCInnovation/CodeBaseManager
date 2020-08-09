@@ -49,7 +49,7 @@ jobs:
       id: run-newman
       uses: anthonyvscode/newman-action@v1
       with:
-        collection: backend/tests/Postaman/Cbm-Api.postman_collection.json
+        collection: backend/tests/Postman/Cbm-Api.postman_collection.json
         environment: backend/tests/Postman/Cbm-Api.postman_environment.json
         reporters: cli
 
@@ -59,8 +59,8 @@ jobs:
     - name: Start Newman
       uses: matt-ball/newman-action@master
       with:
-        collection: backend/tests/Postamn/Cbm-Api.postman_collection.json
-        environment: backend/tests/Postamn/Cbm-Api.postman_environment.json
+        collection: backend/tests/Postman/Cbm-Api.postman_collection.json
+        environment: backend/tests/Postman/Cbm-Api.postman_environment.json
 
 
   auto-pull-request:
