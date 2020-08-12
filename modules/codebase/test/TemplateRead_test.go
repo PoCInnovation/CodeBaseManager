@@ -9,8 +9,8 @@ import (
 
 type TestConfigFT struct {
 	name, cfgPath string
-	exp codebase.RepoTemplate
-	err error
+	exp           codebase.RepoTemplate
+	err           error
 }
 
 func isContentOk(toPrint string, got []string, exp []string) error {
@@ -54,8 +54,8 @@ func TestNewConfigFT(t *testing.T) {
 			"test.toml",
 			codebase.RepoTemplate{
 				Language: []string{"C", "Go", "Python"},
-				Modules: []string{"parser", "repl", "cmd"},
-				Tests: []string{"tests", "olala", "did_you_see_my_skill?"},
+				Modules:  []string{"parser", "repl", "cmd"},
+				Tests:    []string{"tests", "olala", "did_you_see_my_skill?"},
 			},
 			nil,
 		},

@@ -53,15 +53,6 @@ jobs:
         environment: backend/tests/Postman/Cbm-Api.postman_environment.json
         iterationCount: 5
         reporters: cli
-#
-#    - name: Output summary to console
-#      run: echo ${{ steps.run-api-tests.outputs.summary }}
-
-#    - name: Start Newman
-#      uses: matt-ball/newman-action@master
-#      with:
-#        collection: backend/tests/Postman/Cbm-Api.postman_collection.json
-#        environment: backend/tests/Postman/Cbm-Api.postman_environment.json
 
 
   auto-pull-request:

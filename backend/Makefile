@@ -43,7 +43,7 @@ clean: api-clean-stop
 	@echo "y" | docker system prune
 
 fclean: clean
-	@echo "y" | docker system prune -a --volumes --remove-orphans
+	@echo "y" | docker system prune -a --volumes
 
 restart: api-stop
 restart: clean
