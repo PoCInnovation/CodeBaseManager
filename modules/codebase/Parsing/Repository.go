@@ -65,6 +65,6 @@ func isNotReadable(name string) bool {
 	}
 
 	perm := info.Mode()
-	return info.Size() > 10000 && perm&0111 == 0111
+	return info.Size() > 5000 && perm&0111 == 0111
 	//return info.Size() < 10000 && perm&0111 != 0111
 }

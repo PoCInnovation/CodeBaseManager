@@ -17,35 +17,38 @@ func ProcessModules(moduleList *Components.Repository, module *Components.Module
 	var wg sync.WaitGroup
 
 	for _, target := range targetList {
-		//targetName := target.Name()
-		//newPath := path + "/" + targetName
+		targetName := target.Name()
+		newPath := path + "/" + targetName
 		if target.IsDir() {
-			targetName := target.Name()
-			newPath := path + "/" + targetName
 			if strings.HasPrefix(targetName, ".") {
 				continue
 			}
-			newModule := moduleList.Append(newPath, targetName)
-			wg.Add(1)
-			go func() {
-				ProcessModules(moduleList, newModule, newPath)
-				log.Println("module", targetName, "processed")
-				wg.Done()
-			}()
+			targetIsModule(moduleList, newPath, targetName, &wg)
 		} else {
-			targetName := target.Name()
-			newPath := path + "/" + targetName
 			if isNotReadable(newPath) {
 				continue
 			}
-			newFile := module.Append(newPath, targetName)
-			wg.Add(1)
-			go func() {
-				parseFile(newFile, newPath)
-				wg.Done()
-			}()
+			targetIsFile(module, newPath, targetName, &wg)
 		}
 	}
-
 	wg.Wait()
+}
+
+func targetIsModule(moduleList *Components.Repository, path, name string, wg *sync.WaitGroup) {
+	newModule := moduleList.Append(path, name)
+	wg.Add(1)
+	go func() {
+		ProcessModules(moduleList, newModule, path)
+		log.Println("module", name, "processed")
+		wg.Done()
+	}()
+}
+
+func targetIsFile(module *Components.Module, path, name string, wg *sync.WaitGroup) {
+	newFile := module.Append(path, name)
+	wg.Add(1)
+	go func() {
+		parseFile(newFile, path)
+		wg.Done()
+	}()
 }
