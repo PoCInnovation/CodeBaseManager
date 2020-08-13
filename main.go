@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/PoCFrance/CodeBaseManager/cmd/codebase"
+	"github.com/PoCFrance/CodeBaseManager/modules/codebase/Parsing"
 	"log"
 	"os"
 )
