@@ -4,7 +4,6 @@ import (
 	"strings"
 )
 
-
 func isExit(in string) bool {
 	return len(in) == len("exit") && in == "exit"
 }

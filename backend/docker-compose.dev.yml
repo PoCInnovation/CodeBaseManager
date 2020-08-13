@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  cbm-api:
+    container_name: cbm-Api
+    build: .
+    environment:
+      PORT: 8080
+      GIN_MODE: debug
+      SECRET: 98hbun98h
+    ports:
+      - 8080:8080
+    #      - 5342:5342
+    restart: on-failure
+    volumes:
+      - api:/usr/src/cbm-api/
+
+volumes:
+  api:

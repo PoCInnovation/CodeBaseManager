@@ -25,6 +25,35 @@ jobs:
     - name: Build
       run: go build -v .
 
+  backend-testing:
+    name: Backend Testing
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.14
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.14
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Start Api
+      env:
+        PORT: 8080
+        GIN_MODE: debug
+      run: cd backend && make api-start
+
+    - name: Run API Tests
+      id: run-newman
+      uses: anthonyvscode/newman-action@v1
+      with:
+        collection: backend/tests/Postman/Cbm-Api.postman_collection.json
+        environment: backend/tests/Postman/Cbm-Api.postman_environment.json
+        iterationCount: 5
+        reporters: cli
+
 
   auto-pull-request:
     needs: Build

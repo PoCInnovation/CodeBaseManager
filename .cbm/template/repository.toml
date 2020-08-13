@@ -1,4 +1,5 @@
 Languages = ["C", "Go"]
-Features = 
+Features =
 Modules = ["parser", "repl"]
 Tests = ["tests", "olala"]
+ProjectName="CBM"

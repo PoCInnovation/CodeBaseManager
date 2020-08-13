@@ -8,8 +8,8 @@ const FILEPATH_REPOSITORY = "./.cbm/template/test.toml"
 
 type RepoTemplate struct {
 	Language []string `toml:"Language"`
-	Modules []string `toml:Modules`
-	Tests   []string `toml:Tests`
+	Modules  []string `toml:Modules`
+	Tests    []string `toml:Tests`
 }
 
 func GetTomlRepo(filepath string) (*RepoTemplate, error) {

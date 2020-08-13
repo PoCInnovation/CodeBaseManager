@@ -64,4 +64,3 @@ func (test *FT) GetResults() *ftResult {
 	}
 	return res
 }
-
