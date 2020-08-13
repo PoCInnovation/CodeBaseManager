@@ -3,6 +3,7 @@ package codebase
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -18,7 +19,7 @@ type ProcessFuncGetter interface {
 }
 
 type Appender interface {
-	Append(string)
+	Append(string) RepositoryParser
 }
 
 type RepositoryParser interface {
@@ -28,7 +29,7 @@ type RepositoryParser interface {
 }
 
 type FileParser struct {
-	Files []string
+	Path string
 }
 
 func (f FileParser) isTarget(path string) bool {
@@ -43,20 +44,64 @@ func (f FileParser) isTarget(path string) bool {
 	return true
 }
 
-func (f *FileParser) Append(path string) {
-	f.Files = append(f.Files, path)
+func (f *FileParser) Append(path string) RepositoryParser {
+	//f.Path = append(f.Path, path)
+	return f
 }
 
 func (f *FileParser) getProcessFunc() func(datas RepositoryParser, path string) {
 	return ParseFiles
 }
 
+func (f FileParser) String() string {
+	str := "FileName: " + f.Path
+	return str
+}
+
 type ModuleParser struct {
-	Modules []string
-	Files   []FileParser
+	Path  string
+	Files []FileParser
 }
 
 func (m ModuleParser) isTarget(path string) bool {
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		log.Printf("Error when stating %s, %v\n", path, err)
+		return false
+	}
+	if fileInfo.IsDir() {
+		return false
+	}
+	return true
+}
+
+func (m *ModuleParser) getProcessFunc() func(datas RepositoryParser, path string) {
+	return ParseFiles
+}
+
+func (m *ModuleParser) Append(path string) RepositoryParser {
+	newFile := FileParser{
+		Path: path,
+	}
+	m.Files = append(m.Files, newFile)
+	return &newFile
+}
+
+func (m ModuleParser) String() string {
+	str := fmt.Sprintf("ModuleName: %s", m.Path)
+	for _, file := range m.Files {
+		str += fmt.Sprintf("\t%s\n", file.String())
+		//log.Println(file.String())
+		//str = str + file.String() + "\n"
+	}
+	return str
+}
+
+type RepositoryContent struct {
+	Modules []ModuleParser
+}
+
+func (m RepositoryContent) isTarget(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		log.Printf("Error when stating %s, %v\n", path, err)
@@ -69,31 +114,44 @@ func (m ModuleParser) isTarget(path string) bool {
 	return true
 }
 
-func (m *ModuleParser) getProcessFunc() func(datas RepositoryParser, path string) {
+func (m *RepositoryContent) getProcessFunc() func(datas RepositoryParser, path string) {
 	return repositoryParser
 }
 
-func (m *ModuleParser) Append(path string) {
-	m.Modules = append(m.Modules, path)
+func (m *RepositoryContent) Append(path string) RepositoryParser {
+	newModule := ModuleParser{
+		Path:  path,
+		Files: nil,
+	}
+	m.Modules = append(m.Modules, newModule)
+	return &newModule
 }
 
-type RepositoryContent []ModuleParser
+func (m RepositoryContent) String() string {
+	//line := strings.Repeat("---", 5)
+	//str := line + "\n"
 
-func ParseRepositoryv2(path string) (*ModuleParser, error) {
-	parser := &ModuleParser{
-		Modules: []string{},
-		Files:   []FileParser{},
+	var str string
+	for idx, module := range m.Modules {
+		str += fmt.Sprintf("%d: %s\n", idx+1, module.String())
+	}
+
+	//str += line
+	return str
+}
+
+func ParseRepositoryV2(path string) (*RepositoryContent, error) {
+	parser := &RepositoryContent{
+		Modules: []ModuleParser{},
 	}
 	if !parser.isTarget(path) {
 		return nil, errors.New(path + " is not a valid target")
 	}
-	repositoryParser(parser, path)
+	mod := parser.Append(path)
+	log.Println(mod)
+	repositoryParser(mod, path)
+	//repositoryParser(parser, path)
 
-	for _, module := range parser.Modules {
-		newFileParser := FileParser{Files: []string{}}
-		repositoryParser(&newFileParser, module)
-		parser.Files = append(parser.Files, newFileParser)
-	}
 	return parser, nil
 }
 
@@ -121,27 +179,36 @@ func repositoryParser(datas RepositoryParser, path string) {
 		newName := path + "/" + newPath.Name()
 		if datas.isTarget(newName) {
 			log.Println(newName)
-			datas.Append(newName)
+			newData := datas.Append(newName)
 			wg.Add(1)
 			go func() {
-				processFunc(datas, newName)
+				processFunc(newData, newName)
 				wg.Done()
 			}()
 		}
 	}
 	wg.Wait()
+	log.Println(datas)
 }
 
 func ParseFiles(datas RepositoryParser, path string) {
 	if !datas.isTarget(path) {
-		log.Println(path, " is not a target")
+		log.Println("file ", path, " is not a target")
 		return
 	}
-	content, err := getFile(path)
+	log.Println("file", path, "processed")
+	//datas.Append(path)
+
+	_, err := getFile(path)
 	if err != nil {
 		return
 	}
-	log.Println(content)
+
+	//content, err := getFile(path)
+	//if err != nil {
+	//	return
+	//}
+	//log.Println(content)
 }
 
 func getFile(fileName string) (string, error) {

@@ -8,7 +8,7 @@ import (
 
 func main() {
 	//cmd.Execute()
-	res, err := codebase.ParseRepositoryv2("/work/Projects/Personnal/CodeBaseManager/cmd")
+	res, err := codebase.ParseRepositoryV2("/work/Projects/Personnal/CodeBaseManager/cmd")
 	if err != nil {
 		os.Exit(84)
 	}
