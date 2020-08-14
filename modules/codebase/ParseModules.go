@@ -24,7 +24,7 @@ func ProcessModules(moduleList *Repository, module *Module, path string) {
 			}
 			targetIsModule(moduleList, newPath, targetName, &wg)
 		} else {
-			if isNotReadable(newPath) {
+			if isNotReadable(newPath) || !isSupportedLanguage(newPath) {
 				continue
 			}
 			targetIsFile(module, newPath, targetName, &wg)
@@ -44,6 +44,7 @@ func targetIsModule(moduleList *Repository, path, name string, wg *sync.WaitGrou
 }
 
 func targetIsFile(module *Module, path, name string, wg *sync.WaitGroup) {
+
 	newFile := module.Append(path, name)
 	wg.Add(1)
 	go func() {

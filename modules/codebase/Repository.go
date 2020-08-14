@@ -34,6 +34,27 @@ func (r *Repository) Append(path, name string) *Module {
 	return newModule
 }
 
+func (r *Repository) remove(idx, len int) {
+	r.Modules[idx] = r.Modules[len-1]
+	r.Modules = r.Modules[:len-1]
+}
+
+func (r *Repository) Clean() {
+	stop := false
+main:
+	for !stop {
+		modulesLen := len(r.Modules)
+		for idx, module := range r.Modules {
+			if module.IsEmpty() {
+				r.remove(idx, modulesLen)
+				modulesLen -= 1
+				continue main
+			}
+		}
+		stop = true
+	}
+}
+
 func (r Repository) String() string {
 	var str string
 	for idx, module := range r.Modules {

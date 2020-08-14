@@ -22,6 +22,7 @@ func ParseRepository(path string) (*Repository, error) {
 	}
 	ProcessModules(parser, module, path)
 
+	parser.Clean()
 	return parser, nil
 }
 
