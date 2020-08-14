@@ -8,7 +8,6 @@ services:
       GIN_MODE: release
     ports:
       - ${PORT}:${PORT}
-#      - 5342:5342
     restart: on-failure
     volumes:
       - api:/usr/src/cbm-api/
