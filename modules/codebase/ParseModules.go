@@ -1,13 +1,12 @@
 package codebase
 
 import (
-	Components "github.com/PoCFrance/CodeBaseManager/modules/codebase/Components"
 	"log"
 	"strings"
 	"sync"
 )
 
-func ProcessModules(moduleList *Components.Repository, module *Components.Module, path string) {
+func ProcessModules(moduleList *Repository, module *Module, path string) {
 	targetList, closure := listTargets(path)
 	if targetList == nil {
 		return
@@ -34,7 +33,7 @@ func ProcessModules(moduleList *Components.Repository, module *Components.Module
 	wg.Wait()
 }
 
-func targetIsModule(moduleList *Components.Repository, path, name string, wg *sync.WaitGroup) {
+func targetIsModule(moduleList *Repository, path, name string, wg *sync.WaitGroup) {
 	newModule := moduleList.Append(path, name)
 	wg.Add(1)
 	go func() {
@@ -44,7 +43,7 @@ func targetIsModule(moduleList *Components.Repository, path, name string, wg *sy
 	}()
 }
 
-func targetIsFile(module *Components.Module, path, name string, wg *sync.WaitGroup) {
+func targetIsFile(module *Module, path, name string, wg *sync.WaitGroup) {
 	newFile := module.Append(path, name)
 	wg.Add(1)
 	go func() {
