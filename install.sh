@@ -43,7 +43,8 @@ function writePort() {
 }
 
 function cbmPort() {
-  local wd=$(pwd)
+  local wd
+  wd=$(pwd)
   while true; do
 
     if [[ $CBM_PORT != "" ]]; then echo -e "\n\e[1;94m$CBM_PORT didn't work\e[0m"; fi
@@ -53,7 +54,7 @@ function cbmPort() {
     echo -e "\e[1;94mLaunching CodeBaseManager Backend ...\n\n\e[0m"
 
     if ! writePort; then
-      cd wd || echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m" && exit
+      cd "$wd" || echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m" && exit
       continue
     else break; fi
 
