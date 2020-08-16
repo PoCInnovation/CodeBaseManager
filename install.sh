@@ -52,7 +52,10 @@ function cbmPort() {
     read -r CBM_PORT
     echo -e "\e[1;94mLaunching CodeBaseManager Backend ...\n\n\e[0m"
 
-    if ! writePort; then cd wd; continue; else break; fi
+    if ! writePort; then
+      cd wd || echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m" && exit
+      continue
+    else break; fi
 
   done
   echo -e "\e[1;94mApi Running ... \n\e[0m"
