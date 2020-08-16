@@ -12,6 +12,5 @@ func RegisterCmd(parentCmd *cobra.Command) {
 
 	registerCreate(repoCmd)
 	registerTodos(repoCmd)
-	registerWatch(repoCmd)
 	parentCmd.AddCommand(repoCmd)
 }

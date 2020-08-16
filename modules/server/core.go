@@ -14,10 +14,15 @@ const (
 	ON          = true
 	BackendDir  = ".cbm/backend/"
 	EnvFileName = ".env"
+	LocalUrl    = "http://127.0.0.1"
 )
 
 var State = OFF
 var Port = ""
+
+func GetApiUrl(urlSuffix string) string {
+	return fmt.Sprintf("%s:%s/%s", LocalUrl, Port, urlSuffix)
+}
 
 func GetBackendGlobalDirectory() (string, bool) {
 	home := os.Getenv("HOME")
@@ -59,7 +64,7 @@ func GetServerState() bool {
 			return false
 		}
 	}
-	healthUrl := fmt.Sprintf("http://127.0.0.1:%s/health", Port)
+	healthUrl := fmt.Sprintf("%s:%s/health", LocalUrl, Port)
 	response, err := http.Get(healthUrl)
 	if err != nil || response.StatusCode != http.StatusOK {
 		log.Println(err)
