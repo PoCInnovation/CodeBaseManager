@@ -2,6 +2,6 @@ package repository
 
 import "fmt"
 
-func WatchRepository() {
-	fmt.Println("Watch this repository")
+func WatchRepository(path string) {
+	fmt.Println("Watch this repository:", path)
 }
