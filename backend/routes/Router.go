@@ -7,7 +7,7 @@ import (
 
 const (
 	rModule       = "module"
-	rProject      = "project"
+	RProject      = "project"
 	rFunction     = "function"
 	rType         = "type"
 	rName         = "name"
@@ -22,11 +22,11 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/health", func(c *gin.Context) {
 		c.Status(http.StatusOK)
 	})
-	projects := r.Group("/" + rProject)
+	projects := r.Group("/" + RProject)
 	{
 		projects.GET("/list", listProject)
 		projects.GET("/get", findProjectById)
-		projects.GET("/get/:"+rProject, findProjectByName)
+		projects.GET("/get/:"+RProject, findProjectByName)
 		projects.POST("/add", addProject)
 		projects.PATCH("/update", updateProject)
 		projects.DELETE("/delete", deleteProject)
