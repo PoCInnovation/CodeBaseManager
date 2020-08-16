@@ -41,7 +41,7 @@ jobs:
 
     - name: Start Api
       env:
-        PORT: 8080
+        CBM_PORT: 8080
         GIN_MODE: debug
       run: cd backend && make api-start
 
