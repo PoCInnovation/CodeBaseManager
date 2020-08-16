@@ -37,7 +37,7 @@ function installBackend() {
 }
 
 function writePort() {
-  echo "PORT=$CBM_PORT" >"$CBM_API_ENV_PATH"
+  echo "CBM_PORT=$CBM_PORT" >"$CBM_API_ENV_PATH"
 
   cd "$CBM_GLOBAL_BACKEND_DIR" && make api-clean-stop && make api-start || return 1
 }
