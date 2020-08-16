@@ -19,7 +19,9 @@ const (
 // testing postman
 
 func ApplyRoutes(r *gin.Engine) {
-
+	r.GET("/health", func(c *gin.Context) {
+		c.Status(http.StatusOK)
+	})
 	projects := r.Group("/" + rProject)
 	{
 		projects.GET("/list", listProject)

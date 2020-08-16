@@ -4,10 +4,10 @@ services:
     container_name: cbm-Api
     build: .
     environment:
-      PORT: "${PORT}"
+      PORT: "${CBM_PORT}"
       GIN_MODE: debug
     ports:
-      - ${PORT}:${PORT}
+      - ${CBM_PORT}:${CBM_PORT}
     restart: on-failure
     volumes:
       - api:/usr/src/cbm-api/

@@ -1,18 +1,17 @@
 package codebase
 
 import (
-	Components "github.com/PoCFrance/CodeBaseManager/modules/codebase/Components"
 	"log"
 	"strings"
 	"sync"
 )
 
-func ProcessModules(moduleList *Components.Repository, module *Components.Module, path string) {
+func ProcessModules(moduleList *Repository, module *Module, path string) {
 	targetList, closure := listTargets(path)
+	defer closure()
 	if targetList == nil {
 		return
 	}
-	defer closure()
 
 	var wg sync.WaitGroup
 
@@ -25,7 +24,7 @@ func ProcessModules(moduleList *Components.Repository, module *Components.Module
 			}
 			targetIsModule(moduleList, newPath, targetName, &wg)
 		} else {
-			if isNotReadable(newPath) {
+			if isNotReadable(newPath) || !isSupportedLanguage(newPath) {
 				continue
 			}
 			targetIsFile(module, newPath, targetName, &wg)
@@ -34,17 +33,28 @@ func ProcessModules(moduleList *Components.Repository, module *Components.Module
 	wg.Wait()
 }
 
-func targetIsModule(moduleList *Components.Repository, path, name string, wg *sync.WaitGroup) {
-	newModule := moduleList.Append(path, name)
+func targetIsModule(moduleList *Repository, path, name string, wg *sync.WaitGroup) {
+	newModule := &Module{
+		Path:  path,
+		Name:  name,
+		Files: nil,
+	}
+	//newModule := moduleList.Append(path, name)
 	wg.Add(1)
 	go func() {
 		ProcessModules(moduleList, newModule, path)
-		log.Println("module", name, "processed")
+		if !newModule.IsEmpty() {
+			moduleList.Modules = append(moduleList.Modules, newModule)
+			log.Println("module", name, "processed and added")
+		} else {
+			log.Println("module", name, "processed but not added")
+		}
 		wg.Done()
 	}()
 }
 
-func targetIsFile(module *Components.Module, path, name string, wg *sync.WaitGroup) {
+func targetIsFile(module *Module, path, name string, wg *sync.WaitGroup) {
+
 	newFile := module.Append(path, name)
 	wg.Add(1)
 	go func() {

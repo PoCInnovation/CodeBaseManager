@@ -2,27 +2,27 @@ package codebase
 
 import (
 	"errors"
-	Components "github.com/PoCFrance/CodeBaseManager/modules/codebase/Components"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-func ParseRepositoryV2(path string) (*Components.Repository, error) {
+func ParseRepository(path string) (*Repository, error) {
 	path = strings.TrimSuffix(path, "/")
 	if !isDir(path) {
 		return nil, errors.New(path + " is not a valid target")
 	}
-	module := &Components.Module{
+	module := &Module{
 		Path: path,
 		Name: filepath.Base(path),
 	}
-	parser := &Components.Repository{
-		Modules: []*Components.Module{module},
+	parser := &Repository{
+		Modules: []*Module{module},
 	}
 	ProcessModules(parser, module, path)
 
+	parser.Clean()
 	return parser, nil
 }
 
@@ -63,8 +63,7 @@ func isNotReadable(name string) bool {
 	if err != nil {
 		return true
 	}
-
 	perm := info.Mode()
-	return info.Size() > 5000 && perm&0111 == 0111
+	return info.Size() > 2000 && perm&0111 == 0111
 	//return info.Size() < 10000 && perm&0111 != 0111
 }

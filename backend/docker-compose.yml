@@ -4,11 +4,10 @@ services:
     container_name: cbm-Api
     build: .
     environment:
-      PORT: "${PORT}"
+      PORT: "${CBM_PORT}"
       GIN_MODE: release
     ports:
-      - ${PORT}:${PORT}
-#      - 5342:5342
+      - ${CBM_PORT}:${CBM_PORT}
     restart: on-failure
     volumes:
       - api:/usr/src/cbm-api/

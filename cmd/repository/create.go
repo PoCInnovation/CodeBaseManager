@@ -10,11 +10,11 @@ func registerCreate(parentCmd *cobra.Command) {
 		Use:   "create <github link>",
 		Short: "Create your project repository based on the given template.",
 		Run: func(_ *cobra.Command, args []string) {
-			repository.CreateRepository(args[0])
+			repository.CreateRepository(args)
 		},
 	}
 
-	createCmd.Args = cobra.ExactArgs(1)
+	createCmd.Args = cobra.RangeArgs(1, 2)
 
 	parentCmd.AddCommand(createCmd)
 }
