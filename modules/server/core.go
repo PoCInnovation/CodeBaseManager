@@ -20,7 +20,7 @@ const (
 var State = OFF
 var Port = ""
 
-func GetNewRequest(urlSuffix string) string {
+func GetApiUrl(urlSuffix string) string {
 	return fmt.Sprintf("%s:%s/%s", LocalUrl, Port, urlSuffix)
 }
 

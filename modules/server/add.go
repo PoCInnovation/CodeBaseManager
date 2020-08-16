@@ -26,7 +26,7 @@ func Add(repoName string) {
 }
 
 func addNewProject(repoName, repoPath string) {
-	url := GetNewRequest("project/add")
+	url := GetApiUrl("project/add")
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatal(err)
