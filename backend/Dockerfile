@@ -55,7 +55,7 @@ COPY --from=builder /app/main .
 
 # Expose port 8080 to the outside world
 #EXPOSE 8080
-EXPOSE $PORT
+EXPOSE $CBM_PORT
 
 #Command to run the executable
 #CMD ["./main"]
