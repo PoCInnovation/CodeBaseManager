@@ -28,7 +28,6 @@ func CreateRepository(args []string) {
 		return
 	}
 	server.Add(repo)
-	//watchRepo(repo)
 }
 
 func cloneRepo(cmd []string) error {

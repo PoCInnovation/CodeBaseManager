@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -9,31 +10,41 @@ import (
 )
 
 const (
-	OFF = false
-	ON  = true
+	OFF         = false
+	ON          = true
+	BackendDir  = ".cbm/backend/"
+	EnvFileName = ".env"
 )
 
 var State = OFF
 var Port = ""
 
-func getServerPort() bool {
+func GetBackendGlobalDirectory() (string, bool) {
 	home := os.Getenv("HOME")
 	if home == "" {
 		log.Println("cannot load HOME environnement variable.")
+		return "", false
+	}
+	var backendDir string
+	if strings.HasSuffix(home, "/") {
+		backendDir = home + BackendDir
+	} else {
+		backendDir = home + "/" + BackendDir
+	}
+	return backendDir, true
+}
+
+func getServerPort() bool {
+	backendDir, ok := GetBackendGlobalDirectory()
+	if !ok {
 		return false
 	}
-	var portFile string
-	if strings.HasSuffix(home, "/") {
-		portFile = home + ".cbm/backend/.env"
-	} else {
-		portFile = home + "/.cbm/backend/.env"
-	}
+	portFile := backendDir + EnvFileName
 	err := godotenv.Load(portFile)
 	if err != nil {
 		log.Println(err)
 		return false
 	}
-	log.Println(portFile)
 	Port = os.Getenv("CBM_PORT")
 	if Port == "" {
 		log.Println("cannot load CBM_PORT environnement variable.")
@@ -48,12 +59,13 @@ func GetServerState() bool {
 			return false
 		}
 	}
-	_, err := http.Get("http://127.0.0.1:8080/join")
-	if err != nil {
+	healthUrl := fmt.Sprintf("http://127.0.0.1:%s/health", Port)
+	response, err := http.Get(healthUrl)
+	if err != nil || response.StatusCode != http.StatusOK {
 		log.Println(err)
 		State = OFF
-	} else {
-		State = ON
+		return State
 	}
+	State = ON
 	return State
 }
