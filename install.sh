@@ -45,8 +45,8 @@ function writePort() {
 function cbmPort() {
   local wd
   wd=$(pwd)
-  while true; do
 
+  while true; do
     if [[ $CBM_PORT != "" ]]; then echo -e "\n\e[1;94m$CBM_PORT didn't work\e[0m"; fi
 
     echo -e "\e[1;94mPlease enter a valid port on which Cbm Backend could run:\e[0m"
@@ -56,9 +56,12 @@ function cbmPort() {
     if ! writePort; then
       cd "$wd" || echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m" && exit
       continue
-    else break; fi
-
+    else
+      break
+    fi
   done
+
+  cd "$wd" || exit 1
   echo -e "\e[1;94mApi Running ... \n\e[0m"
 }
 
@@ -69,10 +72,12 @@ function installCbm() {
     echo "CodeBaseManager Couldn't build"
     exit 1
   fi
+
   echo -e "\e[1;94mMoving CBM to /usr/bin\e[0m"
   sudo mv cbm /usr/bin/
 
   validateHome
+
   if ! installBackend; then
     echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m"
     exit 1
