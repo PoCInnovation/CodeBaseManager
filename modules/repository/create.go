@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"github.com/PoCFrance/CodeBaseManager/modules/server"
 	"os"
 	"os/exec"
 	"path"
@@ -26,7 +27,8 @@ func CreateRepository(args []string) {
 	if err := cloneRepo(args); err != nil {
 		return
 	}
-	watchRepo(repo)
+	server.Add(repo)
+	//watchRepo(repo)
 }
 
 func cloneRepo(cmd []string) error {
@@ -37,19 +39,4 @@ func cloneRepo(cmd []string) error {
 		return err
 	}
 	return nil
-}
-
-func watchRepo(repo string) {
-	//actualPath, err := os.Getwd()
-	//if err := os.Chdir("./" + repo); err != nil {
-	//	log.Println(err)
-	//	return
-	//}
-	//defer func() {
-	//	if err := os.Chdir("./" + repo); err != nil {
-	//		log.Println(err)
-	//		return
-	//	}
-	//}()
-	WatchRepository(repo)
 }

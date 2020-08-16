@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/modules/repository"
+	"github.com/PoCFrance/CodeBaseManager/modules/server"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -18,11 +18,8 @@ func registerWatch(parentCmd *cobra.Command) {
 		Use:   "watch",
 		Short: "Tell CodeBaseManager to silently watch this repository.",
 		Run: func(_ *cobra.Command, args []string) {
-			repository.WatchRepository(actualPath)
+			server.Add(actualPath)
 		},
 	}
-
-	//createCmd.Args = cobra.ExactArgs(1)
-
 	parentCmd.AddCommand(watchCmd)
 }
