@@ -47,7 +47,6 @@ main:
 		for idx, module := range r.Modules {
 			if module.IsEmpty() {
 				r.remove(idx, modulesLen)
-				modulesLen -= 1
 				continue main
 			}
 		}

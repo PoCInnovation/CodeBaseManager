@@ -8,10 +8,10 @@ import (
 
 func ProcessModules(moduleList *Repository, module *Module, path string) {
 	targetList, closure := listTargets(path)
+	defer closure()
 	if targetList == nil {
 		return
 	}
-	defer closure()
 
 	var wg sync.WaitGroup
 
@@ -34,11 +34,21 @@ func ProcessModules(moduleList *Repository, module *Module, path string) {
 }
 
 func targetIsModule(moduleList *Repository, path, name string, wg *sync.WaitGroup) {
-	newModule := moduleList.Append(path, name)
+	newModule := &Module{
+		Path:  path,
+		Name:  name,
+		Files: nil,
+	}
+	//newModule := moduleList.Append(path, name)
 	wg.Add(1)
 	go func() {
 		ProcessModules(moduleList, newModule, path)
-		log.Println("module", name, "processed")
+		if !newModule.IsEmpty() {
+			moduleList.Modules = append(moduleList.Modules, newModule)
+			log.Println("module", name, "processed and added")
+		} else {
+			log.Println("module", name, "processed but not added")
+		}
 		wg.Done()
 	}()
 }
