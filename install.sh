@@ -1,14 +1,5 @@
 #!/usr/bin/env bash
 
-echo -e "\e[1;94mBuilding CBM...\e[0m"
-go build -o cbm main.go
-if [[ $? != 0 ]]; then
-  echo "CodeBaseManager Couldn't build"
-  exit 1
-fi
-echo -e "\e[1;94mMoving CBM to /usr/bin\e[0m"
-sudo mv cbm /usr/bin/
-
 USER_HOME=""
 CBM_DIRNAME=".cbm"
 CBM_GLOBAL_PATH=""
@@ -39,15 +30,20 @@ function installBackend() {
   CBM_GLOBAL_BACKEND_DIR="$CBM_GLOBAL_PATH/$CBM_BACKEND_DIR"
   CBM_API_ENV_PATH="$CBM_GLOBAL_PATH/$CBM_BACKEND_DIR/$CBM_API_ENV_FILENAME"
 
+  echo -e "\e[1;94mRemoving directory: $CBM_GLOBAL_BACKEND_DIR\e[0m"
   rm -rfd "$CBM_GLOBAL_BACKEND_DIR"
+  echo -e "\e[1;94mInstalling CodeBaseManager Backend in $CBM_GLOBAL_BACKEND_DIR\e[0m"
   cp -r "$CBM_BACKEND_DIR" "$CBM_GLOBAL_BACKEND_DIR"
+}
+
+function writePort() {
   echo "PORT=$CBM_PORT" >"$CBM_API_ENV_PATH"
 
-  cd "$CBM_GLOBAL_BACKEND_DIR" && make api-clean-stop && make api-start
+  cd "$CBM_GLOBAL_BACKEND_DIR" && make api-clean-stop && make api-start || return 1
 }
 
 function cbmPort() {
-
+  local wd=$(pwd)
   while true; do
 
     if [[ $CBM_PORT != "" ]]; then echo -e "\n\e[1;94m$CBM_PORT didn't work\e[0m"; fi
@@ -56,13 +52,30 @@ function cbmPort() {
     read -r CBM_PORT
     echo -e "\e[1;94mLaunching CodeBaseManager Backend ...\n\n\e[0m"
 
-    if ! installBackend; then continue; else break; fi
+    if ! writePort; then cd wd; continue; else break; fi
 
   done
   echo -e "\e[1;94mApi Running ... \n\e[0m"
 }
 
-validateHome
-cbmPort
+function installCbm() {
+  echo -e "\e[1;94mBuilding CBM...\e[0m"
+  go build -o cbm main.go
+  if [[ $? != 0 ]]; then
+    echo "CodeBaseManager Couldn't build"
+    exit 1
+  fi
+  echo -e "\e[1;94mMoving CBM to /usr/bin\e[0m"
+  sudo mv cbm /usr/bin/
 
-echo -e "\e[1;94mCodebase manager Successfully Installed !!\n\n\e[0m"
+  validateHome
+  if ! installBackend; then
+    echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m"
+    exit 1
+  fi
+
+  cbmPort
+  echo -e "\e[1;94mCodebase manager Successfully Installed !!\n\n\e[0m"
+}
+
+installCbm
