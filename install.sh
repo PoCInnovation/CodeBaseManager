@@ -26,6 +26,14 @@ function validateHome() {
   done
 }
 
+function copyConfigs() {
+    FILES=("watcher" "func-test")
+
+    for file in ${FILES[*]}; do
+        cp "$CBM_DIRNAME/$file.toml" "$CBM_GLOBAL_PATH"
+    done
+}
+
 function installBackend() {
   CBM_GLOBAL_BACKEND_DIR="$CBM_GLOBAL_PATH/$CBM_BACKEND_DIR"
   CBM_API_ENV_PATH="$CBM_GLOBAL_PATH/$CBM_BACKEND_DIR/$CBM_API_ENV_FILENAME"
@@ -42,7 +50,7 @@ function writePort() {
   cd "$CBM_GLOBAL_BACKEND_DIR" && make api-clean-stop && make api-start || return 1
 }
 
-function cbmPort() {
+function getPortCBM() {
   local wd
   wd=$(pwd)
 
@@ -77,13 +85,14 @@ function installCbm() {
   sudo mv cbm /usr/bin/
 
   validateHome
-
+  copyConfigs
+  exit 
   if ! installBackend; then
     echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m"
     exit 1
   fi
 
-  cbmPort
+  getPortCBM
   echo -e "\e[1;94mCodebase manager Successfully Installed !!\n\n\e[0m"
 }
 

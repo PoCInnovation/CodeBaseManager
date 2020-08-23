@@ -19,4 +19,4 @@ events = ["all"]
 
 # Can be used as global & local config
 # Tells the watcher to ignore the given patterns
-ignore = [".git", "*.yolo"]
+ignore = [".git", "*.idea", ".vscode"]
