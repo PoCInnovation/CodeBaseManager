@@ -86,7 +86,7 @@ function installCbm() {
 
   validateHome
   copyConfigs
-  exit 
+
   if ! installBackend; then
     echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m"
     exit 1
