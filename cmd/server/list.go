@@ -16,5 +16,4 @@ func registerList(parent *cobra.Command) {
 
 	cmd.Args = cobra.ExactArgs(0)
 	parent.AddCommand(cmd)
-
 }

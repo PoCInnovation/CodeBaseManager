@@ -16,6 +16,7 @@ const (
 
 func CreateRepository(args []string) {
 	var repo string
+
 	if len(args) == 1 {
 		fmt.Printf("Creating repo based on: %s\n", args[url])
 		repo = strings.TrimSuffix(path.Base(args[url]), ".git")
@@ -23,15 +24,17 @@ func CreateRepository(args []string) {
 		fmt.Printf("Creating repo based on: %s in %s\n", args[url], args[dir])
 		repo = args[dir]
 	}
-	args = append([]string{"clone"}, args...)
+
 	if err := cloneRepo(args); err != nil {
 		return
 	}
+
 	server.Add(repo)
 }
 
 func cloneRepo(cmd []string) error {
-	execCmd := exec.Command("git", cmd...)
+	args := append([]string{"clone"}, cmd...)
+	execCmd := exec.Command("git", args...)
 	execCmd.Stdout = os.Stdout
 	execCmd.Stderr = os.Stderr
 	if err := execCmd.Run(); err != nil {
