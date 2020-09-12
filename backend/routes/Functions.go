@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// TODO: DOC
 func addFunction(c *gin.Context) {
 	queryModule := &model.Module{}
 

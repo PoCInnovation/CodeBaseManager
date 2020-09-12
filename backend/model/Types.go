@@ -11,6 +11,7 @@ type Type struct {
 	Path string `gorm:"size:255;not null;unique" json:"path"`
 }
 
+// TODO: DOC and ROUTE request
 func (t *Type) Save(db *database.Database) (*Type, error) {
 	if err := db.DB.Create(&t).Error; err != nil {
 		return &Type{}, err

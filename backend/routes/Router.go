@@ -26,6 +26,7 @@ func ApplyRoutes(r *gin.Engine) {
 	{
 		projects.GET("/list", listProject)
 		projects.GET("/get", findProjectById)
+		projects.GET("/getByPath", findProjectByPath)
 		projects.GET("/get/:"+RProject, findProjectByName)
 		projects.POST("/add", addProject)
 		projects.PATCH("/update", updateProject)
@@ -35,6 +36,7 @@ func ApplyRoutes(r *gin.Engine) {
 	{
 		modules.GET("/list", listModules)
 		modules.GET("/get", findModuleById)
+		modules.GET("/getByPath", findModuleByPath)
 		modules.GET("/get/:"+rModule, findModuleByName)
 		modules.POST("/add", addModule)
 		modules.PATCH("/update", updateModule)

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// TODO: DOC
 func addType(c *gin.Context) {
 	//name := c.Query("name")
 	//path := c.Query("path")

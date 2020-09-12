@@ -10,7 +10,7 @@ import (
 type Module struct {
 	gorm.Model
 	Name      string `gorm:"size:255;not null" json:"name"`
-	Path      string `gorm:"size:255;not null" json:"path"`
+	Path      string `gorm:"size:255;not null;unique" json:"path"`
 	ProjectID uint
 	Functions []Function `json:"functions"`
 	Types     []Type     `json:"types"`
@@ -25,7 +25,7 @@ func ListModules(project *Project) (modules []Module, err error) {
 	return modules, nil
 }
 
-// Find: Search for given Module.Name in database.Database with associated Project ID.
+// FindByName: Search for given Module.Name in database.Database with associated Project ID.
 func (m *Module) FindByName(project *Project) (modules []Module, err error) {
 	if err = database.BackendDB.DB.Model(project).Related(&modules).Where("name = ? ", m.Name).Error; err != nil {
 		log.Print(err)
@@ -34,7 +34,16 @@ func (m *Module) FindByName(project *Project) (modules []Module, err error) {
 	return modules, nil
 }
 
-// Find: Search for given Module ID in database.Database with associated Project ID.
+// FindByPath: Search for given Module.Path in database.Database with associated Module Path.
+func (m *Module) FindByPath() (modules []Module, err error) {
+	if err = database.BackendDB.DB.Model(m).Where("path = ? ", m.Path).Error; err != nil {
+		log.Print(err)
+		return nil, err
+	}
+	return modules, nil
+}
+
+// FindById: Search for given Module ID in database.Database with associated Module ID.
 func (m *Module) FindById() (modules []Module, err error) {
 	if err = database.BackendDB.DB.Model(m).Where("id = ?", m.ID).First(m).Error; err != nil {
 		log.Print(err)

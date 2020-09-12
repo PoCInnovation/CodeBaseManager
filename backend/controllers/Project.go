@@ -24,6 +24,15 @@ func FindProjectByName(project *model.Project) (projects []model.Project, err er
 	return projects, nil
 }
 
+// FindProjectByPath : search for model.Project with FindByPath method.
+//  Return an error if no project found or error in database.Database query.
+func FindProjectByPath(project *model.Project) (*model.Project, error) {
+	if _, err := project.FindByPath(); err != nil {
+		return nil, errors.New(fmt.Sprintf("project with path {%s} not found", project.Path))
+	}
+	return project, nil
+}
+
 // FindProjectById : search for model.Project with model.Project FindById method.
 //  Return an error if no project found or error in database.Database query.
 func FindProjectById(project *model.Project) (*model.Project, error) {
@@ -78,7 +87,7 @@ func DeleteProjectDependencies(project *model.Project) (*model.Project, error) {
 	return project, nil
 }
 
-// DeleteProject: Delete a model.Project with given Id.
+// DeleteProject: Delete a model.Project with given Id with it's dependencies.
 //  Return an error if no project found or error in database.Database deletion.
 func DeleteProject(project *model.Project) (*model.Project, error) {
 	var err error

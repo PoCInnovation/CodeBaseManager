@@ -4,18 +4,17 @@ import (
 	"cbm-api/controllers"
 	"cbm-api/model"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"strconv"
 )
 
+// addProject: Call controllers.AddProject with projectName and projectPath Query params.
+// Abort when error occurs.
 func addProject(c *gin.Context) {
-	log.Println(c.Request.Form)
 	newProject := &model.Project{
 		Name: c.Query("projectName"),
 		Path: c.Query("projectPath"),
 	}
-	log.Println(newProject)
 	if project, err := controllers.AddProject(newProject); err != nil {
 		_ = c.AbortWithError(InternalError, err)
 	} else {
@@ -23,6 +22,8 @@ func addProject(c *gin.Context) {
 	}
 }
 
+// listProject: Call controllers.ListProject.
+// Abort when error occurs.
 func listProject(c *gin.Context) {
 	if projects, err := controllers.ListProjects(); err != nil {
 		_ = c.AbortWithError(InternalError, err)
@@ -31,6 +32,8 @@ func listProject(c *gin.Context) {
 	}
 }
 
+// findProjectByName: Call controllers.FindProjectByName with URL param.
+// Abort when error occurs.
 func findProjectByName(c *gin.Context) {
 	queryProject := &model.Project{
 		Name: c.Param(RProject),
@@ -42,6 +45,21 @@ func findProjectByName(c *gin.Context) {
 	}
 }
 
+// findProjectByPath: Call controllers.FindProjectByPath with projectPath Query param.
+// Abort when error occurs.
+func findProjectByPath(c *gin.Context) {
+	queryProject := &model.Project{
+		Path: c.Query("projectPath"),
+	}
+	if project, err := controllers.FindProjectByPath(queryProject); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, project)
+	}
+}
+
+// findProjectById: Call controllers.FindProjectById with projectId Query param.
+// Abort when error occurs.
 func findProjectById(c *gin.Context) {
 	queryProject := &model.Project{}
 
@@ -58,6 +76,8 @@ func findProjectById(c *gin.Context) {
 	}
 }
 
+// updateProject: Call controllers.UpdateProject with projectId Query param.
+// Abort when error occurs.
 func updateProject(c *gin.Context) {
 	queryProject := &model.Project{}
 
@@ -79,6 +99,8 @@ func updateProject(c *gin.Context) {
 	}
 }
 
+// deleteProject: Call controllers.DeleteProject with projectId Query param.
+// Abort when error occurs.
 func deleteProject(c *gin.Context) {
 	queryProject := &model.Project{}
 

@@ -9,10 +9,10 @@ import (
 // Project: Typedef for Project model in database.Database
 type Project struct {
 	gorm.Model          // gorm.Model:
-	Name       string   `gorm:"size:255;not null" json:"name"` // Name: name of the Project
-	Path       string   `gorm:"size:255;not null" json:"path"` // Path: Path of the Project
-	Modules    []Module `json:"modules"`                       // Modules: List of Project's related Module
-	Todos      []Todo   `json:"todo"`                          // Todos: List of Project's related Todo
+	Name       string   `gorm:"size:255;not null" json:"name"`        // Name: name of the Project
+	Path       string   `gorm:"size:255;not null;unique" json:"path"` // Path: Path of the Project
+	Modules    []Module `json:"modules"`                              // Modules: List of Project's related Module
+	Todos      []Todo   `json:"todo"`                                 // Todos: List of Project's related Todo
 }
 
 // ListProjects: Return list of all Project from database.Database
@@ -31,6 +31,15 @@ func (p *Project) FindByName() (projects []Project, err error) {
 		return nil, err
 	}
 	return projects, nil
+}
+
+// FindByPath: Search for list of Project in database.Database with Project.Path
+func (p *Project) FindByPath() (*Project, error) {
+	if err := database.BackendDB.DB.Where("path = ?", p.Path).First(p).Error; err != nil {
+		log.Print(err)
+		return nil, err
+	}
+	return p, nil
 }
 
 // FindById: Search for list of Project in database.Database with Project ID
