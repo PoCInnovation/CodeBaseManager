@@ -17,7 +17,7 @@ It will have a backend to hold informations about the codebase, build system and
 
 ```
 cbm module [command]
-# or
+or
 cbm help
 ```
 
