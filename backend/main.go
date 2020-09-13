@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cbm-api/routes"
+	"github.com/PoCFrance/CodeBaseManager/backend/routes"
 	"log"
 )
 

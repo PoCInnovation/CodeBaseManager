@@ -1,7 +1,7 @@
 package codebase_test
 
 import (
-	"cbm-api/codebase"
+	"github.com/PoCFrance/CodeBaseManager/backend/codebase"
 	"errors"
 	"fmt"
 	"testing"
