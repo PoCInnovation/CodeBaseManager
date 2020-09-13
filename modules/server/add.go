@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 )
 
+// Add: Check server state and Prepare repository path before calling addNewProject
 func Add(repoName string) {
 	if !GetServerState() {
 		log.Fatal("CodeBaseManager Backend not started")
@@ -23,8 +24,10 @@ func Add(repoName string) {
 	addNewProject(repoName, repoPath)
 }
 
+// addNewProject: Send Request to add Project in API.
 func addNewProject(repoName, repoPath string) {
 	url := GetApiUrl("project/add")
+	// TODO/ Change to post method ?
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatal(err)

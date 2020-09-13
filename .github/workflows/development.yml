@@ -43,7 +43,7 @@ jobs:
       env:
         CBM_PORT: 8080
         GIN_MODE: debug
-      run: cd backend && echo "CBM_PORT=8080" > .env && make api-start
+      run: cd backend && make api-start
 
     - name: Run API Tests
       id: run-newman

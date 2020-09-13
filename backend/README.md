@@ -14,7 +14,7 @@ It receives requests by CBM-Watcher to keep track of changes in watched Reposito
 
 This module is being launch directly during installation, on a Port chosen by the user.
 
-It is not yet started with a service via systemctl, but the user can launch it manually with CLI:
+It is not yet started with a systemctl service, but the user can launch it manually with CLI:
 
 ```bash
     cbm server start
