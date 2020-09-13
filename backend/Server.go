@@ -1,8 +1,8 @@
 package main
 
 import (
-	"cbm-api/database"
-	"cbm-api/model"
+	"github.com/PoCFrance/CodeBaseManager/backend/database"
+	"github.com/PoCFrance/CodeBaseManager/backend/model"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"

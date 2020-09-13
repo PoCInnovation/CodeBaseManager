@@ -1,10 +1,22 @@
 package main
 
 import (
-    "cbm-watcher/watcher"
-    "log"
-    "time"
+	"github.com/PoCFrance/CodeBaseManager/watcher/watcher"
+	"log"
+	"time"
 )
+
+func main() {
+	if err := watcher.NewWatcher(); err != nil {
+		log.Fatalln(err)
+	}
+	for {
+		if err := watcher.GetProjectList(); err != nil {
+			log.Println(err)
+		}
+		time.Sleep(1 * time.Second)
+	}
+}
 
 // Documentation on notify: https://godoc.org/github.com/rjeczalik/notify#example-Watch--LinuxMove
 //
@@ -90,15 +102,3 @@ import (
 //        }
 //    }
 //}
-
-func main() {
-    if err := watcher.NewWatcher(); err != nil {
-        log.Fatalln(err)
-    }
-    for {
-        if err := watcher.GetProjectList(); err != nil {
-            log.Println(err)
-        }
-        time.Sleep(1 * time.Second)
-    }
-}
