@@ -11,7 +11,6 @@ type Todo struct {
 	Path string `gorm:"size:255;not null" json:"path"`
 }
 
-// TODO: DOC and ROUTE request
 func (t *Todo) Save(db *database.Database) (*Todo, error) {
 	if err := db.DB.Create(&t).Error; err != nil {
 		return &Todo{}, err

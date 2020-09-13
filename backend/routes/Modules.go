@@ -93,7 +93,7 @@ func findModuleByName(c *gin.Context) {
 // Abort when error occurs.
 func findModuleByPath(c *gin.Context) {
 	queryModule := &model.Module{
-		Name: c.Query("modulePath"),
+		Path: c.Query("modulePath"),
 	}
 
 	if modules, err := controllers.FindModuleByPath(queryModule); err != nil {
@@ -103,6 +103,8 @@ func findModuleByPath(c *gin.Context) {
 	}
 }
 
+// updateModule: Call controllers.UpdateProject with moduleId Query param.
+// Abort when error occurs.
 func updateModule(c *gin.Context) {
 	queryModule := &model.Module{}
 
@@ -124,6 +126,8 @@ func updateModule(c *gin.Context) {
 	}
 }
 
+// deleteModule: Call controllers.DeleteModule with moduleId Query param.
+// Abort when error occurs.
 func deleteModule(c *gin.Context) {
 	queryModule := &model.Module{}
 
