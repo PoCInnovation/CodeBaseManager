@@ -1,7 +1,6 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -38,14 +37,11 @@ func addNewProject(repoName, repoPath string) {
 
 	resp, err := http.PostForm(req.URL.String(), q)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
-	//var res map[string]interface{}
-	var res map[string]interface{}
-
-	json.NewDecoder(resp.Body).Decode(&res)
-
-	fmt.Println(res)
-	fmt.Println(res["name"])
-	fmt.Println(res["path"])
+	if resp.StatusCode != http.StatusCreated {
+		log.Println("Post request failed:", resp.Body)
+		return
+	}
 }
