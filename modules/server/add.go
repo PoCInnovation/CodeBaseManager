@@ -21,7 +21,6 @@ func Add(repoName string) {
 	repoPath := filepath.Clean(actualPath + "/" + repoName)
 	fmt.Println("Adding:", repoName)
 	fmt.Println("Path:", repoPath)
-	fmt.Println("[WIP]", GetServerState())
 	addNewProject(repoName, repoPath)
 }
 

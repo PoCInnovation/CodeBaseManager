@@ -11,6 +11,7 @@ services:
     restart: on-failure
     volumes:
       - api:/usr/src/cbm-api/
+      - ${HOME}/.cbm/watcher.toml:/watcher.toml
 
 volumes:
   api:

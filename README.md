@@ -17,7 +17,7 @@ It will have a backend to hold informations about the codebase, build system and
 
 ```
 cbm module [command]
-# or
+or
 cbm help
 ```
 
@@ -32,7 +32,7 @@ A module fills up a specific task. In the future they will be able to interact w
 |:------------------------------------------:|:-----------:|:-------:|:-----:|
 |[server](/modules/server/README.md)         | Allows you to interact with CBM's backend | none    | no |
 |[repository](/modules/repository/README.md) | Provides helpers for the organization of the repository (as well as project) |none    | no |
-|[codebase](/modules/codebase/README.md)     | Allows to find informations about the codebase  |none    | yes |
+|[codebase](/backend/codebase/README.md)     | Allows to find informations about the codebase  |none    | yes |
 |[functional-tests](/modules/funcTests/README.md) | Allows to test a binary through the use of [TOML](https://github.com/toml-lang/toml) files to describe tests |"ft" | yes |
 
 ### Predicted
