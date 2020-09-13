@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"cbm-api/model"
+	"github.com/PoCFrance/CodeBaseManager/backend/model"
 	"errors"
 	"fmt"
 )

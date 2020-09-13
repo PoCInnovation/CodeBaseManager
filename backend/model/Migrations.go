@@ -1,7 +1,7 @@
 package model
 
 import (
-	"cbm-api/database"
+	"github.com/PoCFrance/CodeBaseManager/backend/database"
 )
 
 // MigrateModels: Use gorm to make database.Database necessary migrations.

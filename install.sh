@@ -74,19 +74,33 @@ function getPortCBM() {
 }
 
 function installCbm() {
-  echo -e "\e[1;94mBuilding CBM...\e[0m"
-  go build -o cbm main.go
+  # Installing the CLI
+  echo -e "\e[1;94mBuilding CodeBaseManager(cli)...\e[0m"
+  go build -o cbm cli/main.go
   if [[ $? != 0 ]]; then
-    echo "CodeBaseManager Couldn't build"
+    echo "CodeBaseManager(cli) couldn't build"
+    exit 1
+  fi
+
+  echo -e "\e[1;94mMoving CodeBaseManager(cli) to /usr/bin\e[0m"
+  sudo mv cbm /usr/bin/
+
+  # Installing the Watcher
+  echo -e "\e[1;94mBuilding CodeBaseManager(watcher)...\e[0m"
+  go build -o cbm-watcher watcher/main.go
+  if [[ $? != 0 ]]; then
+    echo "CodeBaseManager(watcher) Couldn't build"
     exit 1
   fi
 
   echo -e "\e[1;94mMoving CBM to /usr/bin\e[0m"
   sudo mv cbm /usr/bin/
 
+  # Preping home directory
   validateHome
   copyConfigs
 
+  # Installing backend
   if ! installBackend; then
     echo -e "\e[1;94mProblem with CodebaseManager installation.\e[0m"
     exit 1

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"cbm-api/controllers"
-	"cbm-api/model"
+	"github.com/PoCFrance/CodeBaseManager/backend/controllers"
+	"github.com/PoCFrance/CodeBaseManager/backend/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
