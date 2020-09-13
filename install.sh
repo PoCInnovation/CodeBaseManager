@@ -41,7 +41,8 @@ function installBackend() {
     echo -e "\e[1;94mRemoving directory: $CBM_GLOBAL_BACKEND_DIR\e[0m"
     rm -rfd "$CBM_GLOBAL_BACKEND_DIR"
     echo -e "\e[1;94mInstalling CodeBaseManager Backend in $CBM_GLOBAL_BACKEND_DIR\e[0m"
-    cp -r "$CBM_BACKEND_DIR" "$CBM_GLOBAL_BACKEND_DIR"
+    mkdir -p "$CBM_GLOBAL_BACKEND_DIR"
+    cp -r "$CBM_BACKEND_DIR"/* go.mod go.sum "$CBM_GLOBAL_BACKEND_DIR"
 }
 
 function writePort() {
