@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+// addModule: Call controllers.AddModule with projectId, moduleName and modulePath Query params.
+// Abort when error occurs.
 func addModule(c *gin.Context) {
 	queryProject := &model.Project{}
 
@@ -29,6 +31,8 @@ func addModule(c *gin.Context) {
 	}
 }
 
+// listModules: Call controllers.ListModules with projectId Query param.
+// Abort when error occurs.
 func listModules(c *gin.Context) {
 	queryProject := &model.Project{}
 
@@ -45,6 +49,8 @@ func listModules(c *gin.Context) {
 	}
 }
 
+// findModuleById: Call controllers.FindModuleById with Query param.
+// Abort when error occurs.
 func findModuleById(c *gin.Context) {
 	queryModule := &model.Module{}
 
@@ -61,10 +67,12 @@ func findModuleById(c *gin.Context) {
 	}
 }
 
+// findModuleByName: Call controllers.FindModuleByName with module name in URL param and "projectId" in Query param.
+// Abort when error occurs.
 func findModuleByName(c *gin.Context) {
 	queryProject := &model.Project{}
 
-	projectId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	projectId, err := strconv.ParseInt(c.Query("projectId"), 10, 64)
 	if err != nil {
 		_ = c.AbortWithError(InternalError, err)
 	}
@@ -81,6 +89,22 @@ func findModuleByName(c *gin.Context) {
 	}
 }
 
+// findModuleByPath: Call controllers.FindModuleByPath with modulePath Query param.
+// Abort when error occurs.
+func findModuleByPath(c *gin.Context) {
+	queryModule := &model.Module{
+		Path: c.Query("modulePath"),
+	}
+
+	if modules, err := controllers.FindModuleByPath(queryModule); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, modules)
+	}
+}
+
+// updateModule: Call controllers.UpdateProject with moduleId Query param.
+// Abort when error occurs.
 func updateModule(c *gin.Context) {
 	queryModule := &model.Module{}
 
@@ -102,6 +126,8 @@ func updateModule(c *gin.Context) {
 	}
 }
 
+// deleteModule: Call controllers.DeleteModule with moduleId Query param.
+// Abort when error occurs.
 func deleteModule(c *gin.Context) {
 	queryModule := &model.Module{}
 

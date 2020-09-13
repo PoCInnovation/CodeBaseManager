@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+// addFunction: Call controllers.AddFunction with moduleId, functionName and functionPath Query params.
+// Abort when error occurs.
 func addFunction(c *gin.Context) {
 	queryModule := &model.Module{}
 
@@ -29,6 +31,8 @@ func addFunction(c *gin.Context) {
 	}
 }
 
+// listFunctions: Call controllers.ListFunctions with moduleId Query param.
+// Abort when error occurs.
 func listFunctions(c *gin.Context) {
 	queryModule := &model.Module{}
 
@@ -45,6 +49,8 @@ func listFunctions(c *gin.Context) {
 	}
 }
 
+// findFunctionById: Call controllers.FindFunctionById with Query param.
+// Abort when error occurs.
 func findFunctionById(c *gin.Context) {
 	queryFunction := &model.Function{}
 
@@ -61,10 +67,12 @@ func findFunctionById(c *gin.Context) {
 	}
 }
 
+// findFunctionByName: Call controllers.FindFunctionByName with module name in URL param and "projectId" in Query param.
+// Abort when error occurs.
 func findFunctionByName(c *gin.Context) {
 	queryModule := &model.Module{}
 
-	moduleId, err := strconv.ParseInt(c.Query("functionId"), 10, 64)
+	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
 	if err != nil {
 		_ = c.AbortWithError(InternalError, err)
 	}
@@ -81,6 +89,30 @@ func findFunctionByName(c *gin.Context) {
 	}
 }
 
+// findFunctionByPath: Call controllers.FindFunctionByName with module name in URL param and "projectId" in Query param.
+// Abort when error occurs.
+func findFunctionByPath(c *gin.Context) {
+	queryModule := &model.Module{}
+
+	moduleId, err := strconv.ParseInt(c.Query("moduleId"), 10, 64)
+	if err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	}
+	queryModule.ID = uint(moduleId)
+
+	queryFunction := &model.Function{
+		Name: c.Query("functionPath"),
+	}
+
+	if functions, err := controllers.FindFunctionByPath(queryModule, queryFunction); err != nil {
+		_ = c.AbortWithError(InternalError, err)
+	} else {
+		c.JSON(http.StatusOK, functions)
+	}
+}
+
+// updateFunction: Call controllers.UpdateFunction with functionId Query param.
+// Abort when error occurs.
 func updateFunction(c *gin.Context) {
 	queryFunction := &model.Function{}
 
@@ -102,6 +134,8 @@ func updateFunction(c *gin.Context) {
 	}
 }
 
+// deleteFunction: Call controllers.DeleteFunction with functionId Query param.
+// Abort when error occurs.
 func deleteFunction(c *gin.Context) {
 	queryFunction := &model.Function{}
 

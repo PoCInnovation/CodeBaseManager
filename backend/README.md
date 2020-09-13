@@ -1,39 +1,50 @@
-# CodeBaseManager - 
+# CodeBaseManager - Backend
 
-This module is one of the most important as it allows to directly interact with CBM's server
+This module is a Dockerized API that allow user to stock information about project added by users.
 
 ## Overview
 
-This section will give a brief overview of each command's capabilities.
-For more informations, please see [] :warning: TODO: add link to details
+This API use [go-sqlite3](https://github.com/mattn/go-sqlite3) and [Gin](https://github.com/gin-gonic/gin).
+
+It receives requests by CBM-Watcher to keep track of changes in watched Repository.
+
+
 
 ### Start & Stop
 
-These two commands are pretty self explanatory, so here's a quick exemple of both:
+This module is being launch directly during installation, on a Port chosen by the user.
+
+It is not yet started with a service via systemctl, but the user can launch it manually with CLI:
 
 ```bash
     cbm server start
     cbm server stop
 ```
 
-### Add & Drop
+### Tables
 
-These two commands allow you to respectively drop or add a repository to CBM's watch-list.
+---
+#### Project
+|  Fields   | Description                       | Type                  | Remark                    |
+|:---------:|:---------------------------------:|:---------------------:|:-------------------------:|
+| Name      | Project name (Base Directory)     | String                | **Mandatory/Unique**      |
+| Path      | Project Path (Given by Watcher)   | String                | **Mandatory/Unique**      |
+| Modules   | Project Modules                   | List of Module        |                           |
 
-```bash
-    cbm server add 'path/to/repository'
-    cbm server drop 'repository-name'
-```
+---
+#### Module
+|  Fields   | Description                       | Type                  | Remark                    |
+|:---------:|:---------------------------------:|:---------------------:|:-------------------------:|
+| Name      | Module name (Base Directory)      | String                | **Mandatory/Unique**      |
+| Path      | Module Path (Given by Watcher)    | String                | **Mandatory/Unique**      |
+| Functions | Module's Functions                | List of Functions     |                           |
 
-### List
+---
+#### Function
+|  Fields   | Description                       | Type                  | Remark                    |
+|:---------:|:---------------------------------:|:---------------------:|:-------------------------:|
+| Name      | Project name (Base Directory)     | String                | **Mandatory/Unique**      |
+| Path      | Project Path (Given by Watcher)   | String                | **Mandatory/Unique**      |
 
-This command will list some information's what CBM's server.
-
-By default, if no arguments are provided, it will display CBM's watch-list
-(and is currently this only behavior of this command).
-
-```bash
-    cbm server list
-```
 
 ## Details

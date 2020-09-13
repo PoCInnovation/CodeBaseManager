@@ -43,7 +43,7 @@ jobs:
       env:
         CBM_PORT: 8080
         GIN_MODE: debug
-      run: cd backend && make api-start
+      run: cd backend && echo "CBM_PORT=8080" > .env && make api-start
 
     - name: Run API Tests
       id: run-newman
@@ -51,7 +51,7 @@ jobs:
       with:
         collection: backend/tests/Postman/Cbm-Api.postman_collection.json
         environment: backend/tests/Postman/Cbm-Api.postman_environment.json
-        iterationCount: 5
+        iterationCount: 1
         reporters: cli
 
 

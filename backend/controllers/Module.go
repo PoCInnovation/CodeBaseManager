@@ -39,6 +39,15 @@ func FindModuleById(module *model.Module) (*model.Module, error) {
 	return module, nil
 }
 
+// FindModuleByPath : search for model.Module with model.Module FindByPath method.
+//  Return an error if no project or module found, or error in database.Database query.
+func FindModuleByPath(module *model.Module) (*model.Module, error) {
+	if _, err := module.FindByPath(); err != nil {
+		return nil, errors.New(fmt.Sprintf("module with path {%s} not found", module.Path))
+	}
+	return module, nil
+}
+
 // UpdateModule : search for model.Module with model.Module FindById method and update fields.
 //  Return an error if no Module found or error in database.Database query or save.
 func UpdateModule(queryModule *model.Module, updatedFields *model.Module) (*model.Module, error) {
@@ -57,7 +66,7 @@ func UpdateModule(queryModule *model.Module, updatedFields *model.Module) (*mode
 	return queryModule, nil
 }
 
-// ListModules: search for list of all model.Model with associated model.ListProjects ID.
+// ListModules: search for list of all model.Module with associated model.ListProjects ID.
 //  Return an error if no project found or error in database.Database listing.
 func ListModules(project *model.Project) ([]model.Module, error) {
 	if _, err := project.FindById(); err != nil {
@@ -73,6 +82,7 @@ func ListModules(project *model.Project) ([]model.Module, error) {
 	return modules, nil
 }
 
+// DeleteModuleDependencies: search for list of all links inside model.Module and delete them.
 func DeleteModuleDependencies(module *model.Module) (*model.Module, error) {
 	if functions, err := ListFunctions(module); err == nil && functions != nil {
 		for _, function := range functions {
@@ -81,9 +91,18 @@ func DeleteModuleDependencies(module *model.Module) (*model.Module, error) {
 			}
 		}
 	}
+	//if types, err := ListTypes(module); err == nil && types != nil {
+	//	for _, thing := range types {
+	//		if _, err := thing.Delete(); err != nil {
+	//			return nil, err
+	//		}
+	//	}
+	//}
 	return module, nil
 }
 
+// FindModuleById : search for model.Module with model.Module FindById method and delete it along with dependencies.
+//  Return an error if no module found or error in database.Database deletion.
 func DeleteModule(module *model.Module) (*model.Module, error) {
 	var err error
 	if module, err = FindModuleById(module); err != nil {
