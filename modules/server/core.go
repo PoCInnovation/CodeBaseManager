@@ -24,10 +24,11 @@ func GetApiUrl(urlSuffix string) string {
 	return fmt.Sprintf("%s:%s/%s", LocalUrl, Port, urlSuffix)
 }
 
+// GetBackendGlobalDirectory: Search global cbm install dir with env.
 func GetBackendGlobalDirectory() (string, bool) {
 	home := os.Getenv("HOME")
 	if home == "" {
-		log.Println("cannot load HOME environnement variable.")
+		log.Println("cannot load HOME environment variable.")
 		return "", false
 	}
 	var backendDir string
@@ -39,6 +40,7 @@ func GetBackendGlobalDirectory() (string, bool) {
 	return backendDir, true
 }
 
+// getServerPort: Get the server Port in ~/.cbm installation folder
 func getServerPort() bool {
 	backendDir, ok := GetBackendGlobalDirectory()
 	if !ok {
@@ -58,6 +60,7 @@ func getServerPort() bool {
 	return true
 }
 
+// GetServerState: Check if Cbm-api is running with port in global CBM install
 func GetServerState() bool {
 	if Port == "" {
 		if !getServerPort() {
