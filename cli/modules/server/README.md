@@ -5,7 +5,6 @@ This module is one of the most important as it allows to directly interact with 
 ## Overview
 
 This section will give a brief overview of each command's capabilities.
-For more informations, please see [] :warning: TODO: add link to details
 
 ### Start & Stop
 
