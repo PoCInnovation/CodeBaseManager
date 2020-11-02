@@ -22,13 +22,13 @@ RUN apk update                                          \
 WORKDIR /app
 
 # Copy go mod and sum files
-#COPY go.mod go.sum ./
+COPY backend/go.mod .
 
 # Download all dependencies. Dependencies will be cached if the go.mod and the go.sum files are not changed
-RUN go get github.com/PoCFrance/CodeBaseManager
+RUN go mod download
 
 # Copy the source from the current directory to the working Directory inside the container
-COPY . .
+COPY backend .
 
 # Build the Go app
 #RUN GOOS=linux go build -a -installsuffix cgo -o main .

@@ -13,6 +13,7 @@ api-run:
 	@docker-compose up --build
 
 api-dev:
+	cp ../go.mod ../go.sum .
 	watchexec --restart --filter "$(pwd)/*" --watch . "docker-compose -f docker-compose.dev.yml up --build"
 
 api-test:
