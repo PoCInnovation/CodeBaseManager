@@ -1,4 +1,4 @@
-module github.com/PoCFrance/CodeBaseManager
+module github.com/PoCInnovation/CodeBaseManager
 
 go 1.14
 
