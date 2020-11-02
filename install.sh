@@ -42,7 +42,8 @@ function installBackend() {
     rm -rfd "$CBM_GLOBAL_BACKEND_DIR"
     echo -e "\e[1;94mInstalling CodeBaseManager Backend in $CBM_GLOBAL_BACKEND_DIR\e[0m"
     mkdir -p "$CBM_GLOBAL_BACKEND_DIR"
-    cp -r "$CBM_BACKEND_DIR"/* go.mod go.sum "$CBM_GLOBAL_BACKEND_DIR"
+    cp -r "$CBM_BACKEND_DIR"/*  "$CBM_GLOBAL_BACKEND_DIR"
+    cp -r go.mod go.sum Dockerfile  "$CBM_GLOBAL_PATH"
 }
 
 function writePort() {
@@ -84,9 +85,6 @@ function installCbm() {
         exit 1
     fi
 
-    echo -e "\e[1;94mMoving CodeBaseManager(cli) to $BIN_PATH\e[0m"
-    sudo mv cbm $BIN_PATH
-
     # Installing the Watcher
     WATCHER="cbm-watcher"
     WHERE="watcher"
@@ -111,6 +109,8 @@ function installCbm() {
     fi
 
     getPortCBM
+    echo -e "\e[1;94mMoving CodeBaseManager(cli) to $BIN_PATH\e[0m"
+    sudo mv cbm $BIN_PATH
     echo -e "\e[1;94mCodebase manager Successfully Installed !!\n\n\e[0m"
 }
 
