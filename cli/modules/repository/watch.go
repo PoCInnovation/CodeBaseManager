@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/cli/modules/server"
+	"github.com/PoCInnovation/CodeBaseManager/cli/modules/server"
 	"log"
 	"os"
 	"strings"

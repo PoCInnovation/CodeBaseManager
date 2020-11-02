@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/PoCFrance/CodeBaseManager/cli/cmd/codebase"
-	"github.com/PoCFrance/CodeBaseManager/cli/cmd/funcTests"
-	"github.com/PoCFrance/CodeBaseManager/cli/cmd/repository"
-	"github.com/PoCFrance/CodeBaseManager/cli/cmd/server"
+	"github.com/PoCInnovation/CodeBaseManager/cli/cmd/codebase"
+	"github.com/PoCInnovation/CodeBaseManager/cli/cmd/funcTests"
+	"github.com/PoCInnovation/CodeBaseManager/cli/cmd/repository"
+	"github.com/PoCInnovation/CodeBaseManager/cli/cmd/server"
 	"github.com/spf13/cobra"
 	"os"
 )

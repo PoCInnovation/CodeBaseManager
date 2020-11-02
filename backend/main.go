@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/backend/routes"
+	"github.com/PoCInnovation/CodeBaseManager/backend/routes"
 	"log"
 )
 

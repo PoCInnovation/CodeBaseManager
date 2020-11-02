@@ -1,8 +1,8 @@
 package codebase
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/cli/REPL"
-	"github.com/PoCFrance/CodeBaseManager/cli/cmd/common"
+	"github.com/PoCInnovation/CodeBaseManager/cli/REPL"
+	"github.com/PoCInnovation/CodeBaseManager/cli/cmd/common"
 	"github.com/spf13/cobra"
 )
 

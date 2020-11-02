@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/backend/database"
+	"github.com/PoCInnovation/CodeBaseManager/backend/database"
 	"github.com/jinzhu/gorm"
 )
 

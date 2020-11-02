@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/cli/modules/server"
+	"github.com/PoCInnovation/CodeBaseManager/cli/modules/server"
 	"github.com/spf13/cobra"
 )
 

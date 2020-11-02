@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/cli/modules/repository"
+	"github.com/PoCInnovation/CodeBaseManager/cli/modules/repository"
 	"github.com/spf13/cobra"
 )
 

@@ -1,7 +1,7 @@
 package funcTests
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/cli/modules/funcTests"
+	"github.com/PoCInnovation/CodeBaseManager/cli/modules/funcTests"
 	"github.com/spf13/cobra"
 )
 

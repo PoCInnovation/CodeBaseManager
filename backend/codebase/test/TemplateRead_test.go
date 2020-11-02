@@ -1,9 +1,9 @@
 package codebase_test
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/backend/codebase"
 	"errors"
 	"fmt"
+	"github.com/PoCInnovation/CodeBaseManager/backend/codebase"
 	"testing"
 )
 

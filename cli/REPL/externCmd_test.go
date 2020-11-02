@@ -2,7 +2,7 @@ package REPL
 
 import (
 	"fmt"
-	pt "github.com/PoCFrance/CodeBaseManager/cli/REPL/tests"
+	pt "github.com/PoCInnovation/CodeBaseManager/cli/REPL/tests"
 	"io/ioutil"
 	"os"
 	"testing"

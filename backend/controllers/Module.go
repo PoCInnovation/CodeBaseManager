@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/backend/model"
 	"errors"
 	"fmt"
+	"github.com/PoCInnovation/CodeBaseManager/backend/model"
 )
 
 // AddModule: add a model.Project with given projectId, moduleName and modulePath.

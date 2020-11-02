@@ -1,6 +1,6 @@
 package REPL
 
-import "github.com/PoCFrance/CodeBaseManager/cli/REPL/builtins"
+import "github.com/PoCInnovation/CodeBaseManager/cli/REPL/builtins"
 
 type builtin func([]string)
 type Builtins map[string]builtin

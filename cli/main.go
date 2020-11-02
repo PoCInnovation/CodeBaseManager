@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/cli/cmd"
+	"github.com/PoCInnovation/CodeBaseManager/cli/cmd"
 )
 
 func main() {

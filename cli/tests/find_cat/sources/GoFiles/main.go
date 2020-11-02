@@ -1,6 +1,6 @@
 package main
 
-import "github.com/PoCFrance/CodeBaseManager/cli/cmd"
+import "github.com/PoCInnovation/CodeBaseManager/cli/cmd"
 
 func main() {
 	cmd.Execute()

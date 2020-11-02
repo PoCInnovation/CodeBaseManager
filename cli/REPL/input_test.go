@@ -2,9 +2,9 @@ package REPL
 
 import (
 	"fmt"
-	"github.com/PoCFrance/CodeBaseManager/cli/REPL/builtins"
-	"github.com/PoCFrance/CodeBaseManager/cli/REPL/tests"
-	"github.com/PoCFrance/CodeBaseManager/cli/modules/funcTests"
+	"github.com/PoCInnovation/CodeBaseManager/cli/REPL/builtins"
+	"github.com/PoCInnovation/CodeBaseManager/cli/REPL/tests"
+	"github.com/PoCInnovation/CodeBaseManager/cli/modules/funcTests"
 	"reflect"
 	"testing"
 )

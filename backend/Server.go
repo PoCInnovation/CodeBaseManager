@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/backend/database"
-	"github.com/PoCFrance/CodeBaseManager/backend/model"
+	"github.com/PoCInnovation/CodeBaseManager/backend/database"
+	"github.com/PoCInnovation/CodeBaseManager/backend/model"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"

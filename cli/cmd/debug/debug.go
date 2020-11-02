@@ -1,7 +1,7 @@
 package debug
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/cli/REPL"
+	"github.com/PoCInnovation/CodeBaseManager/cli/REPL"
 	"github.com/spf13/cobra"
 )
 

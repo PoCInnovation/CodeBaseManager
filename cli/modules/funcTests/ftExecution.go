@@ -3,7 +3,7 @@ package funcTests
 import (
 	"bytes"
 	"fmt"
-	"github.com/PoCFrance/CodeBaseManager/cli/REPL"
+	"github.com/PoCInnovation/CodeBaseManager/cli/REPL"
 	"os"
 	"os/exec"
 	"strings"

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/backend/controllers"
-	"github.com/PoCFrance/CodeBaseManager/backend/model"
+	"github.com/PoCInnovation/CodeBaseManager/backend/controllers"
+	"github.com/PoCInnovation/CodeBaseManager/backend/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

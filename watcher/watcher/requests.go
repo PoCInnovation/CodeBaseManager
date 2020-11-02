@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PoCFrance/CodeBaseManager/backend/model"
+	"github.com/PoCInnovation/CodeBaseManager/backend/model"
 	"github.com/joho/godotenv"
 	"io/ioutil"
 	"log"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/PoCFrance/CodeBaseManager/watcher/watcher"
+	"github.com/PoCInnovation/CodeBaseManager/watcher/watcher"
 	"log"
 	"time"
 )
