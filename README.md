@@ -1,9 +1,19 @@
 # CodeBaseManager
 
 ## Description
-CodeBaseManager is a command line tool designed to ease the development of projects through multiple, single purpose, language independant, modules.
+CodeBaseManager is a command line tool designed to ease the development of projects through multiple, single purpose, language independent, modules.
 
-It will have a backend to hold informations about the codebase, build system and such, of the project for the modules to use.
+Each module are manage differently. By default, there are some modules but you can develop your own if you want. The final objective is to give a true open source tool that can help you to manage your codebase.
+
+It will have a backend to hold information about the codebase, build system and such, of the project for the modules to use.
+
+The project is compose of 3 services : the CLI, a backend and a watcher.
+
+The CLI allow you to launch commands through the terminal who will control the watcher and backend. The watcher is a service who run continuously to get information about projects that wil be send to backend. 
+
+See below a schema of the current architecture 
+
+![CMB-architecture](./.github/assets/cmb-architecture-schema.png)
 
 ## Installation
 
@@ -22,6 +32,14 @@ cbm help
 ```
 
 If no command is provided then, depending on the module, you may enter a shell. This shell can execute a command at a time and the module's commands.
+
+## Configuration
+
+Each codebase can be configured thanks to `TOML` file.
+
+For example, it's possible to manage functional tests like this :
+
+![cbm-toml-example](./.github/assets/cbm-example-test.png)
 
 ## Modules
 A module fills up a specific task. In the future they will be able to interact with the backend and with each other (for specific features).
@@ -53,6 +71,28 @@ A module fills up a specific task. In the future they will be able to interact w
 | [gin-gonic/gin](https://github.com/gin-gonic/gin)          | MIT License        |
 | [logrusorgu/aurora](https://github.com/logrusorgru/aurora) | Unlicense License  |
 
+
+## Example 
+
+Here is an example of result what you can do with CBM 
+
+### Find module 
+
+![cbm-find-example](.github/assets/cbm-example-find-result.png)
+
+### Cat module
+
+![cbm-cat-example](.github/assets/cbm-example-cat-example.png)
+
+### Functional tests
+
+#### Config
+
+![cbm-test-example](.github/assets/cbm-example-test-functional-2.png)
+
+#### Result 
+
+![cbm-test-example](.github/assets/cbm-functional-test-result.png)
 
 ------------
 ## Maintainers
